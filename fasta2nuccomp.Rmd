@@ -1,0 +1,110 @@
+---
+title: "fasta2nuccomp"
+author: "Insert author here"
+date: "`r format(Sys.time(), '%Y, %B %d')`"
+output: 
+  html_document:
+    toc: true
+    code_folding: show
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.align = "center")
+knitr::opts_chunk$set(fig.height = 6)
+knitr::opts_chunk$set(fig.width = 6)
+library(reticulate)
+use_python("/usr/bin/python3")
+```
+
+
+
+
+The repository ```fasta2nuccomp``` includes tools to help investigators rapidly summarize teh contents of a file in the FASTA format.
+The python scriptt ```fasta2nuccomp.py``` can be run independently or called from Rmarkdown, as we will see in this document.
+
+
+## Dependencies
+
+
+The script ```fasta2nuccomp.py``` was written in python 3.7.3 and biopython 1.78.
+You'll want versions that are greater or equla to these versions.
+Below we see how to query the versions we have.
+
+```{r include=FALSE}
+options(prompt = '$ ')
+```
+
+```{bash, prompt=TRUE}
+python3 -V
+```
+
+```{r include=FALSE}
+options(prompt = '>>> ')
+```
+
+```{python, prompt=TRUE}
+import Bio
+print(Bio.__version__)
+```
+
+
+We'll also want at least R 4.0.2.
+You should see the version you have when you start R.
+We'll also see how to get this information in the section 'Session information.'
+
+
+## FASTA file
+
+Nucleotide data is typically stored in a FASTA format file.
+This is a text file with a specific format.
+A description line begins with '>' and is followed by one or more lines of sequence.
+You can learn more about the FASTA format at Wikipedia's [FASTA format](https://en.wikipedia.org/wiki/FASTA_format) page.
+An example FASTA file is included with ```fasta2nuccomp```.
+
+
+## Summarizing a FASTA file
+
+
+In order to summarize our FASTA file we will call ```fasta2nuccomp.py``` from the shell.
+It requires that you tell it the name of your FASTA file.
+
+
+```{r include=FALSE}
+options(prompt = '$ ')
+```
+
+```{bash, prompt=TRUE}
+./fasta2nuccomp.py test.fa
+```
+
+
+This will create a comma delimited text file that has the same name as your FASTA file with the added suffix ```_nuccomp.csv```.
+
+
+## Post-proceessing and visualization
+
+
+```{r}
+my_nucs <- readr::read_csv("test.fa_nuccomp.csv")
+my_nucs
+```
+
+
+```{r}
+library(ggplot2)
+p1 <- ggplot(my_nucs, aes(x = Length)) + geom_histogram(binwidth=1)
+p1 <- p1 + theme_bw()
+p1
+
+```
+
+
+## Session information
+
+
+```{r}
+sessionInfo()
+```
+
