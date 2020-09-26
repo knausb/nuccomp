@@ -12,10 +12,11 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(fig.align = "center")
-knitr::opts_chunk$set(fig.height = 6)
-knitr::opts_chunk$set(fig.width = 6)
+knitr::opts_chunk$set(fig.height = 4)
+knitr::opts_chunk$set(fig.width = 4)
 library(reticulate)
 use_python("/usr/bin/python3")
+st1 <- Sys.time()
 ```
 
 
@@ -61,8 +62,7 @@ Nucleotide data is typically stored in a FASTA format file.
 This is a text file with a specific format.
 A description line begins with '>' and is followed by one or more lines of sequence.
 You can learn more about the FASTA format at Wikipedia's [FASTA format](https://en.wikipedia.org/wiki/FASTA_format) page.
-An example FASTA file is included with ```fasta2nuccomp```.
-
+The yeast (*=Saccharomyces cerevisiae*) strain S288C genome is included with ```fasta2nuccomp``` as an example FASTA file.
 
 ## Summarizing a FASTA file
 
@@ -73,10 +73,16 @@ It requires that you tell it the name of your FASTA file.
 
 ```{r include=FALSE}
 options(prompt = '$ ')
+st2 <- Sys.time()
 ```
 
 ```{bash, prompt=TRUE}
-./fasta2nuccomp.py test.fa
+./fasta2nuccomp.py S288C_reference_sequence_R64-2-1_20150113.fsa
+```
+
+```{r}
+st3 <- Sys.time()
+st3-st2
 ```
 
 
@@ -87,22 +93,178 @@ This will create a comma delimited text file that has the same name as your FAST
 
 
 ```{r}
-my_nucs <- readr::read_csv("test.fa_nuccomp.csv")
+#my_nucs <- readr::read_csv("GCF_900626175.2_cs10_genomic.fna_nuccomp.csv")
+my_nucs <- readr::read_csv("S288C_reference_sequence_R64-2-1_20150113.fsa_nuccomp.csv")
 my_nucs
 ```
 
 
+This FASTA file consists of `r format(sum(my_nucs$Length), big.mark=",")` nucleotides organized in `r format(length(my_nucs$Length), big.mark=",")` chromosomes or contigs.
+The longest contig is `r format(max(my_nucs$Length), big.mark=",")` bp and the shortest is `r format(min(my_nucs$Length), big.mark=",")`.
+
+
 ```{r}
 library(ggplot2)
-p1 <- ggplot(my_nucs, aes(x = Length)) + geom_histogram(binwidth=1)
-p1 <- p1 + theme_bw()
-p1
+```
+
+
+```{r}
+pl <- ggplot(my_nucs, aes(x = Length))
+pl <- pl + geom_histogram(binwidth=1e6, fill = "blue")
+pl <- pl + theme_bw()
+pl
+```
+
+
+Maximum value: `r format(max(my_nucs$Length), big.mark=",")`; 
+minimum value: `r format(min(my_nucs$Length), big.mark=",")`.
+
+
+```{r}
+my_df <- as.data.frame(rowSums(my_nucs[,c("a","A")])/my_nucs$Length)
+names(my_df) <- "nucs"
+
+pa <- ggplot(my_df, aes(x = nucs))
+pa <- pa + geom_histogram(binwidth=0.01, fill = "#5157FB")
+pa <- pa + theme_bw()
+pa <- pa + xlim(c(0,1))
+pa <- pa + xlab("Adenine (A, a)")
+pa
+```
+
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
+minimum value: `r format(min(my_df$nucs), big.mark=",")`.
+
+```{r}
+my_df <- as.data.frame(rowSums(my_nucs[,c("c","C")])/my_nucs$Length)
+names(my_df) <- "nucs"
+
+pc <- ggplot(my_df, aes(x = nucs))
+pc <- pc + geom_histogram(binwidth=0.01, fill = "#DD0A17")
+pc <- pc + theme_bw()
+pc <- pc + xlim(c(0,1))
+pc <- pc + xlab("Cytosine (C, c)")
+pc
+```
+
+
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
+minimum value: `r format(min(my_df$nucs), big.mark=",")`.
+
+
+```{r}
+my_df <- as.data.frame(rowSums(my_nucs[,c("g","G")])/my_nucs$Length)
+names(my_df) <- "nucs"
+
+pg <- ggplot(my_df, aes(x = nucs))
+pg <- pg + geom_histogram(binwidth=0.01, fill = "#1CBE20")
+pg <- pg + theme_bw()
+pg <- pg + xlim(c(0,1))
+pg <- pg + xlab("Guanine (G, g)")
+pg
+```
+
+
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
+minimum value: `r format(min(my_df$nucs), big.mark=",")`.
+
+
+```{r}
+my_df <- as.data.frame(rowSums(my_nucs[,c("t","T")])/my_nucs$Length)
+names(my_df) <- "nucs"
+
+pt <- ggplot(my_df, aes(x = nucs))
+pt <- pt + geom_histogram(binwidth=0.01, fill = "#E6E431")
+pt <- pt + theme_bw()
+pt <- pt + xlim(c(0,1))
+pt <- pt + xlab("Thymine (T, t)")
+pt
+```
+
+
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
+minimum value: `r format(min(my_df$nucs), big.mark=",")`.
+
+
+```{r}
+my_df <- as.data.frame(rowSums(my_nucs[,c("w","W", "s", "S", "m", "M", "k", "K", "r", "R", "y", "Y")])/my_nucs$Length)
+names(my_df) <- "nucs"
+
+pu <- ggplot(my_df, aes(x = nucs))
+pu <- pu + geom_histogram(binwidth=0.01, fill = "#AD26FA")
+pu <- pu + theme_bw()
+pu <- pu + xlim(c(0,1))
+# pu <- pu + xlab("IUPAC ambiguous (w,W, s, S, m, M, k, K, r, R, y, Y)")
+pu <- pu + xlab("IUPAC ambiguous")
+pu
+```
+
+
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
+minimum value: `r format(min(my_df$nucs), big.mark=",")`.
+
+
+The ambiguity codes can be looked up on Wikipedia's [nucleotide](https://en.wikipedia.org/wiki/Nucleotide) page.
+
+
+```{r}
+my_df <- as.data.frame(rowSums(my_nucs[,c("n","N")])/my_nucs$Length)
+names(my_df) <- "nucs"
+
+pn <- ggplot(my_df, aes(x = nucs))
+pn <- pn + geom_histogram(binwidth=0.01, fill = "#AD26FA")
+pn <- pn + theme_bw()
+pn <- pn + xlim(c(0,1))
+pn <- pn + xlab("Any base (N,n)")
+pn
+```
+
+
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
+minimum value: `r format(min(my_df$nucs), big.mark=",")`.
+
+
+```{r}
+my_df <- as.data.frame((my_nucs$Length - rowSums(
+  my_nucs[,c("a", "A", "c", "C", "g", "G", "t", "T", "w", "W", "s", "S", "m", "M", "k", "K", "r", "R", "y", "Y", "n", "N")]
+))/my_nucs$Length)
+names(my_df) <- "nucs"
+
+pe <- ggplot(my_df, aes(x = nucs))
+pe <- pe + geom_histogram(binwidth=0.01, fill = "#AD26FA")
+pe <- pe + theme_bw()
+pe <- pe + xlim(c(0,1))
+pe <- pe + xlab("Unexpected characters")
+pe
+```
+
+
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
+minimum value: `r format(min(my_df$nucs), big.mark=",")`.
+
+
+
+## Dashboard
+
+
+```{r, fig.height=6, fig.width=6}
+library(ggpubr)
+
+ggarrange(pa, pc, pt, pg, pu, pn, pe, pl, ncol = 2, nrow = 4)
+# ggsave(filename = "S288C_genome.png", device = "png",
+#        width = 6.5, height = 6.5, units = "in")
+# ggsave(filename = "S288C_genome.tiff", device = "tiff",
+#        width = 6.5, height = 6.5, units = "in")
 
 ```
 
 
 ## Session information
 
+```{r}
+st4 <- Sys.time()
+st4 - st1
+```
 
 ```{r}
 sessionInfo()
