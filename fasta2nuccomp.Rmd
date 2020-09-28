@@ -61,6 +61,7 @@ print(Bio.__version__)
 We'll also want at least R 4.0.2.
 You should see the version you have when you start R.
 We'll also see how to get this information in the section 'Session information.'
+You do not need RStudio, but I highly recommend it.
 
 
 ## FASTA file
