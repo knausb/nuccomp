@@ -473,7 +473,7 @@ summary {
 <pre class="bash"><code>$ ./fasta2nuccomp.py S288C_reference_sequence_R64-2-1_20150113.fsa</code></pre>
 <pre class="r"><code>st3 &lt;- Sys.time()
 st3-st2</code></pre>
-<pre><code>## Time difference of 0.583117 secs</code></pre>
+<pre><code>## Time difference of 0.5656209 secs</code></pre>
 <p>This will create a comma delimited text file that has the same name as your FASTA file with the added suffix <code>_nuccomp.csv</code>.</p>
 </div>
 <div id="post-processing-and-visualization" class="section level2">
@@ -637,7 +637,7 @@ ggarrange(pa, pc, pt, pg, pu, pn, pe, pl, ncol = 2, nrow = 4)</code></pre>
 <p>After performing the above operations we may wish to benchmark the execution time in order to determine how feasible it is to repeate this analysis. This has been facilitated above by taking time stamps with the function <code>Sys.time()</code>. We can now use these timestamps to evaluate total execution time.</p>
 <pre class="r"><code>st4 &lt;- Sys.time()
 st4 - st1</code></pre>
-<pre><code>## Time difference of 6.216391 secs</code></pre>
+<pre><code>## Time difference of 6.8798 secs</code></pre>
 <p>Lastly, we can use the <code>sessionInfo()</code> function to report the version of <code>R()</code> we are using as well as the packages and their versions. This is important information to include if we want to report an issue.</p>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.0.2 (2020-06-22)
