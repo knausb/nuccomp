@@ -22,16 +22,19 @@ st1 <- Sys.time()
 
 
 
-The repository ```fasta2nuccomp``` includes tools to help investigators rapidly summarize teh contents of a file in the FASTA format.
-The python scriptt ```fasta2nuccomp.py``` can be run independently or called from Rmarkdown, as we will see in this document.
+The repository ```fasta2nuccomp``` includes tools to help investigators rapidly summarize the contents of a file in the FASTA format.
+The python script ```fasta2nuccomp.py``` can be run independently or called from Rmarkdown, as we will see in this document.
 
 
 ## Dependencies
 
 
 The script ```fasta2nuccomp.py``` was written in python 3.7.3 and biopython 1.78.
-You'll want versions that are greater or equla to these versions.
+You'll want versions that are greater or equal to these versions.
 Below we see how to query the versions we have.
+
+
+From a ```bash``` prompt we can query which version of ```python``` we have installed.
 
 ```{r include=FALSE}
 options(prompt = '$ ')
@@ -40,6 +43,10 @@ options(prompt = '$ ')
 ```{bash, prompt=TRUE}
 python3 -V
 ```
+
+
+From an interactive ```python``` prompt we can query which version of Biopython we have installed.
+
 
 ```{r include=FALSE}
 options(prompt = '>>> ')
@@ -62,7 +69,7 @@ Nucleotide data is typically stored in a FASTA format file.
 This is a text file with a specific format.
 A description line begins with '>' and is followed by one or more lines of sequence.
 You can learn more about the FASTA format at Wikipedia's [FASTA format](https://en.wikipedia.org/wiki/FASTA_format) page.
-The yeast (*=Saccharomyces cerevisiae*) strain S288C genome is included with ```fasta2nuccomp``` as an example FASTA file.
+The yeast (*Saccharomyces cerevisiae*) strain S288C genome is included with ```fasta2nuccomp``` as an example FASTA file.
 
 ## Summarizing a FASTA file
 
@@ -89,11 +96,15 @@ st3-st2
 This will create a comma delimited text file that has the same name as your FASTA file with the added suffix ```_nuccomp.csv```.
 
 
-## Post-proceessing and visualization
+## Post-processing and visualization
+
+
+Once we have summarized our FASTA data we'll want to present it.
+This can be accomplished with summary statistics and graphics.
+Here we demonstrate how to summarize this data.
 
 
 ```{r}
-#my_nucs <- readr::read_csv("GCF_900626175.2_cs10_genomic.fna_nuccomp.csv")
 my_nucs <- readr::read_csv("S288C_reference_sequence_R64-2-1_20150113.fsa_nuccomp.csv")
 my_nucs
 ```
@@ -101,6 +112,8 @@ my_nucs
 
 This FASTA file consists of `r format(sum(my_nucs$Length), big.mark=",")` nucleotides organized in `r format(length(my_nucs$Length), big.mark=",")` chromosomes or contigs.
 The longest contig is `r format(max(my_nucs$Length), big.mark=",")` bp and the shortest is `r format(min(my_nucs$Length), big.mark=",")`.
+We can visualize this information in a semi-automated manner using histograms.
+
 
 
 ```{r}
@@ -117,7 +130,12 @@ pl
 
 
 Maximum value: `r format(max(my_nucs$Length), big.mark=",")`; 
-minimum value: `r format(min(my_nucs$Length), big.mark=",")`.
+median value: `r format(median(my_nucs$Length), big.mark=",")`;
+minimum value: `r format(min(my_nucs$Length), big.mark=",")`;
+length of values: `r format(length(my_nucs$Length), big.mark=",")`;
+length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;
+length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
+
 
 
 ```{r}
@@ -133,7 +151,13 @@ pa
 ```
 
 Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
-minimum value: `r format(min(my_df$nucs), big.mark=",")`.
+median value: `r format(median(my_df$nucs), big.mark=",")`;
+minimum value: `r format(min(my_df$nucs), big.mark=",")`;
+length of values: `r format(length(my_nucs$Length), big.mark=",")`;
+length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;
+length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
+
+
 
 ```{r}
 my_df <- as.data.frame(rowSums(my_nucs[,c("c","C")])/my_nucs$Length)
@@ -149,7 +173,13 @@ pc
 
 
 Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
-minimum value: `r format(min(my_df$nucs), big.mark=",")`.
+median value: `r format(median(my_df$nucs), big.mark=",")`;
+minimum value: `r format(min(my_df$nucs), big.mark=",")`;
+length of values: `r format(length(my_nucs$Length), big.mark=",")`;
+length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;
+length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
+
+
 
 
 ```{r}
@@ -166,7 +196,12 @@ pg
 
 
 Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
-minimum value: `r format(min(my_df$nucs), big.mark=",")`.
+median value: `r format(median(my_df$nucs), big.mark=",")`;
+minimum value: `r format(min(my_df$nucs), big.mark=",")`;
+length of values: `r format(length(my_nucs$Length), big.mark=",")`;
+length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;
+length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
+
 
 
 ```{r}
@@ -183,7 +218,12 @@ pt
 
 
 Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
-minimum value: `r format(min(my_df$nucs), big.mark=",")`.
+median value: `r format(median(my_df$nucs), big.mark=",")`;
+minimum value: `r format(min(my_df$nucs), big.mark=",")`;
+length of values: `r format(length(my_nucs$Length), big.mark=",")`;
+length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;
+length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
+
 
 
 ```{r}
@@ -201,7 +241,12 @@ pu
 
 
 Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
-minimum value: `r format(min(my_df$nucs), big.mark=",")`.
+median value: `r format(median(my_df$nucs), big.mark=",")`;
+minimum value: `r format(min(my_df$nucs), big.mark=",")`;
+length of values: `r format(length(my_nucs$Length), big.mark=",")`;
+length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;
+length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
+
 
 
 The ambiguity codes can be looked up on Wikipedia's [nucleotide](https://en.wikipedia.org/wiki/Nucleotide) page.
@@ -221,7 +266,12 @@ pn
 
 
 Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
-minimum value: `r format(min(my_df$nucs), big.mark=",")`.
+median value: `r format(median(my_df$nucs), big.mark=",")`;
+minimum value: `r format(min(my_df$nucs), big.mark=",")`;
+length of values: `r format(length(my_nucs$Length), big.mark=",")`;
+length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;
+length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
+
 
 
 ```{r}
@@ -240,14 +290,24 @@ pe
 
 
 Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
-minimum value: `r format(min(my_df$nucs), big.mark=",")`.
+median value: `r format(median(my_df$nucs), big.mark=",")`;
+minimum value: `r format(min(my_df$nucs), big.mark=",")`;
+length of values: `r format(length(my_nucs$Length), big.mark=",")`;
+length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;
+length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
+
 
 
 
 ## Dashboard
 
 
-```{r, fig.height=6, fig.width=6}
+For internal purposes we may want a detailed report, as presented above.
+If we want to publish this information we may want to summarize this information in a single, multipanel graphic, or dashboard perspective.
+This is illustrated below.
+
+
+```{r, fig.height=8, fig.width=8}
 library(ggpubr)
 
 ggarrange(pa, pc, pt, pg, pu, pn, pe, pl, ncol = 2, nrow = 4)
@@ -259,12 +319,27 @@ ggarrange(pa, pc, pt, pg, pu, pn, pe, pl, ncol = 2, nrow = 4)
 ```
 
 
+For the purpose of publication we may desire to save this "dashboard."
+The ```ggsave()``` function can be uncommented, and the filename modified, in order to save this dashboard as a ```*.png``` or ```*.tiff``` graphic.
+
+
 ## Session information
+
+
+After performing the above operations we may wish to benchmark the execution time in order to determine how feasible it is to repeate this analysis.
+This has been facilitated above by taking time stamps with the function ```Sys.time()```.
+We can now use these timestamps to evaluate total execution time.
+
 
 ```{r}
 st4 <- Sys.time()
 st4 - st1
 ```
+
+
+Lastly, we can use the ```sessionInfo()``` function to report the version of ```R()``` we are using as well as the packages and their versions.
+This is important information to include if we want to report an issue.
+
 
 ```{r}
 sessionInfo()
