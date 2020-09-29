@@ -444,7 +444,9 @@ summary {
 <li><a href="#dependencies">Dependencies</a></li>
 <li><a href="#fasta-file">FASTA file</a></li>
 <li><a href="#summarizing-a-fasta-file">Summarizing a FASTA file</a></li>
-<li><a href="#post-processing-and-visualization">Post-processing and visualization</a></li>
+<li><a href="#post-processing">Post-processing</a></li>
+<li><a href="#n50">N50</a></li>
+<li><a href="#visualization">Visualization</a></li>
 <li><a href="#dashboard">Dashboard</a></li>
 <li><a href="#session-information">Session information</a></li>
 </ul>
@@ -473,11 +475,11 @@ summary {
 <pre class="bash"><code>$ ./fasta2nuccomp.py S288C_reference_sequence_R64-2-1_20150113.fsa</code></pre>
 <pre class="r"><code>st3 &lt;- Sys.time()
 st3-st2</code></pre>
-<pre><code>## Time difference of 0.5697908 secs</code></pre>
+<pre><code>## Time difference of 0.574172 secs</code></pre>
 <p>This will create a comma delimited text file that has the same name as your FASTA file with the added suffix <code>_nuccomp.csv</code>.</p>
 </div>
-<div id="post-processing-and-visualization" class="section level2">
-<h2>Post-processing and visualization</h2>
+<div id="post-processing" class="section level2">
+<h2>Post-processing</h2>
 <p>Once we have summarized our FASTA data we’ll want to present it. This can be accomplished with summary statistics and graphics. Here we demonstrate how to summarize this data.</p>
 <pre class="r"><code>my_nucs &lt;- readr::read_csv(&quot;S288C_reference_sequence_R64-2-1_20150113.fsa_nuccomp.csv&quot;)</code></pre>
 <pre><code>## Parsed with column specification:
@@ -510,6 +512,20 @@ st3-st2</code></pre>
 ## # … with 12 more variables: s &lt;dbl&gt;, S &lt;dbl&gt;, m &lt;dbl&gt;, M &lt;dbl&gt;, k &lt;dbl&gt;,
 ## #   K &lt;dbl&gt;, r &lt;dbl&gt;, R &lt;dbl&gt;, y &lt;dbl&gt;, Y &lt;dbl&gt;, n &lt;dbl&gt;, N &lt;dbl&gt;</code></pre>
 <p>This FASTA file consists of 12,157,105 nucleotides organized in 17 chromosomes or contigs. The longest contig is 1,531,933 bp and the shortest is 85,779. We can visualize this information in a semi-automated manner using histograms.</p>
+</div>
+<div id="n50" class="section level2">
+<h2>N50</h2>
+<p>The summary statistic <code>N50</code> has become a popular way to summarize the contiguity of a genome assembly. If we sum the entire number of nucletides in an assembly and divide this number by two we get half of the assembly size. If we then sort the chromosomes or contigs in order of length, from longest to shortest, and walk through these until we reach the point of half of the assembly size we can report the length of the contig that contains this nucleotide. If this contig is long we may conclude that this is a well assembled genome that approaches chromosomes. If this contig is short we may cnclude that this assembly does not approach chromosomes and may have quality issues. In <code>R()</code> we can calculate <code>N50</code> as follows.</p>
+<pre class="r"><code>my_lens &lt;- sort(my_nucs$Length, decreasing = TRUE)
+my_mid &lt;- sum(my_lens)/2
+
+n50 &lt;- my_lens[cumsum(my_lens) &gt;= my_mid][1]
+
+format(n50, big.mark = &quot;,&quot;)</code></pre>
+<pre><code>## [1] &quot;924,431&quot;</code></pre>
+</div>
+<div id="visualization" class="section level2">
+<h2>Visualization</h2>
 <pre class="r"><code>library(ggplot2)</code></pre>
 <pre class="r"><code>pl &lt;- ggplot(my_nucs, aes(x = Length))
 pl &lt;- pl + geom_histogram(binwidth=1e6, fill = &quot;blue&quot;)
@@ -637,7 +653,7 @@ ggarrange(pa, pc, pt, pg, pu, pn, pe, pl, ncol = 2, nrow = 4)</code></pre>
 <p>After performing the above operations we may wish to benchmark the execution time in order to determine how feasible it is to repeate this analysis. This has been facilitated above by taking time stamps with the function <code>Sys.time()</code>. We can now use these timestamps to evaluate total execution time.</p>
 <pre class="r"><code>st4 &lt;- Sys.time()
 st4 - st1</code></pre>
-<pre><code>## Time difference of 6.474236 secs</code></pre>
+<pre><code>## Time difference of 6.587137 secs</code></pre>
 <p>Lastly, we can use the <code>sessionInfo()</code> function to report the version of <code>R()</code> we are using as well as the packages and their versions. This is important information to include if we want to report an issue.</p>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.0.2 (2020-06-22)

@@ -97,7 +97,7 @@ st3-st2
 This will create a comma delimited text file that has the same name as your FASTA file with the added suffix ```_nuccomp.csv```.
 
 
-## Post-processing and visualization
+## Post-processing
 
 
 Once we have summarized our FASTA data we'll want to present it.
@@ -115,6 +115,30 @@ This FASTA file consists of `r format(sum(my_nucs$Length), big.mark=",")` nucleo
 The longest contig is `r format(max(my_nucs$Length), big.mark=",")` bp and the shortest is `r format(min(my_nucs$Length), big.mark=",")`.
 We can visualize this information in a semi-automated manner using histograms.
 
+
+## N50
+
+
+The summary statistic ```N50``` has become a popular way to summarize the contiguity of a genome assembly.
+If we sum the entire number of nucletides in an assembly and divide this number by two we get half of the assembly size.
+If we then sort the chromosomes or contigs in order of length, from longest to shortest, and walk through these until we reach the point of half of the assembly size we can report the length of the contig that contains this nucleotide.
+If this contig is long we may conclude that this is a well assembled genome that approaches chromosomes.
+If this contig is short we may cnclude that this assembly does not approach chromosomes and may have quality issues.
+In ```R()``` we can calculate ```N50``` as follows.
+
+
+```{r}
+my_lens <- sort(my_nucs$Length, decreasing = TRUE)
+my_mid <- sum(my_lens)/2
+
+n50 <- my_lens[cumsum(my_lens) >= my_mid][1]
+
+format(n50, big.mark = ",")
+```
+
+
+
+## Visualization
 
 
 ```{r}
