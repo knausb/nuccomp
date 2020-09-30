@@ -150,6 +150,8 @@ library(ggplot2)
 pl <- ggplot(my_nucs, aes(x = Length))
 pl <- pl + geom_histogram(binwidth=1e6, fill = "blue")
 pl <- pl + theme_bw()
+pl <- pl + geom_vline(xintercept = n50, color = "#B22222", size = 1.5,
+                      linetype="dashed")
 pl
 ```
 
