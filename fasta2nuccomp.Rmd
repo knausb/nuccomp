@@ -147,11 +147,40 @@ library(ggplot2)
 
 
 ```{r}
+my_max <- max(my_nucs$Length)
+my_med <- median(my_nucs$Length)
+my_min <- min(my_nucs$Length)
+my_seqs <- length(my_nucs$Length)
+my_nzero <- length(my_nucs$Length > 0)
+my_nna <- length(!is.na(my_nucs$Length))
+my_len <- sum(my_nucs$Length)
+```
+
+
+```{r}
 pl <- ggplot(my_nucs, aes(x = Length))
-pl <- pl + geom_histogram(binwidth=1e6, fill = "blue")
+pl <- pl + geom_histogram(binwidth=1e5, fill = "blue")
 pl <- pl + theme_bw()
 pl <- pl + geom_vline(xintercept = n50, color = "#B22222", size = 1.5,
                       linetype="dashed")
+pl <- pl + annotate("text", x = my_max * 0.95, y=0,
+                    label= paste("Min:", format(my_min, big.mark = ",")),
+                    adj = 1)
+pl <- pl + annotate("text", x = my_max * 0.95, y=0.5,
+                    label= paste("Median:", format(my_med, big.mark = ",")),
+                    adj = 1)
+pl <- pl + annotate("text", x = my_max * 0.95, y=1,
+                    label= paste("Max:", format(my_max, big.mark = ",")),
+                    adj = 1)
+pl <- pl + annotate("text", x = my_max * 0.95, y=1.5,
+                    label= paste("N seqs:", format(my_seqs, big.mark = ",")),
+                    adj = 1)
+pl <- pl + annotate("text", x = my_max * 0.95, y=2,
+                    label= paste("N50:", format(n50, big.mark = ",")),
+                    adj = 1,  color = "#B22222")
+pl <- pl + annotate("text", x = my_max * 0.95, y=2.5,
+                    label= paste("Nucleotides:", format(my_len, big.mark = ",")),
+                    adj = 1)
 pl
 ```
 
@@ -168,12 +197,16 @@ length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
 ```{r}
 my_df <- as.data.frame(rowSums(my_nucs[,c("a","A")])/my_nucs$Length)
 names(my_df) <- "nucs"
+my_med <- median(my_df$nucs)
 
 pa <- ggplot(my_df, aes(x = nucs))
 pa <- pa + geom_histogram(binwidth=0.01, fill = "#5157FB")
 pa <- pa + theme_bw()
 pa <- pa + xlim(c(0,1))
 pa <- pa + xlab("Adenine (A, a)")
+pa <- pa + annotate("text", x = 0.95, y=1e1,
+                    label= paste("Median:", round(my_med, digits = 3)),
+                    adj = 1)
 pa
 ```
 
@@ -189,12 +222,16 @@ length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
 ```{r}
 my_df <- as.data.frame(rowSums(my_nucs[,c("c","C")])/my_nucs$Length)
 names(my_df) <- "nucs"
+my_med <- median(my_df$nucs)
 
 pc <- ggplot(my_df, aes(x = nucs))
 pc <- pc + geom_histogram(binwidth=0.01, fill = "#DD0A17")
 pc <- pc + theme_bw()
 pc <- pc + xlim(c(0,1))
 pc <- pc + xlab("Cytosine (C, c)")
+pc <- pc + annotate("text", x = 0.95, y=1e1,
+                    label= paste("Median:", round(my_med, digits = 3)),
+                    adj = 1)
 pc
 ```
 
@@ -212,12 +249,16 @@ length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
 ```{r}
 my_df <- as.data.frame(rowSums(my_nucs[,c("g","G")])/my_nucs$Length)
 names(my_df) <- "nucs"
+my_med <- median(my_df$nucs)
 
 pg <- ggplot(my_df, aes(x = nucs))
 pg <- pg + geom_histogram(binwidth=0.01, fill = "#1CBE20")
 pg <- pg + theme_bw()
 pg <- pg + xlim(c(0,1))
 pg <- pg + xlab("Guanine (G, g)")
+pg <- pg + annotate("text", x = 0.95, y=1e1,
+                    label= paste("Median:", round(my_med, digits = 3)),
+                    adj = 1)
 pg
 ```
 
@@ -234,12 +275,16 @@ length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
 ```{r}
 my_df <- as.data.frame(rowSums(my_nucs[,c("t","T")])/my_nucs$Length)
 names(my_df) <- "nucs"
+my_med <- median(my_df$nucs)
 
 pt <- ggplot(my_df, aes(x = nucs))
 pt <- pt + geom_histogram(binwidth=0.01, fill = "#E6E431")
 pt <- pt + theme_bw()
 pt <- pt + xlim(c(0,1))
 pt <- pt + xlab("Thymine (T, t)")
+pt <- pt + annotate("text", x = 0.95, y=1e1,
+                    label= paste("Median:", round(my_med, digits = 3)),
+                    adj = 1)
 pt
 ```
 
@@ -337,7 +382,16 @@ This is illustrated below.
 ```{r, fig.height=8, fig.width=8}
 library(ggpubr)
 
-ggarrange(pa, pc, pt, pg, pu, pn, pe, pl, ncol = 2, nrow = 4)
+#ggarrange(pa, pc, pt, pg, pu, pn, pe, pl, ncol = 2, nrow = 4)
+
+ggarrange(
+  ggarrange(pa, pc, pt, pg, ncol = 2, nrow = 2),
+  pl, 
+  ggarrange(pu, pn, pe, ncol = 3, nrow = 1),
+  ncol = 1, nrow = 3,
+  heights = c(2.5, 2, 1))
+
+
 # ggsave(filename = "S288C_genome.png", device = "png",
 #        width = 6.5, height = 6.5, units = "in")
 # ggsave(filename = "S288C_genome.tiff", device = "tiff",
