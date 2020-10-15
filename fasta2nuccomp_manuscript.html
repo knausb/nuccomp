@@ -435,7 +435,7 @@ summary {
 
 <h1 class="title toc-ignore">fasta2nuccomp: a tool to rapidly summarize the contents of FASTA files containing nucleotides</h1>
 <h4 class="author">Brian J. Knaus and Kelly J. Vining</h4>
-<h4 class="date">2020, October 14</h4>
+<h4 class="date">2020, October 15</h4>
 
 </div>
 
@@ -446,6 +446,7 @@ summary {
 <li><a href="#methods">Methods</a></li>
 <li><a href="#results">Results</a></li>
 <li><a href="#discussion">Discussion</a></li>
+<li><a href="#references">References</a></li>
 </ul>
 </div>
 
@@ -454,15 +455,58 @@ summary {
 </div>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
+<p>Bioinformatic data sets, such as genomic data, are sufficiently large that visual inspection is not practical. This presents a need to summarize and process large data sets for quality control. Solutions exist for some, but not all steps in workflows. For example, the software FastQC <span class="citation">(Andrews and others 2010; Bioinformatics 2011)</span> summarizes raw sequencing reads in the FASTQ format that are a typical result from Illumina sequencing. The trimmomatic <span class="citation">(Bolger, Lohse, and Usadel 2014)</span> attempts to remove nucleotides from low quality Illumina sequencing data. In order to infer whether gene space has been well assembled BUSCO <span class="citation">(Seppey, Manni, and Zdobnov 2019)</span> queries for conserved genes from several databases throughout the phylogenetic tree of life. Blobtools <span class="citation">(Laetsch and Blaxter 2017)</span> uses GC content and read coverage to attempt to improve assemblies.</p>
+<p><span class="citation">(Leggett et al. 2013)</span></p>
+<p>A commonly reported summary of a genome is the N50 statistic. This can be calculated by summing the number of nucleotides in an assembly and dividing by two to get the midpoint. Then sort the sequences from longest to shortest and starting from the longest sequence traverse the sequences until the midpoint of the sequences has been reached. The length of the sequence that contains the midpoint is the N50. While this statistic is commonly reported it does have shortcomings, which is perhaps why several alternatives have been proposed. One shortcoming is that it is a single number that is attempting to summarize millions or billions of nucleotides, so some may see it as an over simplification. Another is that it is sensitive to the minimum reporting length in fragmented genomes. Assemblies based on Illumina data, or other fragmented assemblies, typically contain a large number of short sequences. How short is determined by a minimum length of sequence to report in the final version. If we take an assembly with a minimum reporting length of 100 bp and remove all sequences that are less than 500 bp it will increase the N50. This is because we are reducing the number of nucleotides in the assembly by removing short sequences. The N50 statistic has been very useful but more informative summaries could provide more informative perspectives.</p>
+<p>We present fasta2nuccomp, a pair of scripts intended to summarize the content of FASTA format files that contain nucleotides. These scripts consist of a python script that summarizes the FASTA file in a tabular format and an RMarkdown script that numerically and graphically summarize the tabular data. Together, these scripts provide a rapid way to summarize the contents of FASTA files and present this information in publication quality graphics.</p>
 </div>
 <div id="methods" class="section level2">
 <h2>Methods</h2>
+<p>The repository fasta2nuccomp contains a python script, and RMarkdown script, example data and example output. The python script takes a FASTA format file consisting of nucleotides as input. The python (3.8.2) script uses biopython <span class="citation">(Cock et al. 2009)</span> to read in the file and to collect the length, as well as the (case sensitive) number of nucleotides and IUPAC ambiguous nucleotides. This information is output to a comma delimited text file. This script can be run independently or, on systems with bash (typical *nix systems), can be called from the RMarkdown script. The RMarkdown <span class="citation">(Xie, Allaire, and Grolemund 2018)</span> script uses R <span class="citation">(R Core Team 2020)</span> and reads in the comma delimited text file and summarizes it. Graphical summaries are made using ggplot2 <span class="citation">(Wickham 2016)</span> and ggpubr <span class="citation">(Kassambara 2020)</span> and consist of histograms of A, T, G, and C content, length of sequences, IUPAC ambiguity nucleotides (excluding A, C, G, T, and N), undetermined nucleotides (N), as well as a sanity check for unexpected characters. Numerical summaries are made as well such as the total number of nucleotides, N50, the number of sequences, and the median for these histograms. Examples are provided on how to output these graphical summaries to *.png format and publication quality *.tiff format.</p>
 </div>
 <div id="results" class="section level2">
 <h2>Results</h2>
 </div>
 <div id="discussion" class="section level2">
 <h2>Discussion</h2>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references">
+<div id="ref-andrews2010fastqc">
+<p>Andrews, Simon, and others. 2010. “FastQC: A Quality Control Tool for High Throughput Sequence Data.” Babraham Bioinformatics, Babraham Institute, Cambridge, United Kingdom.</p>
+</div>
+<div id="ref-bioinformatics2011fastqc">
+<p>Bioinformatics, Babraham. 2011. “FastQC: A Quality Control Tool for High Throughput Sequence Data.” <em>Cambridge, UK: Babraham Institute</em>.</p>
+</div>
+<div id="ref-bolger2014trimmomatic">
+<p>Bolger, Anthony M, Marc Lohse, and Bjoern Usadel. 2014. “Trimmomatic: A Flexible Trimmer for Illumina Sequence Data.” <em>Bioinformatics</em> 30 (15). Oxford University Press: 2114–20.</p>
+</div>
+<div id="ref-cock2009biopython">
+<p>Cock, Peter JA, Tiago Antao, Jeffrey T Chang, Brad A Chapman, Cymon J Cox, Andrew Dalke, Iddo Friedberg, et al. 2009. “Biopython: Freely Available Python Tools for Computational Molecular Biology and Bioinformatics.” <em>Bioinformatics</em> 25 (11). Oxford University Press: 1422–3.</p>
+</div>
+<div id="ref-ggpubr">
+<p>Kassambara, Alboukadel. 2020. <em>Ggpubr: ’Ggplot2’ Based Publication Ready Plots</em>. <a href="https://CRAN.R-project.org/package=ggpubr">https://CRAN.R-project.org/package=ggpubr</a>.</p>
+</div>
+<div id="ref-laetsch2017blobtools">
+<p>Laetsch, Dominik R, and Mark L Blaxter. 2017. “BlobTools: Interrogation of Genome Assemblies.” <em>F1000Research</em> 6 (1287). F1000 Research Limited: 1287.</p>
+</div>
+<div id="ref-leggett2013sequencing">
+<p>Leggett, Richard Mark, Ricardo Humberto Ramirez-Gonzalez, Bernardo Clavijo, Darren Waite, and Robert Paul Davey. 2013. “Sequencing Quality Assessment Tools to Enable Data-Driven Informatics for High Throughput Genomics.” <em>Frontiers in Genetics</em> 4. Frontiers: 288.</p>
+</div>
+<div id="ref-R">
+<p>R Core Team. 2020. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.</p>
+</div>
+<div id="ref-seppey2019busco">
+<p>Seppey, Mathieu, Mosè Manni, and Evgeny M Zdobnov. 2019. “BUSCO: Assessing Genome Assembly and Annotation Completeness.” In <em>Gene Prediction</em>, 227–45. Springer.</p>
+</div>
+<div id="ref-ggplot2">
+<p>Wickham, Hadley. 2016. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>.</p>
+</div>
+<div id="ref-rmarkdown">
+<p>Xie, Yihui, J.J. Allaire, and Garrett Grolemund. 2018. <em>R Markdown: The Definitive Guide</em>. Boca Raton, Florida: Chapman; Hall/CRC. <a href="https://bookdown.org/yihui/rmarkdown">https://bookdown.org/yihui/rmarkdown</a>.</p>
+</div>
+</div>
 </div>
 
 

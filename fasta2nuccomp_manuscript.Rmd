@@ -6,6 +6,7 @@ output:
   html_document:
     toc: true
     code_folding: hide
+bibliography: fasta2nuccomp_manuscript.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -19,17 +20,53 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Introduction
 
 
+Bioinformatic data sets, such as genomic data, are sufficiently large that visual inspection is not practical.
+This presents a need to summarize and process large data sets for quality control.
+Solutions exist for some, but not all steps in workflows.
+For example, the software FastQC [@andrews2010fastqc; @bioinformatics2011fastqc] summarizes raw sequencing reads in the FASTQ format that are a typical result from Illumina sequencing.
+The trimmomatic [@bolger2014trimmomatic] attempts to remove nucleotides from low quality Illumina sequencing data.
+In order to infer whether gene space has been well assembled BUSCO [@seppey2019busco] queries for conserved genes from several databases throughout the phylogenetic tree of life.
+Blobtools [@laetsch2017blobtools] uses GC content and read coverage to attempt to improve assemblies.
 
 
-FastQC
+[@leggett2013sequencing]
 
-BUSCO
 
-Blob ogram
+A commonly reported summary of a genome is the N50 statistic.
+This can be calculated by summing the number of nucleotides in an assembly and dividing by two to get the midpoint.
+Then sort the sequences from longest to shortest and starting from the longest sequence traverse the sequences until the midpoint of the sequences has been reached.
+The length of the sequence that contains the midpoint is the N50.
+While this statistic is commonly reported it does have shortcomings, which is perhaps why several alternatives have been proposed.
+One shortcoming is that it is a single number that is attempting to summarize millions or billions of nucleotides, so some may see it as an over simplification.
+Another is that it is sensitive to the minimum reporting length in fragmented genomes.
+Assemblies based on Illumina data, or other fragmented assemblies, typically contain a large number of short sequences.
+How short is determined by a minimum length of sequence to report in the final version.
+If we take an assembly with a minimum reporting length of 100 bp and remove all sequences that are less than 500 bp it will increase the N50.
+This is because we are reducing the number of nucleotides in the assembly by removing short sequences.
+The N50 statistic has been very useful but more informative summaries could provide more informative perspectives.
 
+
+We present fasta2nuccomp, a pair of scripts intended to summarize the content of FASTA format files that contain nucleotides.
+These scripts consist of a python script that summarizes the FASTA file in a tabular format and an RMarkdown script that numerically and graphically summarize the tabular data.
+Together, these scripts provide a rapid way to summarize the contents of FASTA files and present this information in publication quality graphics.
 
 
 ## Methods
+
+
+The repository fasta2nuccomp contains a python script, and RMarkdown script, example data and example output.
+The python script takes a FASTA format file consisting of nucleotides as input.
+The python (3.8.2) script uses biopython [@cock2009biopython] to read in the file and to collect the length, as well as the (case sensitive) number of nucleotides and IUPAC ambiguous nucleotides.
+This information is output to a comma delimited text file.
+This script can be run independently or, on systems with bash (typical *nix systems), can be called from the RMarkdown script.
+The RMarkdown [@rmarkdown] script uses R [@R] and reads in the comma delimited text file and summarizes it.
+Graphical summaries are made using ggplot2 [@ggplot2] and ggpubr [@ggpubr] and consist of histograms of A, T, G, and C content, length of sequences, IUPAC ambiguity nucleotides (excluding A, C, G, T, and N), undetermined nucleotides (N), as well as a sanity check for unexpected characters.
+Numerical summaries are made as well such as the total number of nucleotides, N50, the number of sequences, and the median for these histograms.
+Examples are provided on how to output these graphical summaries to \*.png format and publication quality \*.tiff format.
+
+
+
+
 
 
 
@@ -44,5 +81,5 @@ Blob ogram
 
 
 
-
+# References
 
