@@ -1,0 +1,48 @@
+---
+title: "fasta2nuccomp: a tool to rapidly summarize the contents of FASTA files containing nucleotides"
+author: "Brian J. Knaus and Kelly J. Vining"
+date: "`r format(Sys.time(), '%Y, %B %d')`"
+output: 
+  html_document:
+    toc: true
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Abstract
+
+
+## Introduction
+
+
+
+
+FastQC
+
+BUSCO
+
+Blob ogram
+
+
+
+## Methods
+
+
+
+## Results
+
+
+
+
+## Discussion
+
+
+
+
+
+
+
