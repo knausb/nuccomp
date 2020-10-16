@@ -78,6 +78,10 @@ Examples are provided on how to output these graphical summaries to \*.png forma
 ## Discussion
 
 
+```{r fig, echo=FALSE, fig.align='center', fig.cap="Figure X. A multipanel summary of the yeast S288C genome", out.width = '100%'}
+knitr::include_graphics("S288C_genome.png")
+```
+
 
 
 

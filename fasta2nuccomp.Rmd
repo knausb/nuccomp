@@ -385,10 +385,11 @@ library(ggpubr)
 #ggarrange(pa, pc, pt, pg, pu, pn, pe, pl, ncol = 2, nrow = 4)
 
 ggarrange(
-  ggarrange(pa, pc, pt, pg, ncol = 2, nrow = 2),
+  ggarrange(pa, pc, pt, pg, ncol = 2, nrow = 2, labels = c("A", "B", "C", "D")),
   pl, 
-  ggarrange(pu, pn, pe, ncol = 3, nrow = 1),
+  ggarrange(pu, pn, pe, ncol = 3, nrow = 1, labels = c("F", "G", "H")),
   ncol = 1, nrow = 3,
+  labels = c("", "E", ""),
   heights = c(2.5, 2, 1))
 
 
