@@ -369,6 +369,30 @@ length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;
 length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
 
 
+```{r}
+my_df <- data.frame(Length = my_nucs$Length,
+                    GC = rowSums(my_nucs[,c("c", "C", "g", "G")])
+                    )
+my_df$GC <- my_df$GC/my_df$Length
+my_df$Length <- my_df$Length/1e3
+
+pgc <- ggplot(my_df, aes(x = GC, y = Length))
+pgc <- pgc + geom_point(size = 4, shape = 21, fill = "#B2222299")
+pgc <- pgc + theme_bw()
+pgc <- pgc + ylab("Length (Kbp)")
+
+pgc
+
+my_nucs$Id[my_df$GC < 0.2]
+```
+
+
+We see that most sequences have a similar GC content regardless of length.
+One sequence is a bit shorter than all the others and has a GC content of about a half of what the others have.
+We've queried the Id above to get the accession number for this sequence.
+We can then Google "NC_001224" and select the hit to NCBI and see that this sequence is the 
+[yeast mitochondrion](https://www.ncbi.nlm.nih.gov/nuccore/NC_001224.1).
+It's been my experience that the mitochondrion will have a difference GC content than the nuclear sequences.
 
 
 ## Dashboard
@@ -387,7 +411,7 @@ library(ggpubr)
 ggarrange(
   ggarrange(pa, pc, pt, pg, ncol = 2, nrow = 2, labels = c("A", "B", "C", "D")),
   pl, 
-  ggarrange(pu, pn, pe, ncol = 3, nrow = 1, labels = c("F", "G", "H")),
+  ggarrange(pu, pn, pe, pgc, ncol = 4, nrow = 1, labels = c("F", "G", "H", "I")),
   ncol = 1, nrow = 3,
   labels = c("", "E", ""),
   heights = c(2.5, 2, 1))
