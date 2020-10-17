@@ -58,29 +58,32 @@ The repository fasta2nuccomp contains a python script, and RMarkdown script, exa
 The python script takes a FASTA format file consisting of nucleotides as input.
 The python (3.8.2) script uses biopython [@cock2009biopython] to read in the file and to collect the length, as well as the (case sensitive) number of nucleotides and IUPAC ambiguous nucleotides.
 This information is output to a comma delimited text file.
-This script can be run independently or, on systems with bash (typical *nix systems), can be called from the RMarkdown script.
+This script can be run independently or, on systems with bash (typical \*nix systems), can be called from the RMarkdown script.
 The RMarkdown [@rmarkdown] script uses R [@R] and reads in the comma delimited text file and summarizes it.
 Graphical summaries are made using ggplot2 [@ggplot2] and ggpubr [@ggpubr] and consist of histograms of A, T, G, and C content, length of sequences, IUPAC ambiguity nucleotides (excluding A, C, G, T, and N), undetermined nucleotides (N), as well as a sanity check for unexpected characters.
 Numerical summaries are made as well such as the total number of nucleotides, N50, the number of sequences, and the median for these histograms.
 Examples are provided on how to output these graphical summaries to \*.png format and publication quality \*.tiff format.
-
-
-
-
-
+The *Saccharomyces cerevisiae* [genome](http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/) [@engel2014reference] has been included as an example and a form of unit test.
+Benchmarking was performed on a MacBook Pro with a 2.6 GHz Quad-Core Intel Core i7 CPU and 16 GB 1600 MHz DDR3 RAM.
 
 
 ## Results
 
 
+The python script "fasta2nuccomp.py" processed the 12 Mbp yeast genome, consisting of 17 sequences, in 0.5 seconds.
+This resulted in a comma delimited text file consisting of 18 rows, a header describing the column contents, and a row for each of the 17 sequences in the S288C genome.
+
+
+
+
+```{r fig, echo=FALSE, fig.align='center', fig.cap="Figure 1. A multipanel summary of the yeast S288C genome. Panels A, B, C, and D summarize the per sequence nucleotide content. Panel E summarizes sequence length as well as presents several numerical summaries of sequence length. Panels F, G, and H summarize the per sequence distribution of IUPAC ambiguous and unexpexted characters. Panel I explores the relationship between G/C content and the length of sequences.", out.width = '100%'}
+knitr::include_graphics("S288C_genome.png")
+```
 
 
 ## Discussion
 
 
-```{r fig, echo=FALSE, fig.align='center', fig.cap="Figure X. A multipanel summary of the yeast S288C genome", out.width = '100%'}
-knitr::include_graphics("S288C_genome.png")
-```
 
 
 
