@@ -435,7 +435,7 @@ summary {
 
 <h1 class="title toc-ignore">fasta2nuccomp</h1>
 <h4 class="author">Insert author here</h4>
-<h4 class="date">2020, October 16</h4>
+<h4 class="date">2020, October 18</h4>
 
 </div>
 
@@ -475,7 +475,7 @@ summary {
 <pre class="bash"><code>$ ./fasta2nuccomp.py S288C_reference_sequence_R64-2-1_20150113.fsa</code></pre>
 <pre class="r"><code>st3 &lt;- Sys.time()
 st3-st2</code></pre>
-<pre><code>## Time difference of 0.58322 secs</code></pre>
+<pre><code>## Time difference of 0.574085 secs</code></pre>
 <p>This will create a comma delimited text file that has the same name as your FASTA file with the added suffix <code>_nuccomp.csv</code>.</p>
 </div>
 <div id="post-processing" class="section level2">
@@ -713,14 +713,14 @@ ggarrange(
 #        width = 6.5, height = 6.5, units = &quot;in&quot;)
 # ggsave(filename = &quot;S288C_genome.tiff&quot;, device = &quot;tiff&quot;,
 #        width = 6.5, height = 6.5, units = &quot;in&quot;)</code></pre>
-<p>For the purpose of publication we may desire to save this “dashboard.” The <code>ggsave()</code> function can be uncommented, and the filename modified, in order to save this dashboard as a <code>*.png</code> or <code>*.tiff</code> graphic.</p>
+<p>For the purpose of publication we may desire to save this “dashboard” as a graphic. After the above code has been run, the <code>ggsave()</code> function can be uncommented, and the filename modified, in order to save this dashboard as a <code>*.png</code> or <code>*.tiff</code> graphic.</p>
 </div>
 <div id="session-information" class="section level2">
 <h2>Session information</h2>
 <p>After performing the above operations we may wish to benchmark the execution time in order to determine how feasible it is to repeate this analysis. This has been facilitated above by taking time stamps with the function <code>Sys.time()</code>. We can now use these timestamps to evaluate total execution time.</p>
 <pre class="r"><code>st4 &lt;- Sys.time()
 st4 - st1</code></pre>
-<pre><code>## Time difference of 7.547091 secs</code></pre>
+<pre><code>## Time difference of 7.526401 secs</code></pre>
 <p>Lastly, we can use the <code>sessionInfo()</code> function to report the version of <code>R()</code> we are using as well as the packages and their versions. This is important information to include if we want to report an issue.</p>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.0.2 (2020-06-22)

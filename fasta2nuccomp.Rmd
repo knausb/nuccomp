@@ -425,8 +425,8 @@ ggarrange(
 ```
 
 
-For the purpose of publication we may desire to save this "dashboard."
-The ```ggsave()``` function can be uncommented, and the filename modified, in order to save this dashboard as a ```*.png``` or ```*.tiff``` graphic.
+For the purpose of publication we may desire to save this "dashboard" as a graphic.
+After the above code has been run, the ```ggsave()``` function can be uncommented, and the filename modified, in order to save this dashboard as a ```*.png``` or ```*.tiff``` graphic.
 
 
 ## Session information

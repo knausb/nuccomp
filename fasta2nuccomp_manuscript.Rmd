@@ -72,8 +72,10 @@ Benchmarking was performed on a MacBook Pro with a 2.6 GHz Quad-Core Intel Core 
 
 The python script "fasta2nuccomp.py" processed the 12 Mbp yeast genome, consisting of 17 sequences, in 0.5 seconds.
 This resulted in a comma delimited text file consisting of 18 rows, a header describing the column contents, and a row for each of the 17 sequences in the S288C genome.
-
-
+This file included a column for the Id of each sequence, it's length, and the number of each nucleotide (A, C, G, T) as well as each ambiguous nucleotide in a case sensitive manner.
+The RMarkdown script ```fasta2nuccomp.Rmd``` reads in this tabular data and demonstrates how to create individual plots for information from the output of the python script and how to make a publication quality composite plot summarizing multiple data features.
+An example of this plot is presented in Figure 1.
+Execution of this RMarkdown script, including checks for dependencies, the call to the python script, and the rendering of graphics, required 7.5 seconds.
 
 
 ```{r fig, echo=FALSE, fig.align='center', fig.cap="Figure 1. A multipanel summary of the yeast S288C genome. Panels A, B, C, and D summarize the per sequence nucleotide content. Panel E summarizes sequence length as well as presents several numerical summaries of sequence length. Panels F, G, and H summarize the per sequence distribution of IUPAC ambiguous and unexpexted characters. Panel I explores the relationship between G/C content and the length of sequences.", out.width = '100%'}
@@ -84,7 +86,23 @@ knitr::include_graphics("S288C_genome.png")
 ## Discussion
 
 
+A common task for a bioinformatician or genome scientist is that we are presented with a FASTA format file and told it contains a genome, or some other large quantity of data.
+Determining the contents of this file, and whether the data is of high quality, is an important part of what may be months of work that are contingent on this file.
+For example, this file may be used as a reference for mapping short sequence reads to for variant calling.
+If this file contains a high degree of missing data or ambiguous nucleotides, it may affect the ability to map reads to this reference.
+Similarly, an investigator may be evaluating the quality of several assemblies for comparative investigations or downstream analyses.
 
+
+Reporting of the N50 statistic has become a common feature of genome announcements.
+However, the use of a single number to summarize millions or billions of nucleotides may be an over simplification.
+We demonstrate how the distribution of sequence lengths, as well as their nucleotide content, can be visualized.
+We feel this is a more comprehensive perspective on the contents of a FASTA file than a single number can provide.
+
+
+As the sequencing of genomes becomes more routine the need to summarize the contents of FASTA files becomes increasingly important.
+This may be important for assessing the performance of assembly parameters.
+Or presenting results in genome announcements, a format which is frequently limited in the number of figures presented.
+The software fasta2nuccomp provides a rapid manner to summarize the contents of FASTA files in order to help optimize assembly parameters and to demonstrate the quality of assemblies in a graphical and numerical manner.
 
 
 
