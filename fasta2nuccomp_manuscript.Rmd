@@ -91,11 +91,12 @@ Determining the contents of this file, and whether the data is of high quality, 
 For example, this file may be used as a reference for mapping short sequence reads to for variant calling.
 If this file contains a high degree of missing data or ambiguous nucleotides, it may affect the ability to map reads to this reference.
 Similarly, an investigator may be evaluating the quality of several assemblies for comparative investigations or downstream analyses.
+Having a rapid manner to assess the contents of a FASTA file is therefore a crucial first step in genome science.
 
 
 Reporting of the N50 statistic has become a common feature of genome announcements.
 However, the use of a single number to summarize millions or billions of nucleotides may be an over simplification.
-We demonstrate how the distribution of sequence lengths, as well as their nucleotide content, can be visualized.
+We demonstrate how visualizing the distribution of sequence lengths, as well as their nucleotide content, can provide a mode detailed perspective on what a genome may consist of.
 We feel this is a more comprehensive perspective on the contents of a FASTA file than a single number can provide.
 
 
