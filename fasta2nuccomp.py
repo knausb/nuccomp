@@ -42,6 +42,8 @@ outfile = outfile + '_nuccomp.csv'
 if args.verbose:
     print("Output file: " + outfile)
 
+# os.linesep
+
 with open(outfile, 'w') as f:
     f.write('Id,Length,a,A,c,C,g,G,t,T,w,W,s,S,m,M,k,K,r,R,y,Y,n,N\n')
     for record in SeqIO.parse(args.FASTA, "fasta"):

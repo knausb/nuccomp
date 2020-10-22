@@ -52,6 +52,7 @@ From an interactive ```python``` prompt we can query which version of Biopython 
 options(prompt = '>>> ')
 ```
 
+
 ```{python, prompt=TRUE}
 import Bio
 print(Bio.__version__)
