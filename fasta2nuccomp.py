@@ -2,7 +2,6 @@
 
 # https://docs.python.org/3/tutorial/
 # https://docs.python.org/3/howto/argparse.html#id1
-
 import argparse
 import ntpath
 from Bio import SeqIO
@@ -43,8 +42,14 @@ if args.verbose:
     print("Output file: " + outfile)
 
 with open(outfile, 'w') as f:
-    f.write('Id,Length,a,A,c,C,g,G,t,T,w,W,s,S,m,M,k,K,r,R,y,Y,n,N\n')
+
+    #f.write('Id,Length,a,A,c,C,g,G,t,T,w,W,s,S,m,M,k,K,r,R,y,Y,n,N\n')
+    nucls = "aAcCgGtTwWsSmMkKrRyYnN" # Nucleotides to get counts of
+    print('Id', 'Length', *nucls, sep = ',', file=f)
     for record in SeqIO.parse(args.FASTA, "fasta"):
+        counts = [ record.seq.count(b) for b in nucls ] # Get count of each nucl and store in list
+        print(record.id, len(record), *counts, sep = ',', file=f)
+        """
         f.write(record.id)
         f.write(',')
         f.write(str(len(record)))
@@ -93,6 +98,7 @@ with open(outfile, 'w') as f:
         f.write(',')
         f.write(str(record.seq.count("N")))
         f.write('\n')
+        """
 #    count = count + 1
 #        print("%s %i" % (record.id, len(record)))
 #        print("%s %i %i" % ("aA:", record.seq.count("a"), record.seq.count("A")))
