@@ -36,12 +36,10 @@ Below we see how to query the versions we have.
 
 From a ```bash``` prompt we can query which version of ```python``` we have installed.
 
-```{r include=FALSE}
-options(prompt = '$ ')
-```
 
-```{bash, prompt=TRUE}
-python3 -V
+```{r}
+my_python <- system("python3 -V", intern = TRUE)
+my_python
 ```
 
 
@@ -85,8 +83,8 @@ options(prompt = '$ ')
 st2 <- Sys.time()
 ```
 
-```{bash, prompt=TRUE}
-./fasta2nuccomp.py S288C_reference_sequence_R64-2-1_20150113.fsa
+```{r}
+system("./fasta2nuccomp.py S288C_reference_sequence_R64-2-1_20150113.fsa")
 ```
 
 ```{r}
@@ -200,6 +198,8 @@ my_df <- as.data.frame(rowSums(my_nucs[,c("a","A")])/my_nucs$Length)
 names(my_df) <- "nucs"
 my_med <- median(my_df$nucs)
 
+puc <- sum(my_nucs[,c("A")])/sum(rowSums(my_nucs[,c("a","A")]))
+
 pa <- ggplot(my_df, aes(x = nucs))
 pa <- pa + geom_histogram(binwidth=0.01, fill = "#5157FB")
 pa <- pa + theme_bw()
@@ -207,6 +207,9 @@ pa <- pa + xlim(c(0,1))
 pa <- pa + xlab("Adenine (A, a)")
 pa <- pa + annotate("text", x = 0.95, y=1e1,
                     label= paste("Median:", round(my_med, digits = 3)),
+                    adj = 1)
+pa <- pa + annotate("text", x = 0.95, y=9,
+                    label= paste("Percent uppercase:", format(puc, nsmall = 2)),
                     adj = 1)
 pa
 ```
@@ -225,6 +228,8 @@ my_df <- as.data.frame(rowSums(my_nucs[,c("c","C")])/my_nucs$Length)
 names(my_df) <- "nucs"
 my_med <- median(my_df$nucs)
 
+puc <- sum(my_nucs[,c("C")])/sum(rowSums(my_nucs[,c("c","C")]))
+
 pc <- ggplot(my_df, aes(x = nucs))
 pc <- pc + geom_histogram(binwidth=0.01, fill = "#DD0A17")
 pc <- pc + theme_bw()
@@ -232,6 +237,9 @@ pc <- pc + xlim(c(0,1))
 pc <- pc + xlab("Cytosine (C, c)")
 pc <- pc + annotate("text", x = 0.95, y=1e1,
                     label= paste("Median:", round(my_med, digits = 3)),
+                    adj = 1)
+pc <- pc + annotate("text", x = 0.95, y=9,
+                    label= paste("Percent uppercase:", format(puc, nsmall = 2)),
                     adj = 1)
 pc
 ```
@@ -252,6 +260,8 @@ my_df <- as.data.frame(rowSums(my_nucs[,c("g","G")])/my_nucs$Length)
 names(my_df) <- "nucs"
 my_med <- median(my_df$nucs)
 
+puc <- sum(my_nucs[,c("G")])/sum(rowSums(my_nucs[,c("g","G")]))
+
 pg <- ggplot(my_df, aes(x = nucs))
 pg <- pg + geom_histogram(binwidth=0.01, fill = "#1CBE20")
 pg <- pg + theme_bw()
@@ -259,6 +269,9 @@ pg <- pg + xlim(c(0,1))
 pg <- pg + xlab("Guanine (G, g)")
 pg <- pg + annotate("text", x = 0.95, y=1e1,
                     label= paste("Median:", round(my_med, digits = 3)),
+                    adj = 1)
+pg <- pg + annotate("text", x = 0.95, y=9,
+                    label= paste("Percent uppercase:", format(puc, nsmall = 2)),
                     adj = 1)
 pg
 ```
@@ -278,6 +291,8 @@ my_df <- as.data.frame(rowSums(my_nucs[,c("t","T")])/my_nucs$Length)
 names(my_df) <- "nucs"
 my_med <- median(my_df$nucs)
 
+puc <- sum(my_nucs[,c("T")])/sum(rowSums(my_nucs[,c("t","T")]))
+
 pt <- ggplot(my_df, aes(x = nucs))
 pt <- pt + geom_histogram(binwidth=0.01, fill = "#E6E431")
 pt <- pt + theme_bw()
@@ -285,6 +300,9 @@ pt <- pt + xlim(c(0,1))
 pt <- pt + xlab("Thymine (T, t)")
 pt <- pt + annotate("text", x = 0.95, y=1e1,
                     label= paste("Median:", round(my_med, digits = 3)),
+                    adj = 1)
+pt <- pt + annotate("text", x = 0.95, y=9,
+                    label= paste("Percent uppercase:", format(puc, nsmall = 2)),
                     adj = 1)
 pt
 ```
