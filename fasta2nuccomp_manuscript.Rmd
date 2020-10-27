@@ -17,6 +17,20 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Abstract
 
 
+Many bioinformatic projects begin with a large FASTA format file, such as a genome.
+However, the quality of the contents of these files vary from project to project.
+For example, some genomes may include large numbers of ambiguous nucleatides which may present issues to other software used in a project.
+This presents a need to rapidly assess the contents of these files.
+We present fasta2nuccomp as a tool to query and present summaries of the contents of FASTA files containing nucleotides.
+This tool consists of a python script and an RMarkdown document.
+The python script can be run on local machines or high performance computing facilities and it rapidly summarizes the nucleotide composition for each sequence in the file.
+The RMarkdown providess an example of how this summary can be graphically presented as a report or as publication quality figures.
+With fasta2nuccomp we can rapidly assess the content of FASTA format files and move on to downstream procedures with confidence in knowing what the file contains.
+
+
+Keywords: FASTA file, genome announcement, nucleotide composition.
+
+
 ## Introduction
 
 
