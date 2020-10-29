@@ -2,7 +2,7 @@
 title: "fasta2nuccomp"
 author: "Insert author here"
 date: "`r format(Sys.time(), '%Y, %B %d')`"
-output: 
+output:
   html_document:
     toc: true
     code_folding: show
@@ -34,7 +34,7 @@ You'll want versions that are greater or equal to these versions.
 Below we see how to query the versions we have.
 
 
-From a ```bash``` prompt we can query which version of ```python``` we have installed.
+From a ```R``` prompt we can query which version of ```python``` we have installed.
 
 
 ```{r}
@@ -102,6 +102,7 @@ This will create a comma delimited text file that has the same name as your FAST
 Once we have summarized our FASTA data we'll want to present it.
 This can be accomplished with summary statistics and graphics.
 Here we demonstrate how to summarize this data.
+Note that the end user may have to adjust the manual placement of text in each plot.
 
 
 ```{r}
@@ -184,7 +185,7 @@ pl
 ```
 
 
-Maximum value: `r format(max(my_nucs$Length), big.mark=",")`; 
+Maximum value: `r format(max(my_nucs$Length), big.mark=",")`;
 median value: `r format(median(my_nucs$Length), big.mark=",")`;
 minimum value: `r format(min(my_nucs$Length), big.mark=",")`;
 length of values: `r format(length(my_nucs$Length), big.mark=",")`;
@@ -208,13 +209,13 @@ pa <- pa + xlab("Adenine (A, a)")
 pa <- pa + annotate("text", x = 0.95, y=1e1,
                     label= paste("Median:", round(my_med, digits = 3)),
                     adj = 1)
-pa <- pa + annotate("text", x = 0.95, y=9,
+pa <- pa + annotate("text", x = 0.95, y=8.0,
                     label= paste("Percent uppercase:", format(puc, nsmall = 2)),
                     adj = 1)
 pa
 ```
 
-Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`;
 median value: `r format(median(my_df$nucs), big.mark=",")`;
 minimum value: `r format(min(my_df$nucs), big.mark=",")`;
 length of values: `r format(length(my_nucs$Length), big.mark=",")`;
@@ -238,14 +239,14 @@ pc <- pc + xlab("Cytosine (C, c)")
 pc <- pc + annotate("text", x = 0.95, y=1e1,
                     label= paste("Median:", round(my_med, digits = 3)),
                     adj = 1)
-pc <- pc + annotate("text", x = 0.95, y=9,
+pc <- pc + annotate("text", x = 0.95, y=8,
                     label= paste("Percent uppercase:", format(puc, nsmall = 2)),
                     adj = 1)
 pc
 ```
 
 
-Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`;
 median value: `r format(median(my_df$nucs), big.mark=",")`;
 minimum value: `r format(min(my_df$nucs), big.mark=",")`;
 length of values: `r format(length(my_nucs$Length), big.mark=",")`;
@@ -270,14 +271,14 @@ pg <- pg + xlab("Guanine (G, g)")
 pg <- pg + annotate("text", x = 0.95, y=1e1,
                     label= paste("Median:", round(my_med, digits = 3)),
                     adj = 1)
-pg <- pg + annotate("text", x = 0.95, y=9,
+pg <- pg + annotate("text", x = 0.95, y=8,
                     label= paste("Percent uppercase:", format(puc, nsmall = 2)),
                     adj = 1)
 pg
 ```
 
 
-Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`;
 median value: `r format(median(my_df$nucs), big.mark=",")`;
 minimum value: `r format(min(my_df$nucs), big.mark=",")`;
 length of values: `r format(length(my_nucs$Length), big.mark=",")`;
@@ -301,14 +302,14 @@ pt <- pt + xlab("Thymine (T, t)")
 pt <- pt + annotate("text", x = 0.95, y=1e1,
                     label= paste("Median:", round(my_med, digits = 3)),
                     adj = 1)
-pt <- pt + annotate("text", x = 0.95, y=9,
+pt <- pt + annotate("text", x = 0.95, y=8,
                     label= paste("Percent uppercase:", format(puc, nsmall = 2)),
                     adj = 1)
 pt
 ```
 
 
-Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`;
 median value: `r format(median(my_df$nucs), big.mark=",")`;
 minimum value: `r format(min(my_df$nucs), big.mark=",")`;
 length of values: `r format(length(my_nucs$Length), big.mark=",")`;
@@ -331,7 +332,7 @@ pu
 ```
 
 
-Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`;
 median value: `r format(median(my_df$nucs), big.mark=",")`;
 minimum value: `r format(min(my_df$nucs), big.mark=",")`;
 length of values: `r format(length(my_nucs$Length), big.mark=",")`;
@@ -356,7 +357,7 @@ pn
 ```
 
 
-Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`;
 median value: `r format(median(my_df$nucs), big.mark=",")`;
 minimum value: `r format(min(my_df$nucs), big.mark=",")`;
 length of values: `r format(length(my_nucs$Length), big.mark=",")`;
@@ -380,7 +381,7 @@ pe
 ```
 
 
-Maximum value: `r format(max(my_df$nucs), big.mark=",")`; 
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`;
 median value: `r format(median(my_df$nucs), big.mark=",")`;
 minimum value: `r format(min(my_df$nucs), big.mark=",")`;
 length of values: `r format(length(my_nucs$Length), big.mark=",")`;
@@ -409,7 +410,7 @@ my_nucs$Id[my_df$GC < 0.2]
 We see that most sequences have a similar GC content regardless of length.
 One sequence is a bit shorter than all the others and has a GC content of about a half of what the others have.
 We've queried the Id above to get the accession number for this sequence.
-We can then Google "NC_001224" and select the hit to NCBI and see that this sequence is the 
+We can then Google "NC_001224" and select the hit to NCBI and see that this sequence is the
 [yeast mitochondrion](https://www.ncbi.nlm.nih.gov/nuccore/NC_001224.1).
 It's been my experience that the mitochondrion will have a difference GC content than the nuclear sequences.
 
@@ -429,7 +430,7 @@ library(ggpubr)
 
 ggarrange(
   ggarrange(pa, pc, pt, pg, ncol = 2, nrow = 2, labels = c("A", "B", "C", "D")),
-  pl, 
+  pl,
   ggarrange(pu, pn, pe, pgc, ncol = 4, nrow = 1, labels = c("F", "G", "H", "I")),
   ncol = 1, nrow = 3,
   labels = c("", "E", ""),
