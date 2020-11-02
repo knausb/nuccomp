@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 # https://docs.python.org/3/tutorial/
 # https://docs.python.org/3/howto/argparse.html#id1
