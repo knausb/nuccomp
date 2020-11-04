@@ -179,9 +179,11 @@ pl <- pl + geom_histogram(binwidth=2e4, fill = "blue")
 pl <- pl + theme_bw()
 pl <- pl + geom_vline(xintercept = n50, color = "#B22222", size = 1.5,
                       linetype="dashed")
-pl <- pl + annotate("text", x = my_max * 0.95, y=1.5,
-                    label= my_text,
-                    adj = 1)
+# pl <- pl + annotate("text", x = my_max * 0.95, y=1.5,
+#                     label= my_text,
+#                     adj = 1)
+my_ymax <- max(ggplot_build(pl)$data[[1]]$y)/2
+pl <- pl + annotate("text", x = my_max * 0.95, y=my_ymax, label= my_text, adj = 1)
 
 pl
 ```
@@ -214,7 +216,9 @@ pa <- pa + geom_histogram(binwidth=0.01, fill = "#5157FB")
 pa <- pa + theme_bw()
 pa <- pa + xlim(c(0,1))
 pa <- pa + xlab("Adenine (A, a)")
-pa <- pa + annotate("text", x = 0.95, y=1.5, label= my_text, adj = 1)
+#pa <- pa + annotate("text", x = 0.95, y=1.5, label= my_text, adj = 1)
+my_ymax <- max(ggplot_build(pa)$data[[1]]$y)/2
+pa <- pa + annotate("text", x = 0.95, y=my_ymax, label= my_text, adj = 1)
 
 pa
 ```
@@ -245,7 +249,9 @@ pc <- pc + geom_histogram(binwidth=0.01, fill = "#DD0A17")
 pc <- pc + theme_bw()
 pc <- pc + xlim(c(0,1))
 pc <- pc + xlab("Cytosine (C, c)")
-pc <- pc + annotate("text", x = 0.95, y=1.5, label= my_text, adj = 1)
+#pc <- pc + annotate("text", x = 0.95, y=1.5, label= my_text, adj = 1)
+my_ymax <- max(ggplot_build(pc)$data[[1]]$y)/2
+pc <- pc + annotate("text", x = 0.95, y=my_ymax, label= my_text, adj = 1)
 
 pc
 ```
@@ -278,7 +284,9 @@ pg <- pg + geom_histogram(binwidth=0.01, fill = "#1CBE20")
 pg <- pg + theme_bw()
 pg <- pg + xlim(c(0,1))
 pg <- pg + xlab("Guanine (G, g)")
-pg <- pg + annotate("text", x = 0.95, y=1.5, label= my_text, adj = 1)
+#pg <- pg + annotate("text", x = 0.95, y=1.5, label= my_text, adj = 1)
+my_ymax <- max(ggplot_build(pg)$data[[1]]$y)/2
+pg <- pg + annotate("text", x = 0.95, y=my_ymax, label= my_text, adj = 1)
 
 pg
 ```
@@ -310,7 +318,9 @@ pt <- pt + geom_histogram(binwidth=0.01, fill = "#E6E431")
 pt <- pt + theme_bw()
 pt <- pt + xlim(c(0,1))
 pt <- pt + xlab("Thymine (T, t)")
-pt <- pt + annotate("text", x = 0.95, y=1.5, label= my_text, adj = 1)
+#pt <- pt + annotate("text", x = 0.95, y=1.5, label= my_text, adj = 1)
+my_ymax <- max(ggplot_build(pt)$data[[1]]$y)/2
+pt <- pt + annotate("text", x = 0.95, y=my_ymax, label= my_text, adj = 1)
 
 pt
 ```
@@ -444,8 +454,8 @@ ggarrange(
 
 ggsave(filename = "S288C_genome.png", device = "png",
        width = 6.5, height = 6.5, units = "in")
-# ggsave(filename = "S288C_genome.tiff", device = "tiff",
-#        width = 6.5, height = 6.5, units = "in")
+ggsave(filename = "S288C_genome.tiff", device = "tiff",
+       width = 6.5, height = 6.5, units = "in")
 
 ```
 
