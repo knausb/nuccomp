@@ -15,7 +15,8 @@ knitr::opts_chunk$set(fig.align = "center")
 knitr::opts_chunk$set(fig.height = 4)
 knitr::opts_chunk$set(fig.width = 4)
 library(reticulate)
-use_python("/usr/bin/python3")
+#use_python("/usr/bin/python3")
+use_python("/usr/bin/env python3")
 st1 <- Sys.time()
 ```
 
