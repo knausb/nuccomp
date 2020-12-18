@@ -453,10 +453,10 @@ ggarrange(
   heights = c(2.5, 2, 1))
 
 
-ggsave(filename = "S288C_genome.png", device = "png",
-       width = 6.5, height = 6.5, units = "in")
-ggsave(filename = "S288C_genome.tiff", device = "tiff",
-       width = 6.5, height = 6.5, units = "in")
+# ggsave(filename = "S288C_genome.png", device = "png",
+#        width = 6.5, height = 6.5, units = "in")
+# ggsave(filename = "S288C_genome.tiff", device = "tiff",
+#        width = 6.5, height = 6.5, units = "in")
 # Compressed tiff?
 
 ```
