@@ -85,13 +85,11 @@ In order to summarize our FASTA file we will call ```fasta2nuccomp.py``` from th
 It requires that you tell it the name of your FASTA file.
 
 
-```{r include=FALSE}
-st2 <- Sys.time()
-```
-
-
 ```{r}
-system("./fasta2nuccomp.py S288C_reference_sequence_R64-2-1_20150113.fsa")
+st2 <- Sys.time()
+my_infile <- "S288C_reference_sequence_R64-2-1_20150113.fsa"
+my_out <- basename(my_infile)
+system(paste("~/gits/fasta2nuccomp/fasta2nuccomp.py", my_infile))
 ```
 
 
@@ -114,7 +112,7 @@ Note that the end user may have to adjust the manual placement of text in each p
 
 
 ```{r}
-my_nucs <- readr::read_csv("S288C_reference_sequence_R64-2-1_20150113.fsa_nuccomp.csv")
+my_nucs <- readr::read_csv(paste(my_out, "_nuccomp.csv", sep = ""))
 my_nucs
 ```
 
@@ -452,13 +450,10 @@ ggarrange(
   labels = c("", "E", ""),
   heights = c(2.5, 2, 1))
 
-
-# ggsave(filename = "S288C_genome.png", device = "png",
+# ggsave(filename = paste(my_out, ".png", sep = ""), device = "png",
 #        width = 6.5, height = 6.5, units = "in")
-# ggsave(filename = "S288C_genome.tiff", device = "tiff",
+# ggsave(filename = paste(my_out, ".tiff", sep = ""), device = "tiff",
 #        width = 6.5, height = 6.5, units = "in")
-# Compressed tiff?
-
 ```
 
 
