@@ -45,4 +45,5 @@ with open(outfile, 'w') as f:
         counts = [ record.seq.count(b) for b in nucls ] # Get count of each nucl and store in list
         print(record.id, len(record), *counts, sep = ',', file=f)
 
+
 # EOF.
