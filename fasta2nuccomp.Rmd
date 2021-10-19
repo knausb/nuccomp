@@ -89,7 +89,10 @@ It requires that you tell it the name of your FASTA file.
 st2 <- Sys.time()
 my_infile <- "S288C_reference_sequence_R64-2-1_20150113.fsa"
 my_out <- basename(my_infile)
-system(paste("~/gits/fasta2nuccomp/fasta2nuccomp.py", my_infile))
+# Only run python script if it's outfile does not exist. 
+if( !file.exists( paste(my_out, "_nuccomp.csv", sep = "") ) ){
+  system(paste("~/gits/fasta2nuccomp/fasta2nuccomp.py", my_infile))
+}
 ```
 
 
