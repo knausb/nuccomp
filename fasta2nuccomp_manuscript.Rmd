@@ -100,6 +100,15 @@ knitr::include_graphics("S288C_genome.png")
 ## Discussion
 
 
+Our perspectives on what a genome has changed dramatically with our methods of assaying this unseeable phenomenon.
+Our earliest perceptions may include X-ray crystallography [@franklin1953structure].
+Cytogenetics brought the perspective of the karyogram to visualize chromosomes, their centromeres, and other features.
+Short read genome sequencing presented us with genomes in FASTA files, text files containing nucleotides organized by chromosome.
+As genome sequencing and assembly technologies progress we are still presented with these FASTA files, and thus we have a need to describe the contents of these files.
+We present fasta2nuccomp, a tool consisting of a python script to summarize a FASTA file and an Rmarkdown script to graphically present these summaries in a report format.
+We hope this tool will help summarize genomes for announcements of individual genomic assemblies, summarize numerous genomes to aid pangenomic perspectives, and to also be used internally for quality control to determine if files contain expected data or may have become corrupted somehow.
+
+
 A common task for a bioinformatician or genome scientist is that we are presented with a FASTA format file and told it contains a genome, or some other large quantity of data.
 Determining the contents of this file, and whether the data is of high quality, is an important part of what may be months of work that are contingent on this file.
 For example, this file may be used as a reference for mapping short sequence reads to for variant calling.
