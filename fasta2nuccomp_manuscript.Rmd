@@ -33,6 +33,7 @@ Keywords: FASTA file, genome announcement, nucleotide composition, quality contr
 
 ## Introduction
 
+* **Paragraph thesis statement:**
 
 Bioinformatic data sets, such as genomic data, are sufficiently large that visual inspection is not practical.
 This presents a need to summarize and process large data sets for quality control.
@@ -45,6 +46,8 @@ Blobtools [@laetsch2017blobtools] uses GC content and read coverage to attempt t
 
 [@leggett2013sequencing]
 
+
+* **Paragraph thesis statement:**
 
 A commonly reported summary of a genome is the N50 statistic.
 This can be calculated by summing the number of nucleotides in an assembly and dividing by two to get the midpoint.
@@ -60,6 +63,8 @@ This is because we are reducing the number of nucleotides in the assembly by rem
 The N50 statistic has been very useful but more informative summaries could provide more informative perspectives.
 
 
+* **Paragraph thesis statement:**
+
 We present fasta2nuccomp, a pair of scripts intended to summarize the content of FASTA format files that contain nucleotides.
 These scripts consist of a python script that summarizes the FASTA file in a tabular format and an RMarkdown script that numerically and graphically summarize the tabular data.
 Together, these scripts provide a rapid way to summarize the contents of FASTA files and present this information in publication quality graphics.
@@ -67,6 +72,7 @@ Together, these scripts provide a rapid way to summarize the contents of FASTA f
 
 ## Methods
 
+* **Paragraph thesis statement:**
 
 The repository fasta2nuccomp contains a python script, and RMarkdown script, example data and example output.
 The python script takes a FASTA format file consisting of nucleotides as input.
@@ -84,6 +90,8 @@ Benchmarking was performed on a MacBook Pro with a 2.6 GHz Quad-Core Intel Core 
 ## Results
 
 
+* **Paragraph thesis statement:**
+
 The python script "fasta2nuccomp.py" processed the 12 Mbp yeast genome, consisting of 17 sequences, in 0.5 seconds.
 This resulted in a comma delimited text file consisting of 18 rows, a header describing the column contents, and a row for each of the 17 sequences in the S288C genome.
 This file included a column for the Id of each sequence, it's length, and the number of each nucleotide (A, C, G, T) as well as each ambiguous nucleotide in a case sensitive manner.
@@ -99,6 +107,7 @@ knitr::include_graphics("S288C_genome.png")
 
 ## Discussion
 
+* **Paragraph thesis statement:**
 
 Our perspectives on what a genome has changed dramatically with our methods of assaying this unseeable phenomenon.
 Our earliest perceptions may include X-ray crystallography [@franklin1953structure].
@@ -108,6 +117,7 @@ As genome sequencing and assembly technologies progress we are still presented w
 We present fasta2nuccomp, a tool consisting of a python script to summarize a FASTA file and an Rmarkdown script to graphically present these summaries in a report format.
 We hope this tool will help summarize genomes for announcements of individual genomic assemblies, summarize numerous genomes to aid pangenomic perspectives, and to also be used internally for quality control to determine if files contain expected data or may have become corrupted somehow.
 
+* **Paragraph thesis statement:**
 
 A common task for a bioinformatician or genome scientist is that we are presented with a FASTA format file and told it contains a genome, or some other large quantity of data.
 Determining the contents of this file, and whether the data is of high quality, is an important part of what may be months of work that are contingent on this file.
@@ -116,12 +126,14 @@ If this file contains a high degree of missing data or ambiguous nucleotides, it
 Similarly, an investigator may be evaluating the quality of several assemblies for comparative investigations or downstream analyses.
 Having a rapid manner to assess the contents of a FASTA file is therefore a crucial first step in genome science.
 
+* **Paragraph thesis statement:**
 
 Reporting of the N50 statistic has become a common feature of genome announcements.
 However, the use of a single number to summarize millions or billions of nucleotides may be an over simplification.
 We demonstrate how visualizing the distribution of sequence lengths, as well as their nucleotide content, can provide a mode detailed perspective on what a genome may consist of.
 We feel this is a more comprehensive perspective on the contents of a FASTA file than a single number can provide.
 
+* **Paragraph thesis statement:**
 
 As the sequencing of genomes becomes more routine the need to summarize the contents of FASTA files becomes increasingly important.
 This may be important for assessing the performance of assembly parameters.
