@@ -1,6 +1,6 @@
 ---
 title: "fasta2nuccomp"
-author: "Insert author here"
+author: "Insert authors here"
 date: "`r format(Sys.time(), '%Y, %B %d')`"
 output:
   html_document:
@@ -35,7 +35,7 @@ You'll want versions that are greater or equal to these versions.
 Below we see how to query the versions we have.
 
 
-From a ```R``` prompt we can query which version of ```python``` we have installed.
+From an ```R``` prompt we can query which version of ```python``` we have installed.
 
 
 ```{r}
@@ -83,6 +83,7 @@ The yeast (*Saccharomyces cerevisiae*) strain S288C genome is included with ```f
 
 In order to summarize our FASTA file we will call ```fasta2nuccomp.py``` from the shell.
 It requires that you tell it the name of your FASTA file.
+If the script `fasta2nuccomp.py` is not in your path and not in the path in the below code chunck, you'll have to change the call to reflect it's location on your system.
 
 
 ```{r}
@@ -128,12 +129,12 @@ We can visualize this information in a semi-automated manner using histograms.
 ## N50
 
 
-The summary statistic ```N50``` has become a popular way to summarize the contiguity of a genome assembly.
+The summary statistic N50 has become a popular way to summarize the contiguity of a genome assembly.
 If we sum the entire number of nucleotides in an assembly and divide this number by two we get half of the assembly size.
 If we then sort the chromosomes or contigs in order of length, from longest to shortest, and walk through these until we reach the point of half of the assembly size we can report the length of the contig that contains this nucleotide.
 If this contig is long we may conclude that this is a well assembled genome that approaches chromosomes.
-If this contig is short we may cnclude that this assembly does not approach chromosomes and may have quality issues.
-In ```R()``` we can calculate ```N50``` as follows.
+If this contig is short we may conclude that this assembly does not approach chromosomes and may have quality issues.
+In R we can calculate N50 as follows.
 
 
 ```{r}
@@ -148,6 +149,9 @@ format(n50, big.mark = ",")
 
 
 ## Visualization
+
+
+Graphical summaries can be created in R as follows.
 
 
 ```{r}
@@ -191,12 +195,12 @@ pl
 ```
 
 
-Maximum value: `r format(max(my_nucs$Length), big.mark=",")`;
-median value: `r format(median(my_nucs$Length), big.mark=",")`;
-minimum value: `r format(min(my_nucs$Length), big.mark=",")`;
-length of values: `r format(length(my_nucs$Length), big.mark=",")`;
-length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;
-length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
+Maximum value: `r format(max(my_nucs$Length), big.mark=",")`;   
+median value: `r format(median(my_nucs$Length), big.mark=",")`;   
+minimum value: `r format(min(my_nucs$Length), big.mark=",")`;   
+length of values: `r format(length(my_nucs$Length), big.mark=",")`;   
+length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;   
+length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.   
 
 
 
@@ -208,7 +212,8 @@ my_med <- median(my_df$nucs)
 pua <- sum(my_nucs[,c("A")])/sum(rowSums(my_nucs[,c("a","A")]))
 
 my_text <- paste("Median: ", round(my_med, 3),
-                 "\nPercent uppercase:", round(pua, 1),
+                 "\nUppercase: ", round(pua * 100, 1),
+                 "%",
                  sep = ""
                  )
 
@@ -225,12 +230,12 @@ pa <- pa + annotate("text", x = 0.95, y=my_ymax, label= my_text, adj = 1)
 pa
 ```
 
-Maximum value: `r format(max(my_df$nucs), big.mark=",")`;
-median value: `r format(median(my_df$nucs), big.mark=",")`;
-minimum value: `r format(min(my_df$nucs), big.mark=",")`;
-length of values: `r format(length(my_nucs$Length), big.mark=",")`;
-length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;
-length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`;   
+median value: `r format(median(my_df$nucs), big.mark=",")`;   
+minimum value: `r format(min(my_df$nucs), big.mark=",")`;   
+length of values: `r format(length(my_nucs$Length), big.mark=",")`;   
+length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;   
+length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.   
 
 
 
@@ -242,7 +247,8 @@ my_med <- median(my_df$nucs)
 puc <- sum(my_nucs[,c("C")])/sum(rowSums(my_nucs[,c("c","C")]))
 
 my_text <- paste("Median: ", round(my_med, 3),
-                 "\nPercent uppercase:", round(puc, 1),
+                 "\nUppercase: ", round(puc * 100, 1),
+                 "%",
                  sep = ""
                  )
 
@@ -259,12 +265,12 @@ pc
 ```
 
 
-Maximum value: `r format(max(my_df$nucs), big.mark=",")`;
-median value: `r format(median(my_df$nucs), big.mark=",")`;
-minimum value: `r format(min(my_df$nucs), big.mark=",")`;
-length of values: `r format(length(my_nucs$Length), big.mark=",")`;
-length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;
-length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`;   
+median value: `r format(median(my_df$nucs), big.mark=",")`;   
+minimum value: `r format(min(my_df$nucs), big.mark=",")`;   
+length of values: `r format(length(my_nucs$Length), big.mark=",")`;   
+length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;   
+length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.   
 
 
 
@@ -277,7 +283,8 @@ my_med <- median(my_df$nucs)
 pug <- sum(my_nucs[,c("G")])/sum(rowSums(my_nucs[,c("g","G")]))
 
 my_text <- paste("Median: ", round(my_med, 3),
-                 "\nPercent uppercase:", round(pug, 1),
+                 "\nUppercase: ", round(pug * 100, 1),
+                 "%",
                  sep = ""
                  )
 
@@ -294,12 +301,12 @@ pg
 ```
 
 
-Maximum value: `r format(max(my_df$nucs), big.mark=",")`;
-median value: `r format(median(my_df$nucs), big.mark=",")`;
-minimum value: `r format(min(my_df$nucs), big.mark=",")`;
-length of values: `r format(length(my_nucs$Length), big.mark=",")`;
-length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;
-length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`;   
+median value: `r format(median(my_df$nucs), big.mark=",")`;   
+minimum value: `r format(min(my_df$nucs), big.mark=",")`;   
+length of values: `r format(length(my_nucs$Length), big.mark=",")`;   
+length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;   
+length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.   
 
 
 
@@ -311,7 +318,8 @@ my_med <- median(my_df$nucs)
 put <- sum(my_nucs[,c("T")])/sum(rowSums(my_nucs[,c("t","T")]))
 
 my_text <- paste("Median: ", round(my_med, 3),
-                 "\nPercent uppercase:", round(put, 1),
+                 "\nUppercase: ", round(put * 100, 1),
+                 "%",
                  sep = ""
                  )
 
@@ -328,12 +336,12 @@ pt
 ```
 
 
-Maximum value: `r format(max(my_df$nucs), big.mark=",")`;
-median value: `r format(median(my_df$nucs), big.mark=",")`;
-minimum value: `r format(min(my_df$nucs), big.mark=",")`;
-length of values: `r format(length(my_nucs$Length), big.mark=",")`;
-length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;
-length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`;   
+median value: `r format(median(my_df$nucs), big.mark=",")`;   
+minimum value: `r format(min(my_df$nucs), big.mark=",")`;   
+length of values: `r format(length(my_nucs$Length), big.mark=",")`;   
+length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;   
+length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.   
 
 
 ```{r}
@@ -350,12 +358,12 @@ pu
 ```
 
 
-Maximum value: `r format(max(my_df$nucs), big.mark=",")`;
-median value: `r format(median(my_df$nucs), big.mark=",")`;
-minimum value: `r format(min(my_df$nucs), big.mark=",")`;
-length of values: `r format(length(my_nucs$Length), big.mark=",")`;
-length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;
-length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`;   
+median value: `r format(median(my_df$nucs), big.mark=",")`;   
+minimum value: `r format(min(my_df$nucs), big.mark=",")`;   
+length of values: `r format(length(my_nucs$Length), big.mark=",")`;   
+length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;   
+length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.   
 
 
 The ambiguity codes can be looked up on Wikipedia's [nucleotide](https://en.wikipedia.org/wiki/Nucleotide) page.
@@ -374,12 +382,12 @@ pn
 ```
 
 
-Maximum value: `r format(max(my_df$nucs), big.mark=",")`;
-median value: `r format(median(my_df$nucs), big.mark=",")`;
-minimum value: `r format(min(my_df$nucs), big.mark=",")`;
-length of values: `r format(length(my_nucs$Length), big.mark=",")`;
-length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;
-length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`;   
+median value: `r format(median(my_df$nucs), big.mark=",")`;   
+minimum value: `r format(min(my_df$nucs), big.mark=",")`;   
+length of values: `r format(length(my_nucs$Length), big.mark=",")`;   
+length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;   
+length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.   
 
 
 
@@ -399,12 +407,12 @@ pe
 ```
 
 
-Maximum value: `r format(max(my_df$nucs), big.mark=",")`;
-median value: `r format(median(my_df$nucs), big.mark=",")`;
-minimum value: `r format(min(my_df$nucs), big.mark=",")`;
-length of values: `r format(length(my_nucs$Length), big.mark=",")`;
-length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;
-length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
+Maximum value: `r format(max(my_df$nucs), big.mark=",")`;   
+median value: `r format(median(my_df$nucs), big.mark=",")`;   
+minimum value: `r format(min(my_df$nucs), big.mark=",")`;   
+length of values: `r format(length(my_nucs$Length), big.mark=",")`;   
+length of values > 0: `r format(length(my_nucs$Length > 0), big.mark=",")`;   
+length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.   
 
 
 ```{r}
@@ -430,7 +438,7 @@ One sequence is a bit shorter than all the others and has a GC content of about 
 We've queried the Id above to get the accession number for this sequence.
 We can then Google "NC_001224" and select the hit to NCBI and see that this sequence is the
 [yeast mitochondrion](https://www.ncbi.nlm.nih.gov/nuccore/NC_001224.1).
-It's been my experience that the mitochondrion will have a difference GC content than the nuclear sequences.
+It's been my experience that the mitochondrion will tend to have a different GC content than the nuclear sequences.
 
 
 ## Dashboard
@@ -461,13 +469,15 @@ ggarrange(
 
 
 For the purpose of publication we may desire to save this "dashboard" as a graphic.
-After the above code has been run, the ```ggsave()``` function can be uncommented, and the filename modified, in order to save this dashboard as a ```*.png``` or ```*.tiff``` graphic.
+After the above code has been run, the ```ggsave()``` function can be uncommented and run.
+You'll want to include a meaningful filename.
+This will save the dashboard as a ```*.png``` or ```*.tiff``` graphic.
 
 
 ## Session information
 
 
-After performing the above operations we may wish to benchmark the execution time in order to determine how feasible it is to repeate this analysis.
+After performing the above operations we may wish to benchmark the execution time in order to determine how feasible it is to repeat this analysis.
 This has been facilitated above by taking time stamps with the function ```Sys.time()```.
 We can now use these timestamps to evaluate total execution time.
 
