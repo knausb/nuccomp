@@ -200,7 +200,7 @@ pre code {
 
 <h1 class="title toc-ignore">fasta2nuccomp: a tool to rapidly summarize the contents of FASTA files containing nucleotides</h1>
 <h4 class="author">Brian J. Knaus and Kelly J. Vining</h4>
-<h4 class="date">2021, October 24</h4>
+<h4 class="date">2021, November 02</h4>
 
 </div>
 
@@ -259,21 +259,24 @@ Figure 1. A multipanel summary of the yeast S288C genome. Panels A, B, C, and D 
 <div id="discussion" class="section level2">
 <h2>Discussion</h2>
 <ul>
-<li><strong>Paragraph thesis statement:</strong></li>
+<li><strong>Paragraph thesis statement:</strong> What is a genome, and in this context</li>
 </ul>
-<p>Our perspectives on what a genome has changed dramatically with our methods of assaying this unseeable phenomenon. Our earliest perceptions may include X-ray crystallography <span class="citation">(Franklin and Gosling 1953)</span>. Cytogenetics brought the perspective of the karyogram to visualize chromosomes, their centromeres, and other features. Short read genome sequencing presented us with genomes in FASTA files, text files containing nucleotides organized by chromosome. As genome sequencing and assembly technologies progress we are still presented with these FASTA files, and thus we have a need to describe the contents of these files. We present fasta2nuccomp, a tool consisting of a python script to summarize a FASTA file and an Rmarkdown script to graphically present these summaries in a report format. We hope this tool will help summarize genomes for announcements of individual genomic assemblies, summarize numerous genomes to aid pangenomic perspectives, and to also be used internally for quality control to determine if files contain expected data or may have become corrupted somehow.</p>
+<p>Our perspectives on what a genome is has changed dramatically as our methods of assaying this unseeable phenomenon have changed. Our earliest perceptions may have included X-ray crystallography <span class="citation">(Franklin and Gosling 1953)</span>. Cytogenetics brought the perspective of the karyogram to visualize chromosomes, their centromeres, and other features. Short read genome sequencing presented us with genomes in FASTA format files, text files containing nucleotides organized by chromosome (or sequence), even if the number of sequences in these assemblies greatly outnumbered the expected number of chromosomes. As genome sequencing and assembly technologies progress we are still presented with these FASTA files, and thus we have a need to describe the contents of these files. We present fasta2nuccomp, a tool consisting of a python script to summarize a FASTA file and an Rmarkdown script to graphically present these summaries in a report format. We hope this tool will help summarize genomes for announcements of individual genomic assemblies, summarize numerous genomes to aid pangenomic perspectives, and to also be used internally for quality control to determine if files contain expected data or may have become corrupted somehow.</p>
 <ul>
-<li><strong>Paragraph thesis statement:</strong></li>
+<li><strong>Paragraph thesis statement:</strong> what it does</li>
+</ul>
+<p>We present fasta2nuccomp as a suite of tools that utilizes the speed of python and Biopython <span class="citation">(Cock et al. 2009)</span> with the graphics and RMarkdown report generation of R <span class="citation">(R Core Team 2020)</span> to summarize the contents of FASTA files containing nucleotides. A python script counts the length and nucleotide content for each sequence and saves this information as a comma delimited text file. This script can be run on a local workstation or be deployed in a high performance computing environment. The file resulting from this script can either be moved to a local machine, or simply continue to be processed if already working on a local workstation. These per sequence summaries can be further summarized, such as calculating N50 or the number of sequences in the file, or their distribution can be visualized using graphical tools, such as histograms. The tool fasta2nuccomp also provides an RMarkdown script to aid in this task. The RMarkdown can be compiled into several formats, such as *.html and *.pdf, to provide a report that includes descriptive text as well as graphics and tables produced in R. Because the R code to produce summaries is included in this RMarkdown document the end user is also free to customize this example to fit their specific needs.</p>
+<ul>
+<li><strong>Paragraph thesis statement: conclude, incorporate with existing tools</strong></li>
+</ul>
+<p>Our understanding of what genomes consist of continues to evolve as our ability to assay each genome improves, and as our ability to assay populations of genomes increases. As previous explorers sought to documents the plains, mountains, flora and fauna, in genome science we seek to describe the chromosomal content of genomes, their nucleotide composition, the diversity and organizations of protein coding genes as well as regulatory factors and repetitive elements throughout the genomic landscape. Currently, there are a diversity of summaries that are output from a similar diversity of analytical tools. Frequently these are output at the end of a time intensive analysis, a step that is typically not justified if only a summary is desired. Having a rapid tool to calculate many summaries provides a quick way to validate if downloaded data files matched the published description, whether files shared from a colleague still match or may have been corrupted, to genome announcements and pangenomic investigations. Because the summary table is saved as a text file and all of the code is available other users have the potential to invent combinations of this information that the present authors never imagined.</p>
+<hr />
+<p>As the sequencing of genomes becomes more routine the need to summarize the contents of FASTA files becomes increasingly important. This may be important for assessing the performance of assembly parameters. Or presenting results in genome announcements, a format which is frequently limited in the number of figures presented. The software fasta2nuccomp provides a rapid manner to summarize the contents of FASTA files in order to help optimize assembly parameters and to demonstrate the quality of assemblies in a graphical and numerical manner.</p>
+<ul>
+<li><p><strong>Probably should delete (but didn’t):</strong></p></li>
+<li><p><strong>Paragraph thesis statement:</strong></p></li>
 </ul>
 <p>A common task for a bioinformatician or genome scientist is that we are presented with a FASTA format file and told it contains a genome, or some other large quantity of data. Determining the contents of this file, and whether the data is of high quality, is an important part of what may be months of work that are contingent on this file. For example, this file may be used as a reference for mapping short sequence reads to for variant calling. If this file contains a high degree of missing data or ambiguous nucleotides, it may affect the ability to map reads to this reference. Similarly, an investigator may be evaluating the quality of several assemblies for comparative investigations or downstream analyses. Having a rapid manner to assess the contents of a FASTA file is therefore a crucial first step in genome science.</p>
-<ul>
-<li><strong>Paragraph thesis statement:</strong></li>
-</ul>
-<p>Reporting of the N50 statistic has become a common feature of genome announcements. However, the use of a single number to summarize millions or billions of nucleotides may be an over simplification. We demonstrate how visualizing the distribution of sequence lengths, as well as their nucleotide content, can provide a mode detailed perspective on what a genome may consist of. We feel this is a more comprehensive perspective on the contents of a FASTA file than a single number can provide.</p>
-<ul>
-<li><strong>Paragraph thesis statement:</strong></li>
-</ul>
-<p>As the sequencing of genomes becomes more routine the need to summarize the contents of FASTA files becomes increasingly important. This may be important for assessing the performance of assembly parameters. Or presenting results in genome announcements, a format which is frequently limited in the number of figures presented. The software fasta2nuccomp provides a rapid manner to summarize the contents of FASTA files in order to help optimize assembly parameters and to demonstrate the quality of assemblies in a graphical and numerical manner.</p>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>
