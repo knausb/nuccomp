@@ -225,7 +225,7 @@ if( !file.exists( paste(my_out, &quot;_nuccomp.csv&quot;, sep = &quot;&quot;) ) 
 }</code></pre>
 <pre class="r"><code>st3 &lt;- Sys.time()
 st3-st2</code></pre>
-<pre><code>## Time difference of 0.02013779 secs</code></pre>
+<pre><code>## Time difference of 0.009840488 secs</code></pre>
 <p>This will create a comma delimited text file that has the same name as your FASTA file with the added suffix <code>_nuccomp.csv</code>.</p>
 </div>
 <div id="post-processing" class="section level2">
@@ -546,7 +546,7 @@ ggarrange(
 <p>After performing the above operations we may wish to benchmark the execution time in order to determine how feasible it is to repeat this analysis. This has been facilitated above by taking time stamps with the function <code>Sys.time()</code>. We can now use these timestamps to evaluate total execution time.</p>
 <pre class="r"><code>st4 &lt;- Sys.time()
 st4 - st1</code></pre>
-<pre><code>## Time difference of 7.812221 secs</code></pre>
+<pre><code>## Time difference of 7.959001 secs</code></pre>
 <p>Lastly, we can use the <code>sessionInfo()</code> function to report the version of <code>R()</code> we are using as well as the packages and their versions. This is important information to include if we want to report an issue.</p>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.1.1 (2021-08-10)
@@ -572,26 +572,25 @@ st4 - st1</code></pre>
 ## [1] ggpubr_0.4.0    ggplot2_3.3.5   reticulate_1.22
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] sass_0.4.0        tidyr_1.1.4       bit64_4.0.5       vroom_1.5.5      
-##  [5] jsonlite_1.7.2    carData_3.0-4     here_1.0.1        bslib_0.3.0      
-##  [9] highr_0.9         cellranger_1.1.0  yaml_2.2.1        pillar_1.6.3     
-## [13] backports_1.2.1   lattice_0.20-45   glue_1.4.2        digest_0.6.28    
-## [17] ggsignif_0.6.3    colorspace_2.0-2  cowplot_1.1.1     htmltools_0.5.2  
-## [21] Matrix_1.3-4      pkgconfig_2.0.3   broom_0.7.9       haven_2.4.3      
-## [25] purrr_0.3.4       scales_1.1.1      openxlsx_4.2.4    rio_0.5.27       
-## [29] tzdb_0.1.2        tibble_3.1.5      generics_0.1.0    farver_2.1.0     
-## [33] car_3.0-11        ellipsis_0.3.2    withr_2.4.2       cli_3.0.1        
-## [37] magrittr_2.0.1    crayon_1.4.1      readxl_1.3.1      evaluate_0.14    
-## [41] fansi_0.5.0       rstatix_0.7.0     forcats_0.5.1     foreign_0.8-81   
-## [45] tools_4.1.1       data.table_1.14.2 hms_1.1.1         lifecycle_1.0.1  
-## [49] stringr_1.4.0     munsell_0.5.0     zip_2.2.0         compiler_4.1.1   
-## [53] jquerylib_0.1.4   rlang_0.4.11      grid_4.1.1        rstudioapi_0.13  
-## [57] rappdirs_0.3.3    labeling_0.4.2    rmarkdown_2.11    gtable_0.3.0     
-## [61] abind_1.4-5       curl_4.3.2        R6_2.5.1          knitr_1.36       
-## [65] dplyr_1.0.7       fastmap_1.1.0     bit_4.0.4         utf8_1.2.2       
-## [69] rprojroot_2.0.2   readr_2.0.2       stringi_1.7.4     parallel_4.1.1   
-## [73] Rcpp_1.0.7        vctrs_0.3.8       png_0.1-7         tidyselect_1.1.1 
-## [77] xfun_0.26</code></pre>
+##  [1] Rcpp_1.0.7        lattice_0.20-45   tidyr_1.1.4       png_0.1-7        
+##  [5] digest_0.6.28     utf8_1.2.2        cellranger_1.1.0  R6_2.5.1         
+##  [9] backports_1.2.1   evaluate_0.14     highr_0.9         pillar_1.6.3     
+## [13] rlang_0.4.11      readxl_1.3.1      curl_4.3.2        rstudioapi_0.13  
+## [17] data.table_1.14.2 car_3.0-11        jquerylib_0.1.4   Matrix_1.3-4     
+## [21] rmarkdown_2.11    labeling_0.4.2    readr_2.0.2       stringr_1.4.0    
+## [25] foreign_0.8-81    bit_4.0.4         munsell_0.5.0     broom_0.7.9      
+## [29] compiler_4.1.1    xfun_0.26         pkgconfig_2.0.3   htmltools_0.5.2  
+## [33] tidyselect_1.1.1  tibble_3.1.5      rio_0.5.27        fansi_0.5.0      
+## [37] crayon_1.4.1      dplyr_1.0.7       tzdb_0.1.2        withr_2.4.2      
+## [41] grid_4.1.1        jsonlite_1.7.2    gtable_0.3.0      lifecycle_1.0.1  
+## [45] magrittr_2.0.1    scales_1.1.1      zip_2.2.0         carData_3.0-4    
+## [49] cli_3.0.1         stringi_1.7.4     vroom_1.5.5       farver_2.1.0     
+## [53] ggsignif_0.6.3    bslib_0.3.0       ellipsis_0.3.2    generics_0.1.0   
+## [57] vctrs_0.3.8       cowplot_1.1.1     openxlsx_4.2.4    forcats_0.5.1    
+## [61] tools_4.1.1       bit64_4.0.5       glue_1.4.2        purrr_0.3.4      
+## [65] hms_1.1.1         abind_1.4-5       parallel_4.1.1    fastmap_1.1.0    
+## [69] yaml_2.2.1        colorspace_2.0-2  rstatix_0.7.0     haven_2.4.3      
+## [73] knitr_1.36        sass_0.4.0</code></pre>
 </div>
 
 

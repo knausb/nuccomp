@@ -10,6 +10,6 @@ Together these scripts demonstrate how to rapidly summarize FASTA files such as 
 ---
 
 
-![yeast](S288C_genome.png)
+![yeast genome](S288C_genome.png)
 
 
