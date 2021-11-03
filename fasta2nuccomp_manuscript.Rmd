@@ -33,44 +33,28 @@ Keywords: FASTA file, genome announcement, nucleotide composition, quality contr
 
 ## Introduction
 
-* **Paragraph thesis statement:**
+
+A genome is thought to consist of a double stranded polysaccharide chain of nucleotides organized into genes, non-genic sequence, and eventually chromosomes.
+Current genome sequencing technology reports assays of this biochemical structure in a text file organized in the FASTA format.
+Genomics projects therefore involve managing FASTA files.
+Part of this management involves summarizing the contents of these large files in order to validated their contents as well as aid in organization.
+And part of the management of these files involves collection of these summaries from the various workflow outputs.
+This creates a situation where a significant amount of project time is invested in determining which summarries are available from which output and how to present this information.
 
 
-The results from genomic assembly and analysis workflows frequently results in a large FASTA for mat file.
-
-Bioinformatic data sets, such as genomic data, are sufficiently large that visual inspection is not practical.
-This presents a need to summarize and process large data sets for quality control.
-Solutions exist for some, but not all steps in workflows.
+Various tools for summarizing bioinformatic exist, but they are currently distributed among many software programs designed to work on various file formats.
 For example, the software FastQC [@andrews2010fastqc; @bioinformatics2011fastqc] summarizes raw sequencing reads in the FASTQ format that are a typical result from Illumina sequencing.
 The trimmomatic [@bolger2014trimmomatic] attempts to remove nucleotides from low quality Illumina sequencing data.
 In order to infer whether gene space has been well assembled BUSCO [@seppey2019busco] queries for conserved genes from several databases throughout the phylogenetic tree of life.
 Blobtools [@laetsch2017blobtools] uses GC content and read coverage to attempt to improve assemblies.
+Some of these tools are not specific to FASTA format data, or may be a part of a more computationally expensive analysis that may be undesireable to repeat if only a summary is desired.
+A solution specific to data in the FASTA format that provides several summaries of the data, examples of the presentation of these summaries, as well as the flexibility to allow the end user to customize these summaries would aid the management of genomics projects as well as the presentation of this information in genome announcements and pangenomic investigations.
 
-
-
-
-
-* **Paragraph thesis statement:**
-
-A commonly reported summary of a genome is the N50 statistic.
-This can be calculated by summing the number of nucleotides in an assembly and dividing by two to get the midpoint.
-Then sort the sequences from longest to shortest and starting from the longest sequence traverse the sequences until the midpoint of the sequences has been reached.
-The length of the sequence that contains the midpoint is the N50.
-While this statistic is commonly reported it does have shortcomings, which is perhaps why several alternatives have been proposed.
-One shortcoming is that it is a single number that is attempting to summarize millions or billions of nucleotides, so some may see it as an over simplification.
-Another is that it is sensitive to the minimum reporting length in fragmented genomes.
-Assemblies based on Illumina data, or other fragmented assemblies, typically contain a large number of short sequences.
-How short is determined by a minimum length of sequence to report in the final version.
-If we take an assembly with a minimum reporting length of 100 bp and remove all sequences that are less than 500 bp it will increase the N50.
-This is because we are reducing the number of nucleotides in the assembly by removing short sequences.
-The N50 statistic has been very useful but more informative summaries could provide more informative perspectives.
-
-
-* **Paragraph thesis statement:**
 
 We present fasta2nuccomp, a suite of tools intended to summarize the content of FASTA format files that contain nucleotides.
 These scripts consist of a python script that summarizes the FASTA file in a tabular format and an RMarkdown script that numerically and graphically summarize the tabular data.
 Together, these scripts provide a rapid way to summarize the contents of FASTA files and present this information in publication quality graphics.
+The use of RMarkdown not only provides an example of how to present this data in a visual format, it also provides a working example for how the end user can customize this presentation.
 
 
 ## Methods
