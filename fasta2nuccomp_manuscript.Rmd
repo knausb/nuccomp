@@ -129,31 +129,5 @@ Because the summary table is saved as a text file and all of the code is availab
 
 
 
-___
-
-
-* **Probably should delete (but didn't):**
-
-
-As the sequencing of genomes becomes more routine the need to summarize the contents of FASTA files becomes increasingly important.
-This may be important for assessing the performance of assembly parameters.
-Or presenting results in genome announcements, a format which is frequently limited in the number of figures presented.
-The software fasta2nuccomp provides a rapid manner to summarize the contents of FASTA files in order to help optimize assembly parameters and to demonstrate the quality of assemblies in a graphical and numerical manner.
-
-
-
-* **Paragraph thesis statement:**
-
-A common task for a bioinformatician or genome scientist is that we are presented with a FASTA format file and told it contains a genome, or some other large quantity of data.
-Determining the contents of this file, and whether the data is of high quality, is an important part of what may be months of work that are contingent on this file.
-For example, this file may be used as a reference for mapping short sequence reads to for variant calling.
-If this file contains a high degree of missing data or ambiguous nucleotides, it may affect the ability to map reads to this reference.
-Similarly, an investigator may be evaluating the quality of several assemblies for comparative investigations or downstream analyses.
-Having a rapid manner to assess the contents of a FASTA file is therefore a crucial first step in genome science.
-
-
-[@leggett2013sequencing]
-
-
 # References
 
