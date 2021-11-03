@@ -163,13 +163,23 @@ library(ggplot2)
 
 
 ```{r}
-my_max <- max(my_nucs$Length)
-my_med <- median(my_nucs$Length)
-my_min <- min(my_nucs$Length)
-my_seqs <- length(my_nucs$Length)
-my_nzero <- length(my_nucs$Length > 0)
-my_nna <- length(!is.na(my_nucs$Length))
-my_len <- sum(my_nucs$Length)
+my_df <- data.frame(Length = my_nucs$Length,
+                    GC = rowSums(my_nucs[,c("c", "C", "g", "G")])
+                    )
+
+my_max <- max(my_df$Length)
+my_med <- median(my_df$Length)
+my_min <- min(my_df$Length)
+my_seqs <- length(my_df$Length)
+my_nzero <- length(my_df$Length > 0)
+my_nna <- length(!is.na(my_df$Length))
+my_len <- sum(my_df$Length)
+
+#my_df$GC <- my_df$GC/my_df$Length
+#
+my_denom <- 1e3
+my_df$Length <- my_df$Length/my_denom
+
 
 my_text <- paste("Nucleotides: ", format(my_len, big.mark = ","),
                  "\nN50: ", format(n50, big.mark = ","),
@@ -183,16 +193,21 @@ my_text <- paste("Nucleotides: ", format(my_len, big.mark = ","),
 
 
 ```{r}
-pl <- ggplot(my_nucs, aes(x = Length))
-pl <- pl + geom_histogram(binwidth=2e4, fill = "blue")
+
+pl <- ggplot(my_df, aes(x = Length))
+#pl <- pl + geom_histogram(binwidth=2e4, fill = "blue")
+
+pl <- pl + geom_histogram(binwidth = 2e1, fill = "blue")
 pl <- pl + theme_bw()
-pl <- pl + geom_vline(xintercept = n50, color = "#B22222", size = 1.5,
+pl <- pl + geom_vline(xintercept = n50/my_denom, color = "#B22222", size = 1.5,
                       linetype="dashed")
-# pl <- pl + annotate("text", x = my_max * 0.95, y=1.5,
-#                     label= my_text,
-#                     adj = 1)
 my_ymax <- max(ggplot_build(pl)$data[[1]]$y)/2
-pl <- pl + annotate("text", x = my_max * 0.95, y=my_ymax, label= my_text, adj = 1)
+#
+pl <- pl + annotate("text", x = my_max/my_denom * 0.95, y = my_ymax,
+                    label = my_text, adj = 1)
+
+pl <- pl + xlab("Length (Kbp)")
+pl <- pl + ylab("Count")
 
 pl
 ```
@@ -229,6 +244,7 @@ pa <- pa + xlab("Adenine (A, a)")
 #pa <- pa + annotate("text", x = 0.95, y=1.5, label= my_text, adj = 1)
 my_ymax <- max(ggplot_build(pa)$data[[1]]$y)/2
 pa <- pa + annotate("text", x = 0.95, y=my_ymax, label= my_text, adj = 1)
+pa <- pa + ylab("Count")
 
 pa
 ```
@@ -263,6 +279,7 @@ pc <- pc + xlab("Cytosine (C, c)")
 #pc <- pc + annotate("text", x = 0.95, y=1.5, label= my_text, adj = 1)
 my_ymax <- max(ggplot_build(pc)$data[[1]]$y)/2
 pc <- pc + annotate("text", x = 0.95, y=my_ymax, label= my_text, adj = 1)
+pc <- pc + ylab("Count")
 
 pc
 ```
@@ -299,6 +316,7 @@ pg <- pg + xlab("Guanine (G, g)")
 #pg <- pg + annotate("text", x = 0.95, y=1.5, label= my_text, adj = 1)
 my_ymax <- max(ggplot_build(pg)$data[[1]]$y)/2
 pg <- pg + annotate("text", x = 0.95, y=my_ymax, label= my_text, adj = 1)
+pg <- pg + ylab("Count")
 
 pg
 ```
@@ -334,6 +352,7 @@ pt <- pt + xlab("Thymine (T, t)")
 #pt <- pt + annotate("text", x = 0.95, y=1.5, label= my_text, adj = 1)
 my_ymax <- max(ggplot_build(pt)$data[[1]]$y)/2
 pt <- pt + annotate("text", x = 0.95, y=my_ymax, label= my_text, adj = 1)
+pt <- pt + ylab("Count")
 
 pt
 ```
@@ -357,6 +376,8 @@ pu <- pu + theme_bw()
 pu <- pu + xlim(c(0,1))
 # pu <- pu + xlab("IUPAC ambiguous (w,W, s, S, m, M, k, K, r, R, y, Y)")
 pu <- pu + xlab("IUPAC ambiguous")
+pu <- pu + ylab("Count")
+
 pu
 ```
 
@@ -381,6 +402,8 @@ pn <- pn + geom_histogram(binwidth=0.01, fill = "#AD26FA")
 pn <- pn + theme_bw()
 pn <- pn + xlim(c(0,1))
 pn <- pn + xlab("Any base (N,n)")
+pn <- pn + ylab("Count")
+
 pn
 ```
 
@@ -405,7 +428,10 @@ pe <- ggplot(my_df, aes(x = nucs))
 pe <- pe + geom_histogram(binwidth=0.01, fill = "#AD26FA")
 pe <- pe + theme_bw()
 pe <- pe + xlim(c(0,1))
-pe <- pe + xlab("Unexpected characters")
+#pe <- pe + xlab("Unexpected characters")
+pe <- pe + xlab("Unexpected")
+pe <- pe + ylab("Count")
+
 pe
 ```
 
@@ -454,7 +480,6 @@ This is illustrated below.
 
 ```{r, fig.height=8, fig.width=8}
 library(ggpubr)
-
 
 ggarrange(
   ggarrange(pa, pc, pt, pg, ncol = 2, nrow = 2, labels = c("A", "B", "C", "D")),

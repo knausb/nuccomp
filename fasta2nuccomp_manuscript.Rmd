@@ -35,6 +35,9 @@ Keywords: FASTA file, genome announcement, nucleotide composition, quality contr
 
 * **Paragraph thesis statement:**
 
+
+The results from genomic assembly and analysis workflows frequently results in a large FASTA for mat file.
+
 Bioinformatic data sets, such as genomic data, are sufficiently large that visual inspection is not practical.
 This presents a need to summarize and process large data sets for quality control.
 Solutions exist for some, but not all steps in workflows.
@@ -44,7 +47,7 @@ In order to infer whether gene space has been well assembled BUSCO [@seppey2019b
 Blobtools [@laetsch2017blobtools] uses GC content and read coverage to attempt to improve assemblies.
 
 
-[@leggett2013sequencing]
+
 
 
 * **Paragraph thesis statement:**
@@ -65,20 +68,19 @@ The N50 statistic has been very useful but more informative summaries could prov
 
 * **Paragraph thesis statement:**
 
-We present fasta2nuccomp, a pair of scripts intended to summarize the content of FASTA format files that contain nucleotides.
+We present fasta2nuccomp, a suite of tools intended to summarize the content of FASTA format files that contain nucleotides.
 These scripts consist of a python script that summarizes the FASTA file in a tabular format and an RMarkdown script that numerically and graphically summarize the tabular data.
 Together, these scripts provide a rapid way to summarize the contents of FASTA files and present this information in publication quality graphics.
 
 
 ## Methods
 
-* **Paragraph thesis statement:**
 
-The repository fasta2nuccomp contains a python script, and RMarkdown script, example data and example output.
+The repository fasta2nuccomp contains a python script, an RMarkdown script, example data and example output.
 The python script takes a FASTA format file consisting of nucleotides as input.
-The python (3.8.2) script uses biopython [@cock2009biopython] to read in the file and to collect the length, as well as the (case sensitive) number of nucleotides and IUPAC ambiguous nucleotides.
+The python (≥ 3.8.2) script uses biopython [@cock2009biopython] to read in the file and to collect the length, as well as the (case sensitive) number of nucleotides and IUPAC ambiguous nucleotides.
 This information is output to a comma delimited text file.
-This script can be run independently or, on systems with bash (typical \*nix systems), can be called from the RMarkdown script.
+This script can be run independently or can be called from the RMarkdown script.
 The RMarkdown [@rmarkdown] script uses R [@R] and reads in the comma delimited text file and summarizes it.
 Graphical summaries are made using ggplot2 [@ggplot2] and ggpubr [@ggpubr] and consist of histograms of A, T, G, and C content, length of sequences, IUPAC ambiguity nucleotides (excluding A, C, G, T, and N), undetermined nucleotides (N), as well as a sanity check for unexpected characters.
 Numerical summaries are made as well such as the total number of nucleotides, N50, the number of sequences, and the median for these histograms.
@@ -145,13 +147,15 @@ Because the summary table is saved as a text file and all of the code is availab
 
 ___
 
+
+* **Probably should delete (but didn't):**
+
+
 As the sequencing of genomes becomes more routine the need to summarize the contents of FASTA files becomes increasingly important.
 This may be important for assessing the performance of assembly parameters.
 Or presenting results in genome announcements, a format which is frequently limited in the number of figures presented.
 The software fasta2nuccomp provides a rapid manner to summarize the contents of FASTA files in order to help optimize assembly parameters and to demonstrate the quality of assemblies in a graphical and numerical manner.
 
-
-* **Probably should delete (but didn't):**
 
 
 * **Paragraph thesis statement:**
@@ -164,6 +168,7 @@ Similarly, an investigator may be evaluating the quality of several assemblies f
 Having a rapid manner to assess the contents of a FASTA file is therefore a crucial first step in genome science.
 
 
+[@leggett2013sequencing]
 
 
 # References
