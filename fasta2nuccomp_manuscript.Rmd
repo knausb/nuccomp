@@ -24,8 +24,8 @@ This presents a need to rapidly assess the contents of these files.
 We present fasta2nuccomp as a tool to query and present summaries of the contents of FASTA files containing nucleotides.
 This tool consists of a python script and an RMarkdown document.
 The python script can be run on local machines or high performance computing facilities and it rapidly summarizes the nucleotide composition for each sequence in the file.
-The RMarkdown providess an example of how this summary can be graphically presented as a report or as publication quality figures.
-With fasta2nuccomp we can rapidly assess the content of FASTA format files so we can move on to downstream procedures with confidence in knowing what the file contains.
+The RMarkdown provides an example of how this summary can be graphically presented as a report or as publication quality figures.
+With fasta2nuccomp we can rapidly assess the contents of FASTA format files so we can move on to downstream procedures with confidence in knowing what the file contains.
 
 
 Keywords: FASTA file, genome announcement, nucleotide composition, quality control.
@@ -35,9 +35,9 @@ Keywords: FASTA file, genome announcement, nucleotide composition, quality contr
 
 
 A genome is thought to consist of a double stranded polysaccharide chain of nucleotides organized into genes, non-genic sequence, and eventually chromosomes.
-Current genome sequencing technology reports assays of this biochemical structure in a text file organized in the FASTA format.
+Current genome sequencing technology reports this biochemical structure in a text file organized in the FASTA format.
 Genomics projects therefore involve managing FASTA files.
-Part of this management involves summarizing the contents of these large files in order to validated their contents as well as aid in organization.
+Part of this management involves summarizing the contents of these large files in order to validate their contents as well as aid in organization.
 And part of the management of these files involves collection of these summaries from the various workflow outputs.
 This creates a situation where a significant amount of project time is invested in determining which summarries are available from which output and how to present this information.
 
