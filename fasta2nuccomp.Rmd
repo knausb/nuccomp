@@ -478,7 +478,7 @@ If we want to publish this information we may want to summarize this information
 This is illustrated below.
 
 
-```{r, fig.height=8, fig.width=8}
+```{r, fig.height=8, fig.width=8, fig.cap="**Figure X.** Summary of the genome. Panels **A**, **B**, **C**, and **D** summarize the occurrence of each nucleotide on a per sequence/contig basis. Lowercase characters may indicate that some form of 'masking' may have been implemented. Panel **E** summarizes the length of each sequence/contig, a dashed vertical red line indicates the N50 for the set of sequences/contigs. Panel **F** summarizes the number of positions where [IUPAC ambiguity codes](https://en.wikipedia.org/wiki/Nucleic_acid_sequence#Notation) occured (excluding A, a, C, c, G, g, T, t, N, and n). Panel **G** summarizes the occurence of 'any nucleotide' (N, n) in each sequence/contig. Panel **H** summarizes the occurence of unexpected characters in the sequences, and is expected to be zero. Panel **I** presents the relationship between the length of each sequence/contig and it's G/C content."}
 library(ggpubr)
 
 ggarrange(
