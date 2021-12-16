@@ -37,9 +37,9 @@ Keywords: FASTA file, genome announcement, nucleotide composition, quality contr
 A genome is thought to consist of a double stranded polysaccharide chain of nucleotides organized into genes, non-genic sequence, and eventually chromosomes.
 Current genome sequencing technology reports this biochemical structure in a text file organized in the FASTA format.
 Genomics projects therefore involve managing FASTA files.
-Part of this management involves summarizing the contents of these large files in order to validate their contents as well as aid in organization.
-And part of the management of these files involves collection of these summaries from the various workflow outputs.
-This creates a situation where a significant amount of project time is invested in determining which summarries are available from which output and how to present this information.
+Part of this management involves summarizing the contents of these large files in order to validate their contents as well as aid in project organization.
+Currently, part of the management of these files involves collection of summaries of the FASTA files from the various workflow outputs.
+This creates a situation where a significant amount of project time is invested in determining which summaries are available from which output and how to present this information.
 
 
 Various tools for summarizing bioinformatic exist, but they are currently distributed among many software programs designed to work on various file formats.
@@ -52,15 +52,15 @@ A solution specific to data in the FASTA format that provides several summaries 
 
 
 We present fasta2nuccomp, a suite of tools intended to summarize the content of FASTA format files that contain nucleotides.
-These scripts consist of a python script that summarizes the FASTA file in a tabular format and an RMarkdown script that numerically and graphically summarize the tabular data.
-Together, these scripts provide a rapid way to summarize the contents of FASTA files and present this information in publication quality graphics.
+These ttols consist of a python script that summarizes the FASTA file in a tabular format and an RMarkdown script that numerically and graphically summarize the tabular data.
+Together, these scripts provide a rapid way to summarize the contents of FASTA files and present this information in publication quality graphics, as well as reports for internal use.
 The use of RMarkdown not only provides an example of how to present this data in a visual format, it also provides a working example for how the end user can customize this presentation.
 
 
 ## Methods
 
 
-The repository fasta2nuccomp contains a python script, an RMarkdown script, example data and example output.
+The repository fasta2nuccomp contains a python script, an RMarkdown script, example data, and example output.
 The python script takes a FASTA format file consisting of nucleotides as input.
 The python (≥ 3.8.2) script uses biopython [@cock2009biopython] to read in the file and to collect the length, as well as the (case sensitive) number of nucleotides and IUPAC ambiguous nucleotides.
 This information is output to a comma delimited text file.
@@ -75,12 +75,9 @@ Benchmarking was performed on a MacBook Pro with a 2.6 GHz Quad-Core Intel Core 
 
 ## Results
 
-
-* **Paragraph thesis statement:**
-
 The python script "fasta2nuccomp.py" processed the 12 Mbp yeast genome, consisting of 17 sequences, in 0.5 seconds.
 This resulted in a comma delimited text file consisting of 18 rows, a header describing the column contents, and a row for each of the 17 sequences in the S288C genome.
-This file included a column for the Id of each sequence, it's length, and the number of each nucleotide (A, C, G, T) as well as each ambiguous nucleotide in a case sensitive manner.
+This file included a column for the Id of each sequence, it's length, and the number of each nucleotide (A, C, G, T) as well as each ambiguous nucleotide all in a case sensitive manner (to accommodate masking).
 The RMarkdown script ```fasta2nuccomp.Rmd``` reads in this tabular data and demonstrates how to create individual plots for information from the output of the python script and how to make a publication quality composite plot summarizing multiple data features.
 An example of this plot is presented in Figure 1.
 Execution of this RMarkdown script, including checks for dependencies, the call to the python script, and the rendering of graphics, required 7.5 seconds.
@@ -93,39 +90,35 @@ knitr::include_graphics("S288C_genome.png")
 
 ## Discussion
 
-* **Paragraph thesis statement:** What is a genome, and in this context
-
 Our perspectives on what a genome is has changed dramatically as our methods of assaying this unseeable phenomenon have changed.
 Our earliest perceptions may have included X-ray crystallography [@franklin1953structure].
 Cytogenetics brought the perspective of the karyogram to visualize chromosomes, their centromeres, and other features.
-Short read genome sequencing presented us with genomes in FASTA format files, text files containing nucleotides organized by chromosome (or sequence), even if the number of sequences in these assemblies greatly outnumbered the expected number of chromosomes.
+Short read genome sequencing presented us with genomes in FASTA format files, text files in a specified format containing nucleotides organized by chromosome (or sequence), even if the number of sequences in these assemblies greatly outnumbered the expected number of chromosomes.
 As genome sequencing and assembly technologies progress we are still presented with these FASTA files, and thus we have a need to describe the contents of these files.
-We present fasta2nuccomp, a tool consisting of a python script to summarize a FASTA file and an Rmarkdown script to graphically present these summaries in a report format.
+
+
 We hope this tool will help summarize genomes for announcements of individual genomic assemblies, summarize numerous genomes to aid pangenomic perspectives, and to also be used internally for quality control to determine if files contain expected data or may have become corrupted somehow.
 
 
-* **Paragraph thesis statement:** what it does
-
-We present fasta2nuccomp as a suite of tools that utilizes the speed of python and Biopython [@cock2009biopython] with the graphics and RMarkdown report generation of R [@R] to summarize the contents of FASTA files containing nucleotides.
+We present fasta2nuccomp as a suite of tools that utilizes the speed of python and Biopython [@cock2009biopython] with the graphics and RMarkdown [@allaire_etal2021] report generation of R [@R] to summarize the contents of FASTA files containing nucleotides.
 A python script counts the length and nucleotide content for each sequence and saves this information as a comma delimited text file.
 This script can be run on a local workstation or be deployed in a high performance computing environment.
-The file resulting from this script can either be moved to a local machine, or simply continue to be processed if already working on a local workstation.
-These per sequence summaries can be further summarized, such as calculating N50 or the number of sequences in the file, or their distribution can be visualized using graphical tools, such as histograms.
-The tool fasta2nuccomp also provides an RMarkdown script to aid in this task.
+The file resulting from this script can either be moved to a local machine, or processing can simply continue if already working on a local workstation.
+These per sequence summaries can be further summarized, such as calculating N50 or the number of sequences in the file, or their distribution can be visualized using graphical tools, such as histograms, in R.
+The tool fasta2nuccomp provides an RMarkdown script to demonstrate these tasks and provides the user the option for customization.
 The RMarkdown can be compiled into several formats, such as \*.html and \*.pdf, to provide a report that includes descriptive text as well as graphics and tables produced in R.
-Because the R code to produce summaries is included in this RMarkdown document the end user is also free to customize this example to fit their specific needs.
+Because the R code to produce summaries is included in this RMarkdown document the workflow is documented and the end user is also free to customize these examples to fit their specific needs.
 
 
-* **Paragraph thesis statement: conclude, incorporate with existing tools**
-
-
-Our understanding of what genomes consist of continues to evolve as our ability to assay each genome improves, and as our ability to assay populations of genomes increases. 
-As previous explorers sought to documents the plains, mountains, flora and fauna, in genome science we seek to describe the chromosomal content of genomes, their nucleotide composition, the diversity and organizations of protein coding genes as well as regulatory factors and repetitive elements throughout the genomic landscape.
-Currently, there are a diversity of summaries that are output from a similar diversity of analytical tools.
-Frequently these are output at the end of a time intensive analysis, a step that is typically not justified if only a summary is desired.
-Having a rapid tool to calculate many summaries provides a quick way to validate if downloaded data files matched the published description, whether files shared from a colleague still match or may have been corrupted, to genome announcements and pangenomic investigations.
-Because the summary table is saved as a text file and all of the code is available other users have the potential to invent combinations of this information that the present authors never imagined.
-
+Currently, there are a diversity of software tools that output various summaries.
+But there does not appear to be a tool to efficiently provides a standardized suite of summaries.
+Instead, investigators find themselves collating summaries from several outputs and then presenting this information in a uniform manner.
+Some of these summaries are output at the end of a time intensive analysis (such as assembly), a step that is typically not justified if only a summary is desired.
+For example, an investigator may obtain an accessioned version of a genome and want to validate the published values.
+This is particularly important because some publications may summarize assembled "chromosomes" while accessions versions may include unplaced contigs, the mitochondrion and perhaps a chloroplast.
+Having a rapid tool to calculate many summaries provides a quick way to validate if downloaded data files matched the published description.
+Because the summary table is saved as a text file and all of the code was made available other users have the potential to invent combinations of this information that the present authors never imagined.
+The tool fasta2nuccomp provides rapid summaries of genomes as an initial step for workflows in FASTA based genomic investigations.
 
 
 
