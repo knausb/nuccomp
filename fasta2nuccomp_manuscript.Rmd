@@ -52,7 +52,7 @@ A solution specific to data in the FASTA format that provides several summaries 
 
 
 We present fasta2nuccomp, a suite of tools intended to summarize the content of FASTA format files that contain nucleotides.
-These ttols consist of a python script that summarizes the FASTA file in a tabular format and an RMarkdown script that numerically and graphically summarize the tabular data.
+These tools consist of a python script that summarizes the FASTA file in a tabular format and an RMarkdown script that numerically and graphically summarize the tabular data.
 Together, these scripts provide a rapid way to summarize the contents of FASTA files and present this information in publication quality graphics, as well as reports for internal use.
 The use of RMarkdown not only provides an example of how to present this data in a visual format, it also provides a working example for how the end user can customize this presentation.
 
@@ -89,16 +89,6 @@ knitr::include_graphics("S288C_genome.png")
 
 
 ## Discussion
-
-Our perspectives on what a genome is has changed dramatically as our methods of assaying this unseeable phenomenon have changed.
-Our earliest perceptions may have included X-ray crystallography [@franklin1953structure].
-Cytogenetics brought the perspective of the karyogram to visualize chromosomes, their centromeres, and other features.
-Short read genome sequencing presented us with genomes in FASTA format files, text files in a specified format containing nucleotides organized by chromosome (or sequence), even if the number of sequences in these assemblies greatly outnumbered the expected number of chromosomes.
-As genome sequencing and assembly technologies progress we are still presented with these FASTA files, and thus we have a need to describe the contents of these files.
-
-
-We hope this tool will help summarize genomes for announcements of individual genomic assemblies, summarize numerous genomes to aid pangenomic perspectives, and to also be used internally for quality control to determine if files contain expected data or may have become corrupted somehow.
-
 
 We present fasta2nuccomp as a suite of tools that utilizes the speed of python and Biopython [@cock2009biopython] with the graphics and RMarkdown [@allaire_etal2021] report generation of R [@R] to summarize the contents of FASTA files containing nucleotides.
 A python script counts the length and nucleotide content for each sequence and saves this information as a comma delimited text file.
