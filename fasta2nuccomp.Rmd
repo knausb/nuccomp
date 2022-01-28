@@ -16,10 +16,9 @@ knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(fig.align = "center")
 knitr::opts_chunk$set(fig.height = 4)
 knitr::opts_chunk$set(fig.width = 4)
-library(reticulate)
+#library(reticulate)
 #use_python("/usr/bin/python3")
-#
-use_python("/usr/bin/env python3")
+#use_python("/usr/bin/env python3")
 st1 <- Sys.time()
 ```
 
@@ -41,7 +40,7 @@ Below we see how to query the versions we have.
 From an ```R``` prompt we can query which version of ```python``` we have installed.
 
 
-```{r}
+```{r system_python}
 my_python <- system("python3 -V", intern = TRUE)
 my_python
 ```
@@ -55,10 +54,15 @@ options(prompt = '>>> ')
 ```
 
 
-```{python prompt=TRUE}
-import Bio
-print(Bio.__version__)
+
+
+
+```{python biopython_check, prompt=TRUE, eval=FALSE}
+#import Bio
+#print(Bio.__version__)
 ```
+
+
 
 
 ```{r include=FALSE}
