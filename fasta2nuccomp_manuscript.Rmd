@@ -85,7 +85,7 @@ Execution of this RMarkdown script, including checks for dependencies, the call 
 
 
 ```{r fig, echo=FALSE, fig.align='center', fig.cap="**Figure 1.** A multipanel summary of the yeast S288C genome. Panels A, B, C, and D summarize the per sequence nucleotide content. Panel E summarizes sequence length as well as presents several numerical summaries of sequence length. Panels F, G, and H summarize the per sequence distribution of IUPAC ambiguous and unexpexted characters. Panel I explores the relationship between G/C content and the length of sequences.", out.width = '100%'}
-knitr::include_graphics("S288C_genome.png")
+knitr::include_graphics("S288C_reference_sequence_R64-2-1_20150113.fsa.png")
 ```
 
 
