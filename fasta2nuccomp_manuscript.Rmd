@@ -76,12 +76,12 @@ The repository fasta2nuccomp is currently available on GitHub ([https://github.c
 
 ## Results
 
-The python script "fasta2nuccomp.py" processed the 12 Mbp yeast genome, consisting of 17 sequences, in 0.5 seconds.
+The python script "fasta2nuccomp.py" processed the 12 Mbp yeast genome, consisting of 17 sequences, in less than 1 second (large genomes consisting of more nucleotides and/or sequences should require more time).
 This resulted in a comma delimited text file consisting of 18 rows, a header describing the column contents, and a row for each of the 17 sequences in the S288C genome.
 This file included a column for the 'ID' of each sequence, it's length, and the number of each nucleotide (A, C, G, T) as well as each ambiguous nucleotide all in a case sensitive manner (to accommodate masking).
 The RMarkdown script ```fasta2nuccomp.Rmd``` reads in this tabular data and demonstrates how to create individual plots for information from the output of the python script and how to make a publication quality composite plot summarizing multiple data features.
 An example of this plot is presented in Figure 1.
-Execution of this RMarkdown script, including checks for dependencies, the call to the python script, and the rendering of graphics, required 7.5 seconds.
+Execution of this RMarkdown script, including checks for dependencies, the call to the python script, and the rendering of graphics, required less than 10 seconds.
 
 
 ```{r fig, echo=FALSE, fig.align='center', fig.cap="**Figure 1.** A multipanel summary of the yeast S288C genome. Panels A, B, C, and D summarize the per sequence nucleotide content. Panel E summarizes sequence length as well as presents several numerical summaries of sequence length. Panels F, G, and H summarize the per sequence distribution of IUPAC ambiguous and unexpexted characters. Panel I explores the relationship between G/C content and the length of sequences.", out.width = '100%'}
