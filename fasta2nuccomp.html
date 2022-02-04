@@ -178,7 +178,7 @@ pre code {
 
 <h1 class="title toc-ignore">fasta2nuccomp</h1>
 <h4 class="author">Insert authors here</h4>
-<h4 class="date">2022, January 28</h4>
+<h4 class="date">2022, February 04</h4>
 
 </div>
 
@@ -225,7 +225,7 @@ if( !file.exists( paste(my_out, &quot;_nuccomp.csv&quot;, sep = &quot;&quot;) ) 
 }</code></pre>
 <pre class="r"><code>st3 &lt;- Sys.time()
 st3-st2</code></pre>
-<pre><code>## Time difference of 0.0107255 secs</code></pre>
+<pre><code>## Time difference of 0.008533239 secs</code></pre>
 <p>This will create a comma delimited text file that has the same name as your FASTA file with the added suffix <code>_nuccomp.csv</code>.</p>
 </div>
 <div id="post-processing" class="section level2">
@@ -576,7 +576,7 @@ ggarrange(
 <p>After performing the above operations we may wish to benchmark the execution time in order to determine how feasible it is to repeat this analysis. This has been facilitated above by taking time stamps with the function <code>Sys.time()</code>. We can now use these timestamps to evaluate total execution time.</p>
 <pre class="r"><code>st4 &lt;- Sys.time()
 st4 - st1</code></pre>
-<pre><code>## Time difference of 7.365417 secs</code></pre>
+<pre><code>## Time difference of 7.518592 secs</code></pre>
 <p>Lastly, we can use the <code>sessionInfo()</code> function to report the version of <code>R()</code> we are using as well as the packages and their versions. This is important information to include if we want to report an issue.</p>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.1.2 (2021-11-01)
@@ -606,7 +606,7 @@ st4 - st1</code></pre>
 ##  [5] assertthat_0.2.1 digest_0.6.29    utf8_1.2.2       R6_2.5.1        
 ##  [9] backports_1.4.1  evaluate_0.14    highr_0.9        pillar_1.6.4    
 ## [13] rlang_0.4.12     rstudioapi_0.13  car_3.0-12       jquerylib_0.1.4 
-## [17] Matrix_1.3-4     rmarkdown_2.11   labeling_0.4.2   readr_2.1.1     
+## [17] Matrix_1.4-0     rmarkdown_2.11   labeling_0.4.2   readr_2.1.1     
 ## [21] stringr_1.4.0    bit_4.0.4        munsell_0.5.0    broom_0.7.10    
 ## [25] compiler_4.1.2   xfun_0.29        pkgconfig_2.0.3  htmltools_0.5.2 
 ## [29] tidyselect_1.1.1 tibble_3.1.6     fansi_0.5.0      crayon_1.4.2    
