@@ -204,8 +204,8 @@ pre code {
 my_python</code></pre>
 <pre><code>## [1] &quot;Python 3.8.10&quot;</code></pre>
 <p>From an interactive <code>python</code> prompt we can query which version of Biopython we have installed.</p>
-<pre class="python"><code>&gt;&gt;&gt; #import Bio
-&gt;&gt;&gt; #print(Bio.__version__)</code></pre>
+<pre class="python"><code>&gt;&gt;&gt; import Bio
+&gt;&gt;&gt; print(Bio.__version__)</code></pre>
 <p>We’ll also want at least R 4.0.2. You should see the version you have when you start R. We’ll also see how to get this information in the section ‘Session information.’ You do not need RStudio, but I highly recommend it.</p>
 </div>
 <div id="fasta-file" class="section level2">
@@ -224,7 +224,7 @@ if( !file.exists( paste(my_out, &quot;_nuccomp.csv&quot;, sep = &quot;&quot;) ) 
 }</code></pre>
 <pre class="r"><code>st3 &lt;- Sys.time()
 st3-st2</code></pre>
-<pre><code>## Time difference of 0.01079583 secs</code></pre>
+<pre><code>## Time difference of 0.008171797 secs</code></pre>
 <p>This will create a comma delimited text file that has the same name as your FASTA file with the added suffix <code>_nuccomp.csv</code>.</p>
 </div>
 <div id="post-processing" class="section level2">
@@ -594,7 +594,7 @@ ggarrange(
 <p>After performing the above operations we may wish to benchmark the execution time in order to determine how feasible it is to repeat this analysis. This has been facilitated above by taking time stamps with the function <code>Sys.time()</code>. We can now use these timestamps to evaluate total execution time.</p>
 <pre class="r"><code>st4 &lt;- Sys.time()
 st4 - st1</code></pre>
-<pre><code>## Time difference of 8.355238 secs</code></pre>
+<pre><code>## Time difference of 7.830918 secs</code></pre>
 <p>Lastly, we can use the <code>sessionInfo()</code> function to report the version of <code>R()</code> we are using as well as the packages and their versions. This is important information to include if we want to report an issue.</p>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.1.2 (2021-11-01)

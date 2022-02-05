@@ -54,15 +54,10 @@ options(prompt = '>>> ')
 ```
 
 
-
-
-
 ```{python biopython_check, prompt=TRUE, eval=FALSE}
-#import Bio
-#print(Bio.__version__)
+import Bio
+print(Bio.__version__)
 ```
-
-
 
 
 ```{r include=FALSE}
