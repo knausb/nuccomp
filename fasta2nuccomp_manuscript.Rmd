@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ## Abstract
-Editing your file!
+
 
 Many bioinformatic projects begin with a large FASTA format file, such as a genome.
 However, the quality of the contents of these files varies from project to project.
