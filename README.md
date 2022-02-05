@@ -17,6 +17,5 @@ Together these scripts demonstrate how to rapidly summarize FASTA files such as 
 ---
 
 
-![The yeast genome summarized with fasta2nuccomp.](S288C_genome.png)
-
+![The yeast genome summarized with fasta2nuccomp.](S288C_reference_sequence_R64-2-1_20150113.fsa.png)
 
