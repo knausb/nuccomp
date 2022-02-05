@@ -185,7 +185,7 @@ my_denom <- 1e3
 my_df$Length <- my_df$Length/my_denom
 
 
-my_text <- paste("Nucleotides: ", format(my_len, big.mark = ","),
+my_text <- paste("Nucleotides:\n", format(my_len, big.mark = ","),
                  "\nN50: ", format(n50, big.mark = ","),
                  "\nN seqs: ", format(my_seqs, big.mark = ","),
                  "\nMax: ", format(my_max, big.mark = ","),
@@ -381,6 +381,10 @@ pu <- pu + xlim(c(0,1))
 # pu <- pu + xlab("IUPAC ambiguous (w,W, s, S, m, M, k, K, r, R, y, Y)")
 pu <- pu + xlab("IUPAC ambiguous")
 pu <- pu + ylab("Count")
+pu <- pu + theme(axis.title.x = element_text(size = 10, hjust = 0.5),
+                 axis.text.x = element_text(angle =  0, hjust = 0.5, size=8)
+                 )
+pu <- pu + theme(axis.title.y = element_text(size = 10, hjust = 0.5))
 
 pu
 ```
@@ -407,6 +411,10 @@ pn <- pn + theme_bw()
 pn <- pn + xlim(c(0,1))
 pn <- pn + xlab("Any base (N,n)")
 pn <- pn + ylab("Count")
+pn <- pn + theme(axis.title.x = element_text(size = 10, hjust = 0.5),
+                 axis.text.x = element_text(angle =  0, hjust = 0.5, size=8)
+                 )
+pn <- pn + theme(axis.title.y = element_text(size = 10, hjust = 0.5))
 
 pn
 ```
@@ -435,6 +443,10 @@ pe <- pe + xlim(c(0,1))
 #pe <- pe + xlab("Unexpected characters")
 pe <- pe + xlab("Unexpected")
 pe <- pe + ylab("Count")
+pe <- pe + theme(axis.title.x = element_text(size = 10, hjust = 0.5),
+                 axis.text.x = element_text(angle =  0, hjust = 0.5, size=8)
+                 )
+pe <- pe + theme(axis.title.y = element_text(size = 10, hjust = 0.5))
 
 pe
 ```
@@ -453,13 +465,18 @@ my_df <- data.frame(Length = my_nucs$Length,
                     GC = rowSums(my_nucs[,c("c", "C", "g", "G")])
                     )
 my_df$GC <- my_df$GC/my_df$Length
-my_df$Length <- my_df$Length/1e3
+my_df$Length <- my_df$Length/1e6
 
 pgc <- ggplot(my_df, aes(x = GC, y = Length))
 pgc <- pgc + geom_point(size = 4, shape = 21, fill = "#B2222299")
 pgc <- pgc + theme_bw()
 pgc <- pgc + xlim(c(0,1))
-pgc <- pgc + ylab("Length (Kbp)")
+# pgc <- pgc + ylab("Length (Kbp)")
+pgc <- pgc + ylab("Mbp")
+pgc <- pgc + theme(axis.title.x = element_text(size = 10, hjust = 0.5),
+                   axis.text.x = element_text(angle =  0, hjust = 0.5, size=8)
+                   )
+pgc <- pgc + theme(axis.title.y = element_text(size = 10, hjust = 0.5))
 
 pgc
 
@@ -489,7 +506,9 @@ library(ggpubr)
 ggarrange(
   ggarrange(pa, pc, pt, pg, ncol = 2, nrow = 2, labels = c("A", "B", "C", "D")),
   pl,
-  ggarrange(pu, pn, pe, pgc, ncol = 4, nrow = 1, labels = c("F", "G", "H", "I")),
+  ggarrange(pu, pn, pe, pgc, ncol = 4, nrow = 1, 
+            labels = c("F", "G", "H", "I"),  
+            font.label = list(size = 10, color = "black", face = "bold", family = NULL)),
   ncol = 1, nrow = 3,
   labels = c("", "E", ""),
   heights = c(2.5, 2, 1))
