@@ -1,0 +1,54 @@
+---
+title: "Benchmarking summary"
+author: "Insert authors here"
+date: "`r format(Sys.time(), '%Y, %B %d')`"
+output:
+  html_document:
+    toc: true
+    code_folding: hide
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.align = "center")
+knitr::opts_chunk$set(fig.height = 4)
+knitr::opts_chunk$set(fig.width = 4)
+st1 <- Sys.time()
+```
+
+
+
+```{r}
+bnchmrk <- data.frame( 
+  Mentha <- structure(c(468946732, 307, 36.8542295372372, 37537474, 46699537, 
+11198, 4997, 7.71084189414978), dim = c(8L, 1L), dimnames = list(
+    c("Nucleotides", "Sequences", "GC", "N50", "Maximum", "Median", 
+    "Minimum", "Seconds"), NULL)),
+  Oryza <- structure(c(995045545, 1954, 45.0162325986797, 1922674, 24906701, 
+141848.5, 1324, 33.5186097621918), dim = c(8L, 1L), dimnames = list(
+    c("Nucleotides", "Sequences", "GC", "N50", "Maximum", "Median", 
+    "Minimum", "Seconds"), NULL)),
+  Corylus <- structure(c(369779143, 11, 35.8991454083842, 36653616, 50950907, 
+30273198, 22421508, 16.9769184589386), dim = c(8L, 1L), dimnames = list(
+    c("Nucleotides", "Sequences", "GC", "N50", "Maximum", "Median", 
+    "Minimum", "Seconds"), NULL)),
+  Arabidopsis <- structure(c(119668634, 7, 36.0559867100791, 23459830, 30427671, 
+19698289, 154478, 10.8701975345612), dim = c(8L, 1L), dimnames = list(
+    c("Nucleotides", "Sequences", "GC", "N50", "Maximum", "Median", 
+    "Minimum", "Seconds"), NULL)),
+  Populus <- structure(c(434289848, 1447, 33.7475523113723, 19465461, 50495391, 
+6403, 657, 21.7682278156281), dim = c(8L, 1L), dimnames = list(
+    c("Nucleotides", "Sequences", "GC", "N50", "Maximum", "Median", 
+    "Minimum", "Seconds"), NULL))
+)
+names(bnchmrk) <- c("Mentha", "Oryza", "Corylus", "Arabidopsis", "Populus")
+
+
+knitr::kable(bnchmrk, format.args = list( digits = 2, nsmall = 3, scientific = F, big.mark = ","))
+```
+
+
+
