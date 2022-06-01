@@ -24,7 +24,7 @@ st1 <- Sys.time()
 ```{r}
 bnchmrk <- data.frame( 
   Mentha <- structure(c(468946732, 307, 36.8542295372372, 37537474, 46699537, 
-11198, 4997, 7.71084189414978), dim = c(8L, 1L), dimnames = list(
+11198, 4997, 21.1178591251373), dim = c(8L, 1L), dimnames = list(
     c("Nucleotides", "Sequences", "GC", "N50", "Maximum", "Median", 
     "Minimum", "Seconds"), NULL)),
   Oryza <- structure(c(995045545, 1954, 45.0162325986797, 1922674, 24906701, 
@@ -46,8 +46,14 @@ bnchmrk <- data.frame(
 )
 names(bnchmrk) <- c("Mentha", "Oryza", "Corylus", "Arabidopsis", "Populus")
 
+bnchmrk <- bnchmrk[, sort.int(unlist(bnchmrk['Seconds', ]), index.return = TRUE, decreasing = TRUE)$ix]
+
 
 knitr::kable(bnchmrk, format.args = list( digits = 2, nsmall = 3, scientific = F, big.mark = ","))
+
+knitr::kable(t(bnchmrk), format.args = list( digits = 3, nsmall = 1, scientific = F, big.mark = "," ))
+
+
 ```
 
 

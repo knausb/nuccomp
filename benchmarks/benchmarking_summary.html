@@ -452,14 +452,14 @@ pre code {
 
 <h1 class="title toc-ignore">Benchmarking summary</h1>
 <h4 class="author">Insert authors here</h4>
-<h4 class="date">2022, May 31</h4>
+<h4 class="date">2022, June 01</h4>
 
 </div>
 
 
 <pre class="r"><code>bnchmrk &lt;- data.frame( 
   Mentha &lt;- structure(c(468946732, 307, 36.8542295372372, 37537474, 46699537, 
-11198, 4997, 7.71084189414978), dim = c(8L, 1L), dimnames = list(
+11198, 4997, 21.1178591251373), dim = c(8L, 1L), dimnames = list(
     c(&quot;Nucleotides&quot;, &quot;Sequences&quot;, &quot;GC&quot;, &quot;N50&quot;, &quot;Maximum&quot;, &quot;Median&quot;, 
     &quot;Minimum&quot;, &quot;Seconds&quot;), NULL)),
   Oryza &lt;- structure(c(995045545, 1954, 45.0162325986797, 1922674, 24906701, 
@@ -481,6 +481,8 @@ pre code {
 )
 names(bnchmrk) &lt;- c(&quot;Mentha&quot;, &quot;Oryza&quot;, &quot;Corylus&quot;, &quot;Arabidopsis&quot;, &quot;Populus&quot;)
 
+bnchmrk &lt;- bnchmrk[, sort.int(unlist(bnchmrk[&#39;Seconds&#39;, ]), index.return = TRUE, decreasing = TRUE)$ix]
+
 
 knitr::kable(bnchmrk, format.args = list( digits = 2, nsmall = 3, scientific = F, big.mark = &quot;,&quot;))</code></pre>
 <table>
@@ -495,77 +497,161 @@ knitr::kable(bnchmrk, format.args = list( digits = 2, nsmall = 3, scientific = F
 <thead>
 <tr class="header">
 <th align="left"></th>
-<th align="right">Mentha</th>
 <th align="right">Oryza</th>
+<th align="right">Populus</th>
+<th align="right">Mentha</th>
 <th align="right">Corylus</th>
 <th align="right">Arabidopsis</th>
-<th align="right">Populus</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td align="left">Nucleotides</td>
-<td align="right">468,946,732.000</td>
 <td align="right">995,045,545.000</td>
+<td align="right">434,289,848.000</td>
+<td align="right">468,946,732.000</td>
 <td align="right">369,779,143.000</td>
 <td align="right">119,668,634.000</td>
-<td align="right">434,289,848.000</td>
 </tr>
 <tr class="even">
 <td align="left">Sequences</td>
-<td align="right">307.000</td>
 <td align="right">1,954.000</td>
+<td align="right">1,447.000</td>
+<td align="right">307.000</td>
 <td align="right">11.000</td>
 <td align="right">7.000</td>
-<td align="right">1,447.000</td>
 </tr>
 <tr class="odd">
 <td align="left">GC</td>
-<td align="right">36.854</td>
 <td align="right">45.016</td>
+<td align="right">33.748</td>
+<td align="right">36.854</td>
 <td align="right">35.899</td>
 <td align="right">36.056</td>
-<td align="right">33.748</td>
 </tr>
 <tr class="even">
 <td align="left">N50</td>
-<td align="right">37,537,474.000</td>
 <td align="right">1,922,674.000</td>
+<td align="right">19,465,461.000</td>
+<td align="right">37,537,474.000</td>
 <td align="right">36,653,616.000</td>
 <td align="right">23,459,830.000</td>
-<td align="right">19,465,461.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Maximum</td>
-<td align="right">46,699,537.000</td>
 <td align="right">24,906,701.000</td>
+<td align="right">50,495,391.000</td>
+<td align="right">46,699,537.000</td>
 <td align="right">50,950,907.000</td>
 <td align="right">30,427,671.000</td>
-<td align="right">50,495,391.000</td>
 </tr>
 <tr class="even">
 <td align="left">Median</td>
-<td align="right">11,198.000</td>
 <td align="right">141,848.500</td>
+<td align="right">6,403.000</td>
+<td align="right">11,198.000</td>
 <td align="right">30,273,198.000</td>
 <td align="right">19,698,289.000</td>
-<td align="right">6,403.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Minimum</td>
-<td align="right">4,997.000</td>
 <td align="right">1,324.000</td>
+<td align="right">657.000</td>
+<td align="right">4,997.000</td>
 <td align="right">22,421,508.000</td>
 <td align="right">154,478.000</td>
-<td align="right">657.000</td>
 </tr>
 <tr class="even">
 <td align="left">Seconds</td>
-<td align="right">7.711</td>
 <td align="right">33.519</td>
+<td align="right">21.768</td>
+<td align="right">21.118</td>
 <td align="right">16.977</td>
 <td align="right">10.870</td>
-<td align="right">21.768</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>knitr::kable(t(bnchmrk), format.args = list( digits = 3, nsmall = 1, scientific = F, big.mark = &quot;,&quot; ))</code></pre>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="13%" />
+<col width="9%" />
+<col width="4%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="7%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Nucleotides</th>
+<th align="right">Sequences</th>
+<th align="right">GC</th>
+<th align="right">N50</th>
+<th align="right">Maximum</th>
+<th align="right">Median</th>
+<th align="right">Minimum</th>
+<th align="right">Seconds</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Oryza</td>
+<td align="right">995,045,545.0</td>
+<td align="right">1,954.0</td>
+<td align="right">45.0</td>
+<td align="right">1,922,674.0</td>
+<td align="right">24,906,701.0</td>
+<td align="right">141,848.5</td>
+<td align="right">1,324.0</td>
+<td align="right">33.5</td>
+</tr>
+<tr class="even">
+<td align="left">Populus</td>
+<td align="right">434,289,848.0</td>
+<td align="right">1,447.0</td>
+<td align="right">33.7</td>
+<td align="right">19,465,461.0</td>
+<td align="right">50,495,391.0</td>
+<td align="right">6,403.0</td>
+<td align="right">657.0</td>
+<td align="right">21.8</td>
+</tr>
+<tr class="odd">
+<td align="left">Mentha</td>
+<td align="right">468,946,732.0</td>
+<td align="right">307.0</td>
+<td align="right">36.9</td>
+<td align="right">37,537,474.0</td>
+<td align="right">46,699,537.0</td>
+<td align="right">11,198.0</td>
+<td align="right">4,997.0</td>
+<td align="right">21.1</td>
+</tr>
+<tr class="even">
+<td align="left">Corylus</td>
+<td align="right">369,779,143.0</td>
+<td align="right">11.0</td>
+<td align="right">35.9</td>
+<td align="right">36,653,616.0</td>
+<td align="right">50,950,907.0</td>
+<td align="right">30,273,198.0</td>
+<td align="right">22,421,508.0</td>
+<td align="right">17.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Arabidopsis</td>
+<td align="right">119,668,634.0</td>
+<td align="right">7.0</td>
+<td align="right">36.1</td>
+<td align="right">23,459,830.0</td>
+<td align="right">30,427,671.0</td>
+<td align="right">19,698,289.0</td>
+<td align="right">154,478.0</td>
+<td align="right">10.9</td>
 </tr>
 </tbody>
 </table>
