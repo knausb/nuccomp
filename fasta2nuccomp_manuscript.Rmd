@@ -101,12 +101,12 @@ The RMarkdown can be compiled into several formats, such as \*.html and \*.pdf, 
 Because the R code to produce summaries is included in this RMarkdown document the workflow is documented and the end user is also free to customize these examples to fit their specific needs.
 
 
-Currently, there are a diversity of software tools that output various summaries.
+Several currently-available software tools contain functions to output various summaries of fasta and fastq files, such as QUAST and SeqKit (refs).
 But there does not appear to be a tool to efficiently provides a standardized suite of summaries.
 Instead, investigators find themselves collating summaries from several outputs and then presenting this information in a uniform manner.
 Some of these summaries are output at the end of a time intensive analysis (such as assembly), a step that is typically not justified if only a summary is desired.
 For example, an investigator may obtain an accessioned version of a genome and want to validate the published values.
-This is particularly important because some publications may summarize assembled "chromosomes" while accessions versions may include unplaced contigs, the mitochondrion and perhaps a chloroplast.
+This is particularly important because some publications may summarize assembled "chromosomes" while accessions versions may include unplaced contigs, plus non-autosomal contigs representing the mitochondrion and, for plants, the chloroplast.
 Having a rapid tool to calculate many summaries provides a quick way to validate if downloaded data files matched the published description.
 Because the summary table is saved as a text file and all of the code was made available other users have the potential to invent combinations of this information that the present authors never imagined.
 The tool fasta2nuccomp provides rapid summaries of genomes as an initial step for workflows in FASTA based genomic investigations.
