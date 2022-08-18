@@ -452,17 +452,20 @@ pre code {
 
 <h1 class="title toc-ignore">fasta2nuccomp</h1>
 <h4 class="author">Insert authors here</h4>
-<h4 class="date">2022, May 31</h4>
+<h4 class="date">2022, August 10</h4>
 
 </div>
 
 <div id="TOC">
 <ul>
-<li><a href="#fasta-file-input">FASTA file input</a></li>
-<li><a href="#post-processing">Post-processing</a></li>
-<li><a href="#individual-panels">Individual panels</a></li>
-<li><a href="#dashboard">Dashboard</a></li>
-<li><a href="#session-information">Session information</a></li>
+<li><a href="#fasta-file-input" id="toc-fasta-file-input">FASTA file
+input</a></li>
+<li><a href="#post-processing" id="toc-post-processing">Post-processing</a></li>
+<li><a href="#individual-panels" id="toc-individual-panels">Individual
+panels</a></li>
+<li><a href="#dashboard" id="toc-dashboard">Dashboard</a></li>
+<li><a href="#session-information" id="toc-session-information">Session
+information</a></li>
 </ul>
 </div>
 
@@ -481,7 +484,7 @@ if( !file.exists( paste(my_out, &quot;_nuccomp.csv&quot;, sep = &quot;&quot;) ) 
 }</code></pre>
 <pre class="r"><code>st3 &lt;- Sys.time()
 st3-st2</code></pre>
-<pre><code>## Time difference of 10.3291 secs</code></pre>
+<pre><code>## Time difference of 9.84054 secs</code></pre>
 </div>
 <div id="post-processing" class="section level2">
 <h2>Post-processing</h2>
@@ -772,10 +775,16 @@ my_st &lt;- st4 - st1
 my_summary &lt;- rbind(my_len, my_seqs, my_gc * 100, n50, my_max, my_med, my_min, my_st)
 #row.names(my_summary) &lt;- c(&quot;Nucleotides&quot;, &quot;Sequences&quot;, &quot;GC&quot;, &quot;N50&quot;, &quot;Maximum&quot;, &quot;Median&quot;, &quot;Minimum&quot;)
 row.names(my_summary) &lt;- c(&quot;Nucleotides&quot;, &quot;Sequences&quot;, &quot;GC&quot;, &quot;N50&quot;, &quot;Maximum&quot;, &quot;Median&quot;, &quot;Minimum&quot;, &quot;Seconds&quot;)
-
+colnames(my_summary) &lt;- &quot;Corylus&quot;
 
 knitr::kable(my_summary, format.args = list( digits = 2, nsmall = 3, scientific = F))</code></pre>
 <table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Corylus</th>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td align="left">Nucleotides</td>
@@ -807,15 +816,19 @@ knitr::kable(my_summary, format.args = list( digits = 2, nsmall = 3, scientific 
 </tr>
 <tr class="even">
 <td align="left">Seconds</td>
-<td align="right">16.977</td>
+<td align="right">16.280</td>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>dput( my_summary )</code></pre>
+<pre class="r"><code>write.table(t(my_summary), file = &quot;benchmarking.csv&quot;,
+            append = TRUE, sep = &quot;,&quot;,
+            row.names = TRUE, col.names = FALSE)
+
+dput( my_summary )</code></pre>
 <pre><code>structure(c(369779143, 11, 35.8991454083842, 36653616, 50950907, 
-30273198, 22421508, 16.9769184589386), dim = c(8L, 1L), dimnames = list(
+30273198, 22421508, 16.2801008224487), dim = c(8L, 1L), dimnames = list(
     c(&quot;Nucleotides&quot;, &quot;Sequences&quot;, &quot;GC&quot;, &quot;N50&quot;, &quot;Maximum&quot;, &quot;Median&quot;, 
-    &quot;Minimum&quot;, &quot;Seconds&quot;), NULL))</code></pre>
+    &quot;Minimum&quot;, &quot;Seconds&quot;), &quot;Corylus&quot;))</code></pre>
 </div>
 <div id="session-information" class="section level2">
 <h2>Session information</h2>
@@ -826,19 +839,19 @@ function <code>Sys.time()</code>. We can now use these timestamps to
 evaluate total execution time.</p>
 <pre class="r"><code>st5 &lt;- Sys.time()
 st5 - st1</code></pre>
-<pre><code>## Time difference of 16.99521 secs</code></pre>
+<pre><code>## Time difference of 16.30121 secs</code></pre>
 <p>Lastly, we can use the <code>sessionInfo()</code> function to report
 the version of <code>R()</code> we are using as well as the packages and
 their versions. This is important information to include if we want to
 report an issue.</p>
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>## R version 4.2.0 (2022-04-22)
+<pre><code>## R version 4.2.1 (2022-06-23)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.4 LTS
+## Running under: Ubuntu 22.04.1 LTS
 ## 
 ## Matrix products: default
-## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
-## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0
 ## 
 ## locale:
 ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -857,19 +870,19 @@ report an issue.</p>
 ## loaded via a namespace (and not attached):
 ##  [1] tidyselect_1.1.2 xfun_0.31        bslib_0.3.1      purrr_0.3.4     
 ##  [5] carData_3.0-5    colorspace_2.0-3 vctrs_0.4.1      generics_0.1.2  
-##  [9] htmltools_0.5.2  yaml_2.3.5       utf8_1.2.2       rlang_1.0.2     
+##  [9] htmltools_0.5.2  yaml_2.3.5       utf8_1.2.2       rlang_1.0.4     
 ## [13] jquerylib_0.1.4  pillar_1.7.0     glue_1.6.2       withr_2.5.0     
 ## [17] bit64_4.0.5      lifecycle_1.0.1  stringr_1.4.0    munsell_0.5.0   
 ## [21] ggsignif_0.6.3   gtable_0.3.0     evaluate_0.15    labeling_0.4.2  
-## [25] knitr_1.39       tzdb_0.3.0       fastmap_1.1.0    parallel_4.2.0  
+## [25] knitr_1.39       tzdb_0.3.0       fastmap_1.1.0    parallel_4.2.1  
 ## [29] fansi_1.0.3      highr_0.9        broom_0.8.0      readr_2.1.2     
 ## [33] scales_1.2.0     backports_1.4.1  vroom_1.5.7      jsonlite_1.8.0  
 ## [37] abind_1.4-5      farver_2.1.0     bit_4.0.4        hms_1.1.1       
-## [41] digest_0.6.29    stringi_1.7.6    rstatix_0.7.0    dplyr_1.0.9     
-## [45] grid_4.2.0       cowplot_1.1.1    cli_3.3.0        tools_4.2.0     
+## [41] digest_0.6.29    stringi_1.7.8    rstatix_0.7.0    dplyr_1.0.9     
+## [45] grid_4.2.1       cowplot_1.1.1    cli_3.3.0        tools_4.2.1     
 ## [49] magrittr_2.0.3   sass_0.4.1       tibble_3.1.7     crayon_1.5.1    
 ## [53] tidyr_1.2.0      car_3.0-13       pkgconfig_2.0.3  ellipsis_0.3.2  
-## [57] rmarkdown_2.14   rstudioapi_0.13  R6_2.5.1         compiler_4.2.0</code></pre>
+## [57] rmarkdown_2.14   rstudioapi_0.13  R6_2.5.1         compiler_4.2.1</code></pre>
 </div>
 
 

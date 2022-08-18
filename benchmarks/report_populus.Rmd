@@ -381,9 +381,13 @@ my_st <- st4 - st1
 my_summary <- rbind(my_len, my_seqs, my_gc * 100, n50, my_max, my_med, my_min, my_st)
 #row.names(my_summary) <- c("Nucleotides", "Sequences", "GC", "N50", "Maximum", "Median", "Minimum")
 row.names(my_summary) <- c("Nucleotides", "Sequences", "GC", "N50", "Maximum", "Median", "Minimum", "Seconds")
-
+colnames(my_summary) <- "Populus"
 
 knitr::kable(my_summary, format.args = list( digits = 2, nsmall = 3, scientific = F))
+
+write.table(t(my_summary), file = "benchmarking.csv",
+            append = TRUE, sep = ",",
+            row.names = TRUE, col.names = FALSE)
 
 dput( my_summary )
 ```

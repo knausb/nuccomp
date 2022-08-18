@@ -452,127 +452,151 @@ pre code {
 
 <h1 class="title toc-ignore">Benchmarking summary</h1>
 <h4 class="author">Insert authors here</h4>
-<h4 class="date">2022, June 01</h4>
+<h4 class="date">2022, August 10</h4>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#genome-inventory" id="toc-genome-inventory">Genome
+Inventory</a></li>
+<li><a href="#benchmarking" id="toc-benchmarking">Benchmarking</a></li>
+<li><a href="#summarization" id="toc-summarization">Summarization</a></li>
+</ul>
+</div>
 
-<pre class="r"><code>bnchmrk &lt;- data.frame( 
-  Mentha &lt;- structure(c(468946732, 307, 36.8542295372372, 37537474, 46699537, 
-11198, 4997, 21.1178591251373), dim = c(8L, 1L), dimnames = list(
-    c(&quot;Nucleotides&quot;, &quot;Sequences&quot;, &quot;GC&quot;, &quot;N50&quot;, &quot;Maximum&quot;, &quot;Median&quot;, 
-    &quot;Minimum&quot;, &quot;Seconds&quot;), NULL)),
-  Oryza &lt;- structure(c(995045545, 1954, 45.0162325986797, 1922674, 24906701, 
-141848.5, 1324, 33.5186097621918), dim = c(8L, 1L), dimnames = list(
-    c(&quot;Nucleotides&quot;, &quot;Sequences&quot;, &quot;GC&quot;, &quot;N50&quot;, &quot;Maximum&quot;, &quot;Median&quot;, 
-    &quot;Minimum&quot;, &quot;Seconds&quot;), NULL)),
-  Corylus &lt;- structure(c(369779143, 11, 35.8991454083842, 36653616, 50950907, 
-30273198, 22421508, 16.9769184589386), dim = c(8L, 1L), dimnames = list(
-    c(&quot;Nucleotides&quot;, &quot;Sequences&quot;, &quot;GC&quot;, &quot;N50&quot;, &quot;Maximum&quot;, &quot;Median&quot;, 
-    &quot;Minimum&quot;, &quot;Seconds&quot;), NULL)),
-  Arabidopsis &lt;- structure(c(119668634, 7, 36.0559867100791, 23459830, 30427671, 
-19698289, 154478, 10.8701975345612), dim = c(8L, 1L), dimnames = list(
-    c(&quot;Nucleotides&quot;, &quot;Sequences&quot;, &quot;GC&quot;, &quot;N50&quot;, &quot;Maximum&quot;, &quot;Median&quot;, 
-    &quot;Minimum&quot;, &quot;Seconds&quot;), NULL)),
-  Populus &lt;- structure(c(434289848, 1447, 33.7475523113723, 19465461, 50495391, 
-6403, 657, 21.7682278156281), dim = c(8L, 1L), dimnames = list(
-    c(&quot;Nucleotides&quot;, &quot;Sequences&quot;, &quot;GC&quot;, &quot;N50&quot;, &quot;Maximum&quot;, &quot;Median&quot;, 
-    &quot;Minimum&quot;, &quot;Seconds&quot;), NULL))
-)
-names(bnchmrk) &lt;- c(&quot;Mentha&quot;, &quot;Oryza&quot;, &quot;Corylus&quot;, &quot;Arabidopsis&quot;, &quot;Populus&quot;)
+<pre class="r"><code># unlink(&quot;*_nuccomp.csv&quot;)
+# unlink(&quot;benchmarking.csv&quot;)</code></pre>
+<pre class="r"><code># system(&quot;Rscript -e \&quot;rmarkdown::render(\&#39;report_arabidopsis.Rmd\&#39;)\&quot;&quot;)
+# system(&quot;Rscript -e \&quot;rmarkdown::render(\&#39;report_corylus.Rmd\&#39;)\&quot;&quot;)
+# system(&quot;Rscript -e \&quot;rmarkdown::render(\&#39;report_mentha.Rmd\&#39;)\&quot;&quot;)
+# system(&quot;Rscript -e \&quot;rmarkdown::render(\&#39;report_oryza.Rmd\&#39;)\&quot;&quot;)
+# system(&quot;Rscript -e \&quot;rmarkdown::render(\&#39;report_populus.Rmd\&#39;)\&quot;&quot;)</code></pre>
+<div id="genome-inventory" class="section level2">
+<h2>Genome Inventory</h2>
+<p>In order to test the perfomance of our software we processed several
+plant genomes. The files for each accession, as well as additional
+information about each assembly, can be found at NCBI (<a href="https://www.ncbi.nlm.nih.gov/" class="uri">https://www.ncbi.nlm.nih.gov/</a>).</p>
+<pre class="r"><code>genomes &lt;- matrix(c(&quot;Arabidopsis&quot;, &quot;GCF_000001735.4&quot;, &quot;GCF_000001735.4_TAIR10.1_genomic.fna.gz&quot;,
+&quot;Corylus&quot;, &quot;GCA_901000735.2&quot;, &quot;GCA_901000735.2_CavTom2PMs-1.0_genomic.fna.gz&quot;,
+&quot;Mentha&quot;, &quot;GCA_001642375.2&quot;, &quot;GCA_001642375.2_Mlong_CMEN585_v3_genomic.fna.gz&quot;,
+&quot;Oryza&quot;, &quot;GCA_019925245.1&quot;, &quot;GCA_019925245.1_MQ-UA-ANU_Oaus-KR_1.0_genomic.fna.gz&quot;,
+&quot;Populus&quot;, &quot;GCF_000002775.4&quot;, &quot;GCF_000002775.4_Pop_tri_v3/GCF_000002775.4_Pop_tri_v3_genomic.fna.gz&quot;), 
+ncol = 3, byrow = TRUE)
+colnames(genomes) &lt;- c(&quot;Taxon&quot;, &quot;Accession&quot;, &quot;File name&quot;)
 
-bnchmrk &lt;- bnchmrk[, sort.int(unlist(bnchmrk[&#39;Seconds&#39;, ]), index.return = TRUE, decreasing = TRUE)$ix]
-
-
-knitr::kable(bnchmrk, format.args = list( digits = 2, nsmall = 3, scientific = F, big.mark = &quot;,&quot;))</code></pre>
+knitr::kable(genomes, caption = &quot;**Table 1.** Accessions and common names for genomes used for benchmarking.&quot;)</code></pre>
 <table>
+<caption><strong>Table 1.</strong> Accessions and common names for
+genomes used for benchmarking.</caption>
 <colgroup>
-<col width="13%" />
-<col width="17%" />
-<col width="17%" />
-<col width="17%" />
-<col width="17%" />
-<col width="17%" />
+<col width="12%" />
+<col width="16%" />
+<col width="71%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th align="left"></th>
-<th align="right">Oryza</th>
-<th align="right">Populus</th>
-<th align="right">Mentha</th>
-<th align="right">Corylus</th>
-<th align="right">Arabidopsis</th>
+<th align="left">Taxon</th>
+<th align="left">Accession</th>
+<th align="left">File name</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">Nucleotides</td>
-<td align="right">995,045,545.000</td>
-<td align="right">434,289,848.000</td>
-<td align="right">468,946,732.000</td>
-<td align="right">369,779,143.000</td>
-<td align="right">119,668,634.000</td>
+<td align="left">Arabidopsis</td>
+<td align="left">GCF_000001735.4</td>
+<td align="left">GCF_000001735.4_TAIR10.1_genomic.fna.gz</td>
 </tr>
 <tr class="even">
-<td align="left">Sequences</td>
-<td align="right">1,954.000</td>
-<td align="right">1,447.000</td>
-<td align="right">307.000</td>
-<td align="right">11.000</td>
-<td align="right">7.000</td>
+<td align="left">Corylus</td>
+<td align="left">GCA_901000735.2</td>
+<td align="left">GCA_901000735.2_CavTom2PMs-1.0_genomic.fna.gz</td>
 </tr>
 <tr class="odd">
-<td align="left">GC</td>
-<td align="right">45.016</td>
-<td align="right">33.748</td>
-<td align="right">36.854</td>
-<td align="right">35.899</td>
-<td align="right">36.056</td>
+<td align="left">Mentha</td>
+<td align="left">GCA_001642375.2</td>
+<td align="left">GCA_001642375.2_Mlong_CMEN585_v3_genomic.fna.gz</td>
 </tr>
 <tr class="even">
-<td align="left">N50</td>
-<td align="right">1,922,674.000</td>
-<td align="right">19,465,461.000</td>
-<td align="right">37,537,474.000</td>
-<td align="right">36,653,616.000</td>
-<td align="right">23,459,830.000</td>
+<td align="left">Oryza</td>
+<td align="left">GCA_019925245.1</td>
+<td align="left">GCA_019925245.1_MQ-UA-ANU_Oaus-KR_1.0_genomic.fna.gz</td>
 </tr>
 <tr class="odd">
-<td align="left">Maximum</td>
-<td align="right">24,906,701.000</td>
-<td align="right">50,495,391.000</td>
-<td align="right">46,699,537.000</td>
-<td align="right">50,950,907.000</td>
-<td align="right">30,427,671.000</td>
-</tr>
-<tr class="even">
-<td align="left">Median</td>
-<td align="right">141,848.500</td>
-<td align="right">6,403.000</td>
-<td align="right">11,198.000</td>
-<td align="right">30,273,198.000</td>
-<td align="right">19,698,289.000</td>
-</tr>
-<tr class="odd">
-<td align="left">Minimum</td>
-<td align="right">1,324.000</td>
-<td align="right">657.000</td>
-<td align="right">4,997.000</td>
-<td align="right">22,421,508.000</td>
-<td align="right">154,478.000</td>
-</tr>
-<tr class="even">
-<td align="left">Seconds</td>
-<td align="right">33.519</td>
-<td align="right">21.768</td>
-<td align="right">21.118</td>
-<td align="right">16.977</td>
-<td align="right">10.870</td>
+<td align="left">Populus</td>
+<td align="left">GCF_000002775.4</td>
+<td align="left">GCF_000002775.4_Pop_tri_v3/GCF_000002775.4_Pop_tri_v3_genomic.fna.gz</td>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>knitr::kable(t(bnchmrk), format.args = list( digits = 3, nsmall = 1, scientific = F, big.mark = &quot;,&quot; ))</code></pre>
+<p>Automated downloading of these genomes can be perfomed using
+<code>wget</code> by uncommenting the below commands. (And recommenting
+them when you’re done so you avoid downloading them again.)</p>
+<pre class="bash"><code># wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/735/GCF_000001735.4_TAIR10.1/GCF_000001735.4_TAIR10.1_genomic.fna.gz
+# gunzip GCF_000001735.4_TAIR10.1_genomic.fna.gz
+# wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/901/000/735/GCA_901000735.2_CavTom2PMs-1.0/GCA_901000735.2_CavTom2PMs-1.0_genomic.fna.gz
+# gunzip GCA_901000735.2_CavTom2PMs-1.0_genomic.fna.gz
+# wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/642/375/GCA_001642375.2_Mlong_CMEN585_v3/GCA_001642375.2_Mlong_CMEN585_v3_genomic.fna.gz
+# gunzip GCA_001642375.2_Mlong_CMEN585_v3_genomic.fna.gz
+# wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/925/245/GCA_019925245.1_MQ-UA-ANU_Oaus-KR_1.0/GCA_019925245.1_MQ-UA-ANU_Oaus-KR_1.0_genomic.fna.gz
+# gunzip GCA_019925245.1_MQ-UA-ANU_Oaus-KR_1.0_genomic.fna.gz
+# wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/775/GCF_000002775.4_Pop_tri_v3/GCF_000002775.4_Pop_tri_v3_genomic.fna.gz
+# gunzip GCF_000002775.4_Pop_tri_v3/GCF_000002775.4_Pop_tri_v3_genomic.fna.gz</code></pre>
+</div>
+<div id="benchmarking" class="section level2">
+<h2>Benchmarking</h2>
+<p>The following lines of code render an RMarkdown report that calls
+<code>fasta2nuccomp.py</code> and collects the execution time. You will
+be expected to manage your python/conda environment and make sure
+biopython is installed in the environment that is called from RMarkdown.
+A potential solution is to use the R package <code>reticulate</code> (<a href="https://CRAN.R-project.org/package=reticulate" class="uri">https://CRAN.R-project.org/package=reticulate</a>) to help
+the interface between R and python. Note that the <code>rm</code> call
+will delete the benchmarking file. This is because the rendering of the
+RMarkdown will append to this file, meaning you have to delete this file
+to begin the collection of more information. Once the benchmarking has
+been run, and the <code>benchmarking.csv</code> file has been created,
+these lines may be commented out to avoid benchmarking and focus on
+downstream processing of the benchmarking data.</p>
+<pre class="bash"><code># conda activate biopython
+# rm benchmarking.csv
+# rm *_nuccomp.csv
+# Rscript -e &quot;rmarkdown::render(&#39;report_arabidopsis.Rmd&#39;)&quot;
+# Rscript -e &quot;rmarkdown::render(&#39;report_corylus.Rmd&#39;)&quot;
+# Rscript -e &quot;rmarkdown::render(&#39;report_mentha.Rmd&#39;)&quot;
+# Rscript -e &quot;rmarkdown::render(&#39;report_oryza.Rmd&#39;)&quot;
+# Rscript -e &quot;rmarkdown::render(&#39;report_populus.Rmd&#39;)&quot;</code></pre>
+</div>
+<div id="summarization" class="section level2">
+<h2>Summarization</h2>
+<p>Summarization of each assembly and execution time are presented in
+Table 2. The evaluated assemblies ranged from 100 million to almost 1
+billion nucleotides arranged in a total number of sequences ranging from
+seven to almost two thousand provided assemblies with a diversity of
+characteristics. The execution time includes the execution of
+<code>fasta2nuccomp.py</code> and the rendering of an RMarkdown
+document, including a graphical summary, for each genome. The execution
+times were under one minute for all evaluated genomes.</p>
+<pre class="r"><code>bnchmrk &lt;- read.table(&quot;benchmarking.csv&quot;, header = FALSE, sep = &quot;,&quot;)
+
+colnames(bnchmrk) &lt;- c(&quot;Taxon&quot;, &quot;Nucleotides&quot;, &quot;Sequences&quot;, &quot;GC&quot;, &quot;N50&quot;, &quot;Maximum&quot;, &quot;Median&quot;, &quot;Minimum&quot;, &quot;Seconds&quot;)
+
+# bnchmrk &lt;- bnchmrk[sort.int(bnchmrk$Nucleotides, index.return = TRUE, decreasing = TRUE)$ix, ]
+bnchmrk &lt;- bnchmrk[sort.int(bnchmrk$Sequences, index.return = TRUE, decreasing = TRUE)$ix, ]
+
+# knitr::kable(bnchmrk, 
+#              format.args = list( digits = 2, nsmall = 3, scientific = F, big.mark = &quot;,&quot;),
+#              row.names = FALSE)
+
+#bnchmrk$GC &lt;- as.numeric(bnchmrk$GC)
+
+knitr::kable(bnchmrk, 
+             format.args = list( digits = 3, 
+                                 nsmall = 1, 
+                                 scientific = F, big.mark = &quot;,&quot;),
+             row.names = FALSE, caption = &quot;**Table 2.** Genome summaries produced by fasta2nuccomp.py and execution time. &quot;)</code></pre>
 <table>
+<caption><strong>Table 2.</strong> Genome summaries produced by
+fasta2nuccomp.py and execution time.</caption>
 <colgroup>
 <col width="11%" />
 <col width="13%" />
@@ -586,7 +610,7 @@ knitr::kable(bnchmrk, format.args = list( digits = 2, nsmall = 3, scientific = F
 </colgroup>
 <thead>
 <tr class="header">
-<th align="left"></th>
+<th align="left">Taxon</th>
 <th align="right">Nucleotides</th>
 <th align="right">Sequences</th>
 <th align="right">GC</th>
@@ -607,7 +631,7 @@ knitr::kable(bnchmrk, format.args = list( digits = 2, nsmall = 3, scientific = F
 <td align="right">24,906,701.0</td>
 <td align="right">141,848.5</td>
 <td align="right">1,324.0</td>
-<td align="right">33.5</td>
+<td align="right">31.4</td>
 </tr>
 <tr class="even">
 <td align="left">Populus</td>
@@ -618,7 +642,7 @@ knitr::kable(bnchmrk, format.args = list( digits = 2, nsmall = 3, scientific = F
 <td align="right">50,495,391.0</td>
 <td align="right">6,403.0</td>
 <td align="right">657.0</td>
-<td align="right">21.8</td>
+<td align="right">19.9</td>
 </tr>
 <tr class="odd">
 <td align="left">Mentha</td>
@@ -629,7 +653,7 @@ knitr::kable(bnchmrk, format.args = list( digits = 2, nsmall = 3, scientific = F
 <td align="right">46,699,537.0</td>
 <td align="right">11,198.0</td>
 <td align="right">4,997.0</td>
-<td align="right">21.1</td>
+<td align="right">20.4</td>
 </tr>
 <tr class="even">
 <td align="left">Corylus</td>
@@ -640,7 +664,7 @@ knitr::kable(bnchmrk, format.args = list( digits = 2, nsmall = 3, scientific = F
 <td align="right">50,950,907.0</td>
 <td align="right">30,273,198.0</td>
 <td align="right">22,421,508.0</td>
-<td align="right">17.0</td>
+<td align="right">16.3</td>
 </tr>
 <tr class="odd">
 <td align="left">Arabidopsis</td>
@@ -651,10 +675,11 @@ knitr::kable(bnchmrk, format.args = list( digits = 2, nsmall = 3, scientific = F
 <td align="right">30,427,671.0</td>
 <td align="right">19,698,289.0</td>
 <td align="right">154,478.0</td>
-<td align="right">10.9</td>
+<td align="right">10.1</td>
 </tr>
 </tbody>
 </table>
+</div>
 
 
 
