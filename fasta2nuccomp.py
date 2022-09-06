@@ -29,14 +29,15 @@ args = parser.parse_args()
 if args.verbose:
     print("verbosity turned on")
 
-if args.verbose:
-    print("Input FASTA file: " + args.FASTA)
-
 outfile = ntpath.basename(args.FASTA)
 outfile = outfile + '_nuccomp.csv'
 
 if args.verbose:
+    print("Input FASTA file: " + args.FASTA)
     print("Output file: " + outfile)
+    
+#if args.verbose:
+#    print("Output file: " + outfile)
 
 with open(outfile, 'w') as f:
     nucls = "aAcCgGtTwWsSmMkKrRyYnN" # Nucleotides to get counts of
