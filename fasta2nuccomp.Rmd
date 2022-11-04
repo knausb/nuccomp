@@ -92,6 +92,9 @@ If the script `fasta2nuccomp.py` is not in your path and not in the path in the 
 st2 <- Sys.time()
 my_infile <- "S288C_reference_sequence_R64-2-1_20150113.fsa"
 my_out <- basename(my_infile)
+my_out <- sub("\\.gz$", "", my_out)
+my_out <- sub("\\.fna$", "", my_out)
+my_out <- sub("\\.fasta$", "", my_out)
 # Only run python script if it's outfile does not exist. 
 if( !file.exists( paste(my_out, "_nuccomp.csv", sep = "") ) ){
   system(paste("~/gits/fasta2nuccomp/fasta2nuccomp.py", my_infile))
@@ -520,6 +523,25 @@ For the purpose of publication we may desire to save this "dashboard" as a graph
 After the above code has been run, the ```ggsave()``` function can be uncommented and run.
 You'll want to include a meaningful filename.
 This will save the dashboard as a ```*.png``` or ```*.tiff``` graphic.
+
+
+```{r}
+
+genome_df <- data.frame(matrix(
+  c("Total length (bp)", sum(my_nucs$Length),
+  "Total A,a,C,c,G,g,T,t (bp)", sum(colSums(my_nucs[, c("A", "a", "C", "c", "G", "g", "T", "t")])),
+  "Total C,c,G,g (bp)", sum(colSums(my_nucs[, c("C", "c", "G", "g")])),
+  "GC/ACGT", sum(colSums(my_nucs[, c("C", "c", "G", "g")]))/sum(colSums(my_nucs[, c("A", "a", "C", "c", "G", "g", "T", "t")])),
+  "GC/Total length", sum(colSums(my_nucs[, c("C", "c", "G", "g")]))/sum(my_nucs$Length),
+  "N50", n50,
+  "N sequences", nrow(my_nucs)), ncol = 2, byrow = TRUE
+))
+names(genome_df) <- c("Category", "Value")
+genome_df$Value <- as.numeric(genome_df$Value)
+knitr::kable(genome_df, digits = 3, caption = "**Table X** Summary statistics presented in a manner so that they can be copied into other documents.")
+
+```
+
 
 
 ## Session information
