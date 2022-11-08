@@ -90,7 +90,7 @@ If the script `fasta2nuccomp.py` is not in your path and not in the path in the 
 
 ```{r}
 st2 <- Sys.time()
-my_infile <- "S288C_reference_sequence_R64-2-1_20150113.fsa"
+my_infile <- "S288C_reference_sequence_R64-2-1_20150113.fsa.gz"
 my_out <- basename(my_infile)
 my_out <- sub("\\.gz$", "", my_out)
 my_out <- sub("\\.fna$", "", my_out)
@@ -531,8 +531,8 @@ genome_df <- data.frame(matrix(
   c("Total length (bp)", sum(my_nucs$Length),
   "Total A,a,C,c,G,g,T,t (bp)", sum(colSums(my_nucs[, c("A", "a", "C", "c", "G", "g", "T", "t")])),
   "Total C,c,G,g (bp)", sum(colSums(my_nucs[, c("C", "c", "G", "g")])),
-  "GC/ACGT", sum(colSums(my_nucs[, c("C", "c", "G", "g")]))/sum(colSums(my_nucs[, c("A", "a", "C", "c", "G", "g", "T", "t")])),
-  "GC/Total length", sum(colSums(my_nucs[, c("C", "c", "G", "g")]))/sum(my_nucs$Length),
+  "GC/ACGT", sum(colSums(my_nucs[, c("C", "c", "G", "g")]))/sum(colSums(my_nucs[, c("A", "a", "C", "c", "G", "g", "T", "t")])) * 1e2,
+  "GC/Total length", sum(colSums(my_nucs[, c("C", "c", "G", "g")]))/sum(my_nucs$Length) * 1e2,
   "N50", n50,
   "N sequences", nrow(my_nucs)), ncol = 2, byrow = TRUE
 ))

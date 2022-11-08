@@ -452,7 +452,7 @@ pre code {
 
 <h1 class="title toc-ignore">fasta2nuccomp</h1>
 <h4 class="author">Insert authors here</h4>
-<h4 class="date">2022, November 02</h4>
+<h4 class="date">2022, November 06</h4>
 
 </div>
 
@@ -512,17 +512,18 @@ it the name of your FASTA file. If the script
 the below code chunck, you’ll have to change the call to reflect it’s
 location on your system.</p>
 <pre class="r"><code>st2 &lt;- Sys.time()
-my_infile &lt;- &quot;S288C_reference_sequence_R64-2-1_20150113.fsa&quot;
+my_infile &lt;- &quot;S288C_reference_sequence_R64-2-1_20150113.fsa.gz&quot;
 my_out &lt;- basename(my_infile)
 my_out &lt;- sub(&quot;\\.gz$&quot;, &quot;&quot;, my_out)
 my_out &lt;- sub(&quot;\\.fna$&quot;, &quot;&quot;, my_out)
+my_out &lt;- sub(&quot;\\.fasta$&quot;, &quot;&quot;, my_out)
 # Only run python script if it&#39;s outfile does not exist. 
 if( !file.exists( paste(my_out, &quot;_nuccomp.csv&quot;, sep = &quot;&quot;) ) ){
   system(paste(&quot;~/gits/fasta2nuccomp/fasta2nuccomp.py&quot;, my_infile))
 }</code></pre>
 <pre class="r"><code>st3 &lt;- Sys.time()
 st3-st2</code></pre>
-<pre><code>## Time difference of 0.010782 secs</code></pre>
+<pre><code>## Time difference of 0.01218414 secs</code></pre>
 <p>This will create a comma delimited text file that has the same name
 as your FASTA file with the added suffix <code>_nuccomp.csv</code>.</p>
 </div>
@@ -931,8 +932,8 @@ to include a meaningful filename. This will save the dashboard as a
   c(&quot;Total length (bp)&quot;, sum(my_nucs$Length),
   &quot;Total A,a,C,c,G,g,T,t (bp)&quot;, sum(colSums(my_nucs[, c(&quot;A&quot;, &quot;a&quot;, &quot;C&quot;, &quot;c&quot;, &quot;G&quot;, &quot;g&quot;, &quot;T&quot;, &quot;t&quot;)])),
   &quot;Total C,c,G,g (bp)&quot;, sum(colSums(my_nucs[, c(&quot;C&quot;, &quot;c&quot;, &quot;G&quot;, &quot;g&quot;)])),
-  &quot;GC/ACGT&quot;, sum(colSums(my_nucs[, c(&quot;C&quot;, &quot;c&quot;, &quot;G&quot;, &quot;g&quot;)]))/sum(colSums(my_nucs[, c(&quot;A&quot;, &quot;a&quot;, &quot;C&quot;, &quot;c&quot;, &quot;G&quot;, &quot;g&quot;, &quot;T&quot;, &quot;t&quot;)])),
-  &quot;GC/Total length&quot;, sum(colSums(my_nucs[, c(&quot;C&quot;, &quot;c&quot;, &quot;G&quot;, &quot;g&quot;)]))/sum(my_nucs$Length),
+  &quot;GC/ACGT&quot;, sum(colSums(my_nucs[, c(&quot;C&quot;, &quot;c&quot;, &quot;G&quot;, &quot;g&quot;)]))/sum(colSums(my_nucs[, c(&quot;A&quot;, &quot;a&quot;, &quot;C&quot;, &quot;c&quot;, &quot;G&quot;, &quot;g&quot;, &quot;T&quot;, &quot;t&quot;)])) * 1e2,
+  &quot;GC/Total length&quot;, sum(colSums(my_nucs[, c(&quot;C&quot;, &quot;c&quot;, &quot;G&quot;, &quot;g&quot;)]))/sum(my_nucs$Length) * 1e2,
   &quot;N50&quot;, n50,
   &quot;N sequences&quot;, nrow(my_nucs)), ncol = 2, byrow = TRUE
 ))
@@ -963,11 +964,11 @@ manner so that they can be copied into other documents.</caption>
 </tr>
 <tr class="even">
 <td align="left">GC/ACGT</td>
-<td align="right">0.381</td>
+<td align="right">38.148</td>
 </tr>
 <tr class="odd">
 <td align="left">GC/Total length</td>
-<td align="right">0.381</td>
+<td align="right">38.148</td>
 </tr>
 <tr class="even">
 <td align="left">N50</td>
@@ -989,7 +990,7 @@ function <code>Sys.time()</code>. We can now use these timestamps to
 evaluate total execution time.</p>
 <pre class="r"><code>st4 &lt;- Sys.time()
 st4 - st1</code></pre>
-<pre><code>## Time difference of 8.60477 secs</code></pre>
+<pre><code>## Time difference of 8.45649 secs</code></pre>
 <p>Lastly, we can use the <code>sessionInfo()</code> function to report
 the version of <code>R()</code> we are using as well as the packages and
 their versions. This is important information to include if we want to
