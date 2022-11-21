@@ -94,6 +94,7 @@ my_infile <- "S288C_reference_sequence_R64-2-1_20150113.fsa.gz"
 my_out <- basename(my_infile)
 my_out <- sub("\\.gz$", "", my_out)
 my_out <- sub("\\.fna$", "", my_out)
+my_out <- sub("\\.fsa$", "", my_out)
 my_out <- sub("\\.fasta$", "", my_out)
 # Only run python script if it's outfile does not exist. 
 if( !file.exists( paste(my_out, "_nuccomp.csv", sep = "") ) ){
