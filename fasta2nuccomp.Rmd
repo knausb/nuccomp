@@ -526,20 +526,35 @@ This will save the dashboard as a ```*.png``` or ```*.tiff``` graphic.
 
 
 ```{r}
-
 genome_df <- data.frame(matrix(
-  c("Total length (bp)", sum(my_nucs$Length),
+  c(
+    "Total length (bp)", sum(my_nucs$Length),
+    "N50 (bp)", n50,
+    "N sequences", nrow(my_nucs),
+    "Maximun length (bp)", max(my_nucs$Length),
+    "Median length (bp)", median(my_nucs$Length),
   "Total A,a,C,c,G,g,T,t (bp)", sum(colSums(my_nucs[, c("A", "a", "C", "c", "G", "g", "T", "t")])),
   "Total C,c,G,g (bp)", sum(colSums(my_nucs[, c("C", "c", "G", "g")])),
   "GC/ACGT", sum(colSums(my_nucs[, c("C", "c", "G", "g")]))/sum(colSums(my_nucs[, c("A", "a", "C", "c", "G", "g", "T", "t")])) * 1e2,
-  "GC/Total length", sum(colSums(my_nucs[, c("C", "c", "G", "g")]))/sum(my_nucs$Length) * 1e2,
-  "N50", n50,
-  "N sequences", nrow(my_nucs)), ncol = 2, byrow = TRUE
+  "GC/Total length", sum(colSums(my_nucs[, c("C", "c", "G", "g")]))/sum(my_nucs$Length) * 1e2
+  ), ncol = 2, byrow = TRUE
 ))
+genome_df <- as.data.frame(genome_df)
 names(genome_df) <- c("Category", "Value")
 genome_df$Value <- as.numeric(genome_df$Value)
 knitr::kable(genome_df, digits = 3, caption = "**Table X** Summary statistics presented in a manner so that they can be copied into other documents.")
+```
 
+
+```{r, comment=NA}
+# 
+genome_df <- t(genome_df)
+colnames( genome_df ) <- genome_df[1, ]
+genome_df <- genome_df[-1, , drop = FALSE]
+#
+dput(genome_df)
+# write.table( x = t(genome_df), file = "fasta2nuccomp_summary.csv",
+#              sep = ",", row.names = FALSE, col.names = FALSE )
 ```
 
 
