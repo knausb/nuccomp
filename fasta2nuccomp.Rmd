@@ -36,6 +36,13 @@ The script ```fasta2nuccomp.py``` was written in python 3.7.3 and biopython 1.78
 You'll want versions that are greater or equal to these versions.
 Below we see how to query the versions we have.
 
+If you are using conda you may want to include something like the following in your `~/.Rprofile`.
+
+
+```
+Sys.setenv(RETICULATE_PYTHON = "~/miniconda3/envs/biopython/bin/python")
+```
+
 
 From an ```R``` prompt we can query which version of ```python``` we have installed.
 
@@ -54,7 +61,7 @@ options(prompt = '>>> ')
 ```
 
 
-```{python biopython_check, prompt=TRUE, eval=FALSE}
+```{python biopython_check, prompt=TRUE, eval=TRUE}
 import Bio
 print(Bio.__version__)
 ```
@@ -122,8 +129,7 @@ Note that the end user may have to adjust the manual placement of text in each p
 
 
 ```{r}
-#my_nucs <- readr::read_csv(paste(my_out, "_nuccomp.csv", sep = ""))
-my_nucs <- readr::read_csv("S288C_reference_sequence_R64-2-1_20150113.fsa_nuccomp.csv")
+my_nucs <- readr::read_csv(paste(my_out, "_nuccomp.csv", sep = ""))
 my_nucs
 ```
 
@@ -203,7 +209,9 @@ pl <- ggplot(my_df, aes(x = Length))
 
 pl <- pl + geom_histogram(binwidth = 2e1, fill = "blue")
 pl <- pl + theme_bw()
-pl <- pl + geom_vline(xintercept = n50/my_denom, color = "#B22222", size = 1.5,
+pl <- pl + geom_vline(xintercept = n50/my_denom, color = "#B22222",
+                      #size = 1.5,
+                      linewidth = 1.5,
                       linetype="dashed")
 my_ymax <- max(ggplot_build(pl)$data[[1]]$y)/2
 #

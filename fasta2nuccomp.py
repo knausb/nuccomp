@@ -74,6 +74,7 @@ def check_file(infile):
         file_properties[ 'outname' ] = re.sub(".fa$", "", file_properties[ 'outname' ])
         file_properties[ 'outname' ] = re.sub(".faa$", "", file_properties[ 'outname' ])
         file_properties[ 'outname' ] = re.sub(".fna$", "", file_properties[ 'outname' ])
+        file_properties[ 'outname' ] = re.sub(".fsa$", "", file_properties[ 'outname' ])
         file_properties[ 'outname' ] = re.sub(".fasta$", "", file_properties[ 'outname' ])
         return( file_properties )
 #        print("FASTA line:", line)
