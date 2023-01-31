@@ -122,7 +122,8 @@ Note that the end user may have to adjust the manual placement of text in each p
 
 
 ```{r}
-my_nucs <- readr::read_csv(paste(my_out, "_nuccomp.csv", sep = ""))
+#my_nucs <- readr::read_csv(paste(my_out, "_nuccomp.csv", sep = ""))
+my_nucs <- readr::read_csv("S288C_reference_sequence_R64-2-1_20150113.fsa_nuccomp.csv")
 my_nucs
 ```
 

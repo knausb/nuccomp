@@ -452,11 +452,7 @@ pre code {
 
 <h1 class="title toc-ignore">fasta2nuccomp</h1>
 <h4 class="author">Insert authors here</h4>
-<<<<<<< HEAD
-<h4 class="date">2022, September 08</h4>
-=======
-<h4 class="date">2022, November 21</h4>
->>>>>>> 204bcc96c791200cb2e8eb4db663112ba0633b34
+<h4 class="date">2022, December 22</h4>
 
 </div>
 
@@ -520,6 +516,7 @@ my_infile &lt;- &quot;S288C_reference_sequence_R64-2-1_20150113.fsa.gz&quot;
 my_out &lt;- basename(my_infile)
 my_out &lt;- sub(&quot;\\.gz$&quot;, &quot;&quot;, my_out)
 my_out &lt;- sub(&quot;\\.fna$&quot;, &quot;&quot;, my_out)
+my_out &lt;- sub(&quot;\\.fsa$&quot;, &quot;&quot;, my_out)
 my_out &lt;- sub(&quot;\\.fasta$&quot;, &quot;&quot;, my_out)
 # Only run python script if it&#39;s outfile does not exist. 
 if( !file.exists( paste(my_out, &quot;_nuccomp.csv&quot;, sep = &quot;&quot;) ) ){
@@ -527,11 +524,7 @@ if( !file.exists( paste(my_out, &quot;_nuccomp.csv&quot;, sep = &quot;&quot;) ) 
 }</code></pre>
 <pre class="r"><code>st3 &lt;- Sys.time()
 st3-st2</code></pre>
-<<<<<<< HEAD
-<pre><code>## Time difference of 2.350475 secs</code></pre>
-=======
-<pre><code>## Time difference of 0.01161408 secs</code></pre>
->>>>>>> 204bcc96c791200cb2e8eb4db663112ba0633b34
+<pre><code>## Time difference of 0.645396 secs</code></pre>
 <p>This will create a comma delimited text file that has the same name
 as your FASTA file with the added suffix <code>_nuccomp.csv</code>.</p>
 </div>
@@ -542,7 +535,8 @@ can be accomplished with summary statistics and graphics. Here we
 demonstrate how to summarize this data. Note that the end user may have
 to adjust the manual placement of text in each plot as well as the
 binwidth used for the histograms.</p>
-<pre class="r"><code>my_nucs &lt;- readr::read_csv(paste(my_out, &quot;_nuccomp.csv&quot;, sep = &quot;&quot;))</code></pre>
+<pre class="r"><code>#my_nucs &lt;- readr::read_csv(paste(my_out, &quot;_nuccomp.csv&quot;, sep = &quot;&quot;))
+my_nucs &lt;- readr::read_csv(&quot;S288C_reference_sequence_R64-2-1_20150113.fsa_nuccomp.csv&quot;)</code></pre>
 <pre><code>## Rows: 17 Columns: 24
 ## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
@@ -936,8 +930,6 @@ as a graphic. After the above code has been run, the
 <code>ggsave()</code> function can be uncommented and run. You’ll want
 to include a meaningful filename. This will save the dashboard as a
 <code>*.png</code> or <code>*.tiff</code> graphic.</p>
-<<<<<<< HEAD
-=======
 <pre class="r"><code>genome_df &lt;- data.frame(matrix(
   c(
     &quot;Total length (bp)&quot;, sum(my_nucs$Length),
@@ -1017,7 +1009,6 @@ dput(genome_df)</code></pre>
 &quot;GC/Total length&quot;)))</code></pre>
 <pre class="r"><code># write.table( x = t(genome_df), file = &quot;fasta2nuccomp_summary.csv&quot;,
 #              sep = &quot;,&quot;, row.names = FALSE, col.names = FALSE )</code></pre>
->>>>>>> 204bcc96c791200cb2e8eb4db663112ba0633b34
 </div>
 <div id="session-information" class="section level2">
 <h2>Session information</h2>
@@ -1028,32 +1019,19 @@ function <code>Sys.time()</code>. We can now use these timestamps to
 evaluate total execution time.</p>
 <pre class="r"><code>st4 &lt;- Sys.time()
 st4 - st1</code></pre>
-<<<<<<< HEAD
-<pre><code>## Time difference of 7.454321 secs</code></pre>
-=======
-<pre><code>## Time difference of 8.268288 secs</code></pre>
->>>>>>> 204bcc96c791200cb2e8eb4db663112ba0633b34
+<pre><code>## Time difference of 7.923419 secs</code></pre>
 <p>Lastly, we can use the <code>sessionInfo()</code> function to report
 the version of <code>R()</code> we are using as well as the packages and
 their versions. This is important information to include if we want to
 report an issue.</p>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.2.1 (2022-06-23)
-<<<<<<< HEAD
 ## Platform: aarch64-apple-darwin20 (64-bit)
 ## Running under: macOS Monterey 12.4
 ## 
 ## Matrix products: default
 ## BLAS:   /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRblas.0.dylib
 ## LAPACK: /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRlapack.dylib
-=======
-## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 22.04.1 LTS
-## 
-## Matrix products: default
-## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0
-## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0
->>>>>>> 204bcc96c791200cb2e8eb4db663112ba0633b34
 ## 
 ## locale:
 ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
@@ -1065,43 +1043,24 @@ report an issue.</p>
 ## [1] ggpubr_0.4.0  ggplot2_3.3.6
 ## 
 ## loaded via a namespace (and not attached):
-<<<<<<< HEAD
-##  [1] Rcpp_1.0.9       lattice_0.20-45  tidyr_1.2.1      png_0.1-7       
-##  [5] digest_0.6.29    utf8_1.2.2       R6_2.5.1         backports_1.4.1 
-##  [9] evaluate_0.16    highr_0.9        pillar_1.8.1     rlang_1.0.5     
-## [13] praise_1.0.0     car_3.1-0        jquerylib_0.1.4  Matrix_1.4-1    
-## [17] reticulate_1.26  rmarkdown_2.16   labeling_0.4.2   readr_2.1.2     
-## [21] stringr_1.4.1    bit_4.0.4        munsell_0.5.0    broom_1.0.1     
-## [25] compiler_4.2.1   xfun_0.32        pkgconfig_2.0.3  htmltools_0.5.3 
-## [29] tidyselect_1.1.2 tibble_3.1.8     fansi_1.0.3      crayon_1.5.1    
-## [33] dplyr_1.0.10     tzdb_0.3.0       withr_2.5.0      grid_4.2.1      
-## [37] jsonlite_1.8.0   gtable_0.3.1     lifecycle_1.0.1  magrittr_2.0.3  
-## [41] scales_1.2.1     cli_3.4.0        stringi_1.7.8    vroom_1.5.7     
-## [45] cachem_1.0.6     carData_3.0-5    farver_2.1.1     ggsignif_0.6.3  
-## [49] bslib_0.4.0      ellipsis_0.3.2   generics_0.1.3   vctrs_0.4.1     
-## [53] cowplot_1.1.1    tools_4.2.1      bit64_4.0.5      glue_1.6.2      
-## [57] purrr_0.3.4      hms_1.1.2        abind_1.4-5      parallel_4.2.1  
-## [61] fastmap_1.1.0    yaml_2.3.5       colorspace_2.0-3 rstatix_0.7.0   
-## [65] knitr_1.40       sass_0.4.2</code></pre>
-=======
-##  [1] reticulate_1.24  tidyselect_1.1.2 xfun_0.31        bslib_0.3.1     
-##  [5] purrr_0.3.4      lattice_0.20-45  carData_3.0-5    colorspace_2.0-3
-##  [9] vctrs_0.4.1      generics_0.1.2   htmltools_0.5.2  yaml_2.3.5      
-## [13] utf8_1.2.2       rlang_1.0.4      jquerylib_0.1.4  pillar_1.7.0    
-## [17] glue_1.6.2       withr_2.5.0      bit64_4.0.5      lifecycle_1.0.1 
-## [21] stringr_1.4.0    ggsignif_0.6.3   munsell_0.5.0    gtable_0.3.0    
-## [25] evaluate_0.15    labeling_0.4.2   knitr_1.39       tzdb_0.3.0      
-## [29] fastmap_1.1.0    parallel_4.2.1   fansi_1.0.3      highr_0.9       
-## [33] broom_0.8.0      Rcpp_1.0.9       readr_2.1.2      backports_1.4.1 
-## [37] scales_1.2.0     vroom_1.5.7      jsonlite_1.8.0   abind_1.4-5     
-## [41] farver_2.1.0     bit_4.0.4        hms_1.1.1        png_0.1-7       
-## [45] digest_0.6.29    stringi_1.7.8    rstatix_0.7.0    dplyr_1.0.9     
-## [49] cowplot_1.1.1    grid_4.2.1       cli_3.3.0        tools_4.2.1     
-## [53] magrittr_2.0.3   sass_0.4.1       tibble_3.1.7     car_3.0-13      
-## [57] tidyr_1.2.0      crayon_1.5.1     pkgconfig_2.0.3  ellipsis_0.3.2  
-## [61] Matrix_1.4-1     rmarkdown_2.14   rstudioapi_0.13  R6_2.5.1        
-## [65] compiler_4.2.1</code></pre>
->>>>>>> 204bcc96c791200cb2e8eb4db663112ba0633b34
+##  [1] rmsfact_0.0.3    Rcpp_1.0.9       lattice_0.20-45  tidyr_1.2.1     
+##  [5] png_0.1-7        digest_0.6.29    utf8_1.2.2       R6_2.5.1        
+##  [9] backports_1.4.1  evaluate_0.16    highr_0.9        pillar_1.8.1    
+## [13] rlang_1.0.5      rstudioapi_0.14  praise_1.0.0     car_3.1-0       
+## [17] jquerylib_0.1.4  Matrix_1.4-1     reticulate_1.26  rmarkdown_2.16  
+## [21] labeling_0.4.2   readr_2.1.2      stringr_1.4.1    bit_4.0.4       
+## [25] munsell_0.5.0    broom_1.0.1      compiler_4.2.1   xfun_0.32       
+## [29] pkgconfig_2.0.3  htmltools_0.5.3  tidyselect_1.1.2 tibble_3.1.8    
+## [33] fansi_1.0.3      crayon_1.5.1     dplyr_1.0.10     tzdb_0.3.0      
+## [37] withr_2.5.0      grid_4.2.1       jsonlite_1.8.0   gtable_0.3.1    
+## [41] lifecycle_1.0.1  magrittr_2.0.3   scales_1.2.1     cli_3.4.0       
+## [45] stringi_1.7.8    vroom_1.5.7      cachem_1.0.6     carData_3.0-5   
+## [49] farver_2.1.1     ggsignif_0.6.3   cowsay_0.8.0     bslib_0.4.0     
+## [53] ellipsis_0.3.2   fortunes_1.5-4   generics_0.1.3   vctrs_0.4.1     
+## [57] cowplot_1.1.1    tools_4.2.1      bit64_4.0.5      glue_1.6.2      
+## [61] purrr_0.3.4      hms_1.1.2        abind_1.4-5      parallel_4.2.1  
+## [65] fastmap_1.1.0    yaml_2.3.5       colorspace_2.0-3 rstatix_0.7.0   
+## [69] knitr_1.40       sass_0.4.2</code></pre>
 </div>
 
 
