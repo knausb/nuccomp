@@ -1,8 +1,8 @@
 # Table of Contents
-1. [Example](#example)
-2. [Example2](#example2)
-3. [Third Example](#third-example)
-4. [Fourth Example](#fourth-examplehttpwwwfourthexamplecom)
+1. [fasta2nuccomp](#fasta2nuccomp)
+2. [Installation](#Installation)
+3. [Use case 1: command line python](#Use case 1: command line python)
+4. [Use case 2: Calling python from Rmarkdown](#Use case 2: Calling python from Rmarkdown)
 
 
 ## fasta2nuccomp
@@ -54,6 +54,14 @@ Please see it's documentation to make sure it is installed correctly.
 Note that a system may include several versions of python (including conda environments).
 This can create a situation where Biopython, or other dependencies, are installed in one environment but not in the environment a user is attempting to use at any particular time.
 This means the user needs to ensure that dependencies are installed into the environment they are attempting to use.
+
+
+
+```
+git clone git@github.com:knausb/fasta2nuccomp.git
+```
+
+
 
 
 ## Use case 1: command line python
