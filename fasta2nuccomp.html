@@ -439,7 +439,7 @@ display: none;
 
 <h1 class="title toc-ignore">fasta2nuccomp</h1>
 <h4 class="author">Insert authors here</h4>
-<h4 class="date">2023, January 31</h4>
+<h4 class="date">2023, March 19</h4>
 
 </div>
 
@@ -477,9 +477,8 @@ my_python</code></pre>
 <pre><code>## [1] &quot;Python 3.11.0&quot;</code></pre>
 <p>From an interactive <code>python</code> prompt we can query which
 version of Biopython we have installed.</p>
-<pre class="python"><code>&gt;&gt;&gt; import Bio
-+ print(Bio.__version__)</code></pre>
-<pre><code>## 1.80</code></pre>
+<pre class="python"><code>import Bio
+print(Bio.__version__)</code></pre>
 <p>We’ll also want at least R 4.0.2. You should see the version you have
 when you start R. We’ll also see how to get this information in the
 section ‘Session information.’ You do not need RStudio, but I highly
@@ -515,7 +514,7 @@ if( !file.exists( paste(my_out, &quot;_nuccomp.csv&quot;, sep = &quot;&quot;) ) 
 }</code></pre>
 <pre class="r"><code>st3 &lt;- Sys.time()
 st3-st2</code></pre>
-<pre><code>## Time difference of 0.0146625 secs</code></pre>
+<pre><code>## Time difference of 0.01337647 secs</code></pre>
 <p>This will create a comma delimited text file that has the same name
 as your FASTA file with the added suffix <code>_nuccomp.csv</code>.</p>
 </div>
@@ -1011,7 +1010,7 @@ function <code>Sys.time()</code>. We can now use these timestamps to
 evaluate total execution time.</p>
 <pre class="r"><code>st4 &lt;- Sys.time()
 st4 - st1</code></pre>
-<pre><code>## Time difference of 9.632547 secs</code></pre>
+<pre><code>## Time difference of 8.324287 secs</code></pre>
 <p>Lastly, we can use the <code>sessionInfo()</code> function to report
 the version of <code>R()</code> we are using as well as the packages and
 their versions. This is important information to include if we want to
@@ -1019,7 +1018,7 @@ report an issue.</p>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.2.2 Patched (2022-11-10 r83330)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 22.04.1 LTS
+## Running under: Ubuntu 22.04.2 LTS
 ## 
 ## Matrix products: default
 ## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0
@@ -1037,26 +1036,25 @@ report an issue.</p>
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] ggpubr_0.5.0  ggplot2_3.4.0
+## [1] ggpubr_0.6.0  ggplot2_3.4.1
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] reticulate_1.28  tidyselect_1.2.0 xfun_0.36        bslib_0.4.2     
-##  [5] purrr_1.0.0      lattice_0.20-45  carData_3.0-5    colorspace_2.0-3
-##  [9] vctrs_0.5.1      generics_0.1.3   htmltools_0.5.4  yaml_2.3.6      
-## [13] utf8_1.2.2       rlang_1.0.6      jquerylib_0.1.4  pillar_1.8.1    
+##  [1] reticulate_1.28  tidyselect_1.2.0 xfun_0.37        bslib_0.4.2     
+##  [5] purrr_1.0.1      lattice_0.20-45  carData_3.0-5    colorspace_2.1-0
+##  [9] vctrs_0.5.2      generics_0.1.3   htmltools_0.5.4  yaml_2.3.7      
+## [13] utf8_1.2.3       rlang_1.0.6      jquerylib_0.1.4  pillar_1.8.1    
 ## [17] glue_1.6.2       withr_2.5.0      bit64_4.0.5      lifecycle_1.0.3 
-## [21] stringr_1.5.0    munsell_0.5.0    ggsignif_0.6.4   gtable_0.3.1    
-## [25] evaluate_0.19    labeling_0.4.2   knitr_1.41       tzdb_0.3.0      
-## [29] fastmap_1.1.0    parallel_4.2.2   fansi_1.0.3      highr_0.10      
-## [33] broom_1.0.3      Rcpp_1.0.9       readr_2.1.3      backports_1.4.1 
-## [37] scales_1.2.1     cachem_1.0.6     vroom_1.6.1      jsonlite_1.8.4  
-## [41] abind_1.4-5      farver_2.1.1     bit_4.0.5        hms_1.1.2       
-## [45] png_0.1-8        digest_0.6.31    stringi_1.7.8    rstatix_0.7.1   
-## [49] dplyr_1.0.10     cowplot_1.1.1    grid_4.2.2       cli_3.5.0       
-## [53] tools_4.2.2      magrittr_2.0.3   sass_0.4.4       tibble_3.1.8    
-## [57] car_3.1-1        tidyr_1.2.1      crayon_1.5.2     pkgconfig_2.0.3 
-## [61] ellipsis_0.3.2   Matrix_1.5-1     rmarkdown_2.19   R6_2.5.1        
-## [65] compiler_4.2.2</code></pre>
+## [21] munsell_0.5.0    ggsignif_0.6.4   gtable_0.3.1     evaluate_0.20   
+## [25] labeling_0.4.2   knitr_1.42       tzdb_0.3.0       fastmap_1.1.1   
+## [29] parallel_4.2.2   fansi_1.0.4      highr_0.10       broom_1.0.3     
+## [33] Rcpp_1.0.10      readr_2.1.4      backports_1.4.1  scales_1.2.1    
+## [37] cachem_1.0.7     vroom_1.6.1      jsonlite_1.8.4   abind_1.4-5     
+## [41] farver_2.1.1     bit_4.0.5        hms_1.1.2        png_0.1-8       
+## [45] digest_0.6.31    rstatix_0.7.2    dplyr_1.1.0      cowplot_1.1.1   
+## [49] grid_4.2.2       cli_3.6.0        tools_4.2.2      magrittr_2.0.3  
+## [53] sass_0.4.5       tibble_3.2.0     car_3.1-1        tidyr_1.3.0     
+## [57] crayon_1.5.2     pkgconfig_2.0.3  ellipsis_0.3.2   Matrix_1.5-1    
+## [61] rmarkdown_2.20   rstudioapi_0.14  R6_2.5.1         compiler_4.2.2</code></pre>
 </div>
 
 

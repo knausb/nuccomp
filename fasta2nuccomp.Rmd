@@ -53,7 +53,7 @@ my_python
 ```
 
 
-From an interactive ```python``` prompt we can query which version of Biopython we have installed.
+From an interactive ```python``` prompt we can query which version of Biopython we have installed, as follows.
 
 
 ```{r include=FALSE}
@@ -61,7 +61,7 @@ options(prompt = '>>> ')
 ```
 
 
-```{python biopython_check, prompt=TRUE, eval=TRUE}
+```{python biopython_check, prompt=FALSE, eval=FALSE}
 import Bio
 print(Bio.__version__)
 ```
@@ -95,7 +95,7 @@ It requires that you tell it the name of your FASTA file.
 If the script `fasta2nuccomp.py` is not in your path and not in the path in the below code chunck, you'll have to change the call to reflect it's location on your system.
 
 
-```{r}
+```{r, eval=FALSE}
 st2 <- Sys.time()
 my_infile <- "S288C_reference_sequence_R64-2-1_20150113.fsa.gz"
 my_out <- basename(my_infile)
