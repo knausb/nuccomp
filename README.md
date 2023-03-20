@@ -1,7 +1,7 @@
 # Table of Contents
 1. [fasta2nuccomp](#fasta2nuccomp)
 2. [Installation](#Installation)
-3. [Use case 1: command line python](#Use case 1: command line python)
+3. [Use case 1:](#Use case 1:) command line python
 4. [Use case 2: Calling python from Rmarkdown](#Use case 2: Calling python from Rmarkdown)
 
 
