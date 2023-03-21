@@ -1,8 +1,8 @@
 # Table of Contents
 1. [fasta2nuccomp](#fasta2nuccomp)
-2. [Installation](#Installation)
-3. [Use case 1:](#Use case 1:) command line python
-4. [Use case 2: Calling python from Rmarkdown](#Use case 2: Calling python from Rmarkdown)
+2. [Installation](#installation)
+3. [Use_case_1](#use-case-1): command line python
+4. [Use case 2](#use-case-2): Calling python from Rmarkdown
 
 
 ## fasta2nuccomp
@@ -56,20 +56,29 @@ This can create a situation where Biopython, or other dependencies, are installe
 This means the user needs to ensure that dependencies are installed into the environment they are attempting to use.
 
 
+Installation of `fasta2nuccomp` can be accomplished by cloning the GitHub repository as follows.
+
 
 ```
 git clone git@github.com:knausb/fasta2nuccomp.git
 ```
 
+Or downloading a release.
+Once on a local machine the scripts should be included in the user's path.
 
 
 
-## Use case 1: command line python
+## Use case 1
+**command line python**
+
+The python script `fasta2nuccomp.py` can be invoked, using a FASTA or FASTQ file that may be gzipped, as follows.
 
 
 ```
 $ ./fasta2nuccomp.py S288C_reference_sequence_R64-2-1_20150113.fsa.gz
 ```
+
+This should result in the following file.
 
 
 ```
@@ -77,12 +86,35 @@ S288C_reference_sequence_R64-2-1_20150113_nuccomp.csv
 ```
 
 This is the input file name with the FAST[AQ] and any 'gz' extension removed and the suffix `_nuccomp.csv` added.
-This file summarizes the contents of the file and is used for post-processing in R.
-Once this file has been generated it can be processed by following the example code in `fasta2nuccomp.html` (note that GitHub does not 'serve' these *.html files so the user will have to view a local copy).
+This file summarizes the contents of the FAST[AQ] file
+Processing of this file can be accomplished by following the example code in `fasta2nuccomp.html`.
+Note that GitHub does not 'serve' these *.html files so the user will have to view a local copy.
+Alternatively, the file `fasta2nuccomp.Rmd` can be compiled, or knit, into *.html using RStudio, or from the command line as follows. 
 
 
+```
+Rscript -e "rmarkdown::render('fasta2nuccomp.Rmd')"
+```
 
-## Use case 2: Calling python from Rmarkdown
+
+## Use case 2
+Calling python from Rmarkdown
+
+R can be integrated with python allowing the python script to be run as a part of the Rmarkdown compilation.
+This may require configuration that is beyond the scope of this project.
+It has been our experience that installing the `reticulate` package will be required.
+
+```
+install.packages('reticulate')
+```
+
+Adding the below line to your `~/.Rprofile` file can help R know which version of python to use.
+
+```
+Sys.setenv(RETICULATE_PYTHON = "~/miniconda3/envs/biopython/bin/python")
+```
 
 
+Once R and python are configured the `fasta2nuccomp.Rmd` file can be modified to evaluate the code chucks containing python code.
+This will allow the python code to be called from the Rmarkdown allowing processing to occur in one step.
 
