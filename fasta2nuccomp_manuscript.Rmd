@@ -6,12 +6,36 @@ output:
   html_document:
     toc: true
     code_folding: hide
+  word_document:
+    reference_docx: my-styles.docx
 bibliography: fasta2nuccomp_manuscript.bib
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+
+---
+
+**To do:**
+
+- Bioinformatics (impact factor: 6.931) - Application Notes 
+  - https://academic.oup.com/bioinformatics/pages/instructions_for_authors
+  - up to 4 pages; this is approx. 2,600 words or 2,000 words plus one figure 
+- New name: seqcomp (taken); seqcounter
+- Add motif_counter?
+- export to word?
+
+- Cover letter
+- 350 dpi tif figures; single (86 mm) or double (178 mm) column widt
+- second version of your figures at low-resolution for use in the review 
+- Applications notes: Title page, Short Structured Abstract, Text.
+- References: The journal follows Oxford SCIMED style.
+
+
+
+---
 
 
 ## Abstract

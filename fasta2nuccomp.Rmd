@@ -95,7 +95,7 @@ It requires that you tell it the name of your FASTA file.
 If the script `fasta2nuccomp.py` is not in your path and not in the path in the below code chunck, you'll have to change the call to reflect it's location on your system.
 
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 st2 <- Sys.time()
 my_infile <- "S288C_reference_sequence_R64-2-1_20150113.fsa.gz"
 my_out <- basename(my_infile)
