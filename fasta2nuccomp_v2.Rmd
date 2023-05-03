@@ -62,7 +62,7 @@ Sys.setenv(RETICULATE_PYTHON = "~/miniconda3/envs/biopython/bin/python")
 ```
 
 
-From an ```R``` prompt we can query which version of ```python``` we have installed.
+From an ```R``` prompt we can query which version of ```python``` we are using.
 
 
 ```{r system_python}
@@ -90,7 +90,7 @@ options(prompt = '> ')
 ```
 
 
-Note that these options have been set as 'eval=FALSE' in the RMarkdown.
+Note that these options have been set as 'eval=FALSE' in the RMarkdown chunk options.
 This is in order to allow this document to be compiled on systems where these resources are unavailable.
 If your system does have these resources available it might be nice for you to set these to be executed as a validation that these resources are actually available.
 
@@ -98,7 +98,7 @@ If your system does have these resources available it might be nice for you to s
 We'll also want at least R 4.0.2.
 You should see the version you have when you start R.
 We'll also see how to get this information in the section 'Session information.'
-You do not need RStudio, but I highly recommend it.
+You do not need RStudio, but it is recommended.
 
 
 ## FAST[AQ] files
@@ -145,16 +145,18 @@ TTATAAGGGTATTTATGTAAATCCCCTTTATATATTAGTCATAGGGTGTATGAGTTCGTATTAAAGACTATAAATAGACC
 
 ## Running sequence_comp.py
 
+The python scripts in this repository may be executed at the shell or through this RMarkdown document.
+Execution at the shell with the -h flag, `sequence_comp.py -h`, should provide a help message.
+In order to use the output in the compilation of this RMarkdown document the file should copied to the same directory as this RMarkdown file and the file name specified in the section 'Processing sequence_comp.py output'.
 
-In order to summarize our FASTA file we will call ```fasta2nuccomp.py``` from the shell.
-It requires that you tell it the name of your FASTA file.
-If the script `fasta2nuccomp.py` is not in your path and not in the path in the below code chunck, you'll have to change the call to reflect it's location on your system.
 
-The example begins by specifying the infile name.
+In order to run `sequence_comp.py` from R one can copy the code below (and all subsequent chunks) or compile/knit this RMarkdown document.
+The code chunk below allows the specification of a FASTA file (text or gzipped).
+The filename has any path information and extensions removed to create an output file name.
 The output file is then predicted by removing the extension from the input file.
 This way we can test for the existence of the output file before executing the script.
 This may be helpful if we are exploring different methods of postprocessing the output but do not want to rerun the script for each iteration.
-
+Note that ```fasta2nuccomp.py``` must either be in the user's path or the path to the script must be included below.
 
 
 ```{r, eval=TRUE}
@@ -181,13 +183,12 @@ st3-st2
 This will create a comma delimited text file that has the same name as your FASTA file with the added suffix ```_nuccomp.csv```.
 
 
-### Post-processing
+### Processing sequence_comp.py output
 
 
 Once we have summarized our FASTA data we'll want to present it.
 This can be accomplished with summary statistics and graphics.
 Here we demonstrate how to summarize this data.
-Note that the end user may have to adjust the manual placement of text in each plot as well as the binwidth used for the histograms.
 
 
 ```{r}
@@ -294,6 +295,8 @@ motifs[1:3, ]
 
 
 Graphical summaries can be created in R as follows.
+
+Note that the end user may have to adjust the manual placement of text in each plot as well as the binwidth used for the histograms.
 
 
 ```{r}

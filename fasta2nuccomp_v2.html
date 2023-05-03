@@ -439,7 +439,7 @@ display: none;
 
 <h1 class="title toc-ignore">fasta2nuccomp</h1>
 <h4 class="author">Insert authors here</h4>
-<h4 class="date">2023, May 02</h4>
+<h4 class="date">2023, May 03</h4>
 
 </div>
 
@@ -451,7 +451,8 @@ display: none;
 files</a></li>
 <li><a href="#running-sequence_comp.py" id="toc-running-sequence_comp.py">Running sequence_comp.py</a>
 <ul>
-<li><a href="#post-processing" id="toc-post-processing">Post-processing</a></li>
+<li><a href="#processing-sequence_comp.py-output" id="toc-processing-sequence_comp.py-output">Processing sequence_comp.py
+output</a></li>
 <li><a href="#n50" id="toc-n50">N50</a></li>
 </ul></li>
 <li><a href="#motifs" id="toc-motifs">Motifs</a></li>
@@ -501,7 +502,7 @@ following in your <code>~/.Rprofile</code> in order to help RMarkdown
 find your desired version of python.</p>
 <pre><code>Sys.setenv(RETICULATE_PYTHON = &quot;~/miniconda3/envs/biopython/bin/python&quot;)</code></pre>
 <p>From an <code>R</code> prompt we can query which version of
-<code>python</code> we have installed.</p>
+<code>python</code> we are using.</p>
 <pre class="r"><code>my_python &lt;- system(&quot;python3 -V&quot;, intern = TRUE)
 my_python</code></pre>
 <pre><code>## [1] &quot;Python 3.11.0&quot;</code></pre>
@@ -510,15 +511,15 @@ version of Biopython we have installed, as follows.</p>
 <pre class="python"><code>import Bio
 print(Bio.__version__)</code></pre>
 <p>Note that these options have been set as ‘eval=FALSE’ in the
-RMarkdown. This is in order to allow this document to be compiled on
-systems where these resources are unavailable. If your system does have
-these resources available it might be nice for you to set these to be
-executed as a validation that these resources are actually
-available.</p>
+RMarkdown chunk options. This is in order to allow this document to be
+compiled on systems where these resources are unavailable. If your
+system does have these resources available it might be nice for you to
+set these to be executed as a validation that these resources are
+actually available.</p>
 <p>We’ll also want at least R 4.0.2. You should see the version you have
 when you start R. We’ll also see how to get this information in the
-section ‘Session information.’ You do not need RStudio, but I highly
-recommend it.</p>
+section ‘Session information.’ You do not need RStudio, but it is
+recommended.</p>
 </div>
 <div id="fastaq-files" class="section level2">
 <h2>FAST[AQ] files</h2>
@@ -561,17 +562,28 @@ Y{|e~mRfmVF_K~]~nF}|tjI}mgjutjIr:panhEkdpntsZmLp`Yj\[~idWgT?HbU&gt;[JjYcnnThijfi
 @SRR10238608.2 2 length=20840
 TTATAAGGGTATTTATGTAAATCCCCTTTATATATTAGTCATAGGGTGTATGAGTTCGTATTAAAGACTATAAATAGACC
 +SRR10238608.2 2 length=20840
-~~~~~~~~~~~_~~~~~~R~~~|~~~R~~~z~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~e~~~~~~~~X~~~~~~~~
-@SRR10238608.3 3 length=19987</code></pre>
+~~~~~~~~~~~_~~~~~~R~~~|~~~R~~~z~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~e~~~~~~~~X~~~~~~~~</code></pre>
 </div>
 <div id="running-sequence_comp.py" class="section level2">
 <h2>Running sequence_comp.py</h2>
-<p>In order to summarize our FASTA file we will call
-<code>fasta2nuccomp.py</code> from the shell. It requires that you tell
-it the name of your FASTA file. If the script
-<code>fasta2nuccomp.py</code> is not in your path and not in the path in
-the below code chunck, you’ll have to change the call to reflect it’s
-location on your system.</p>
+<p>The python scripts in this repository may be executed at the shell or
+through this RMarkdown document. Execution at the shell with the -h
+flag, <code>sequence_comp.py -h</code>, should provide a help message.
+In order to use the output in the compilation of this RMarkdown document
+the file should copied to the same directory as this RMarkdown file and
+the file name specified in the section ‘Processing sequence_comp.py
+output’.</p>
+<p>In order to run <code>sequence_comp.py</code> from R one can copy the
+code below (and all subsequent chunks) or compile/knit this RMarkdown
+document. The code chunk below allows the specification of a FASTA file
+(text or gzipped). The filename has any path information and extensions
+removed to create an output file name. The output file is then predicted
+by removing the extension from the input file. This way we can test for
+the existence of the output file before executing the script. This may
+be helpful if we are exploring different methods of postprocessing the
+output but do not want to rerun the script for each iteration. Note that
+<code>fasta2nuccomp.py</code> must either be in the user’s path or the
+path to the script must be included below.</p>
 <pre class="r"><code>st2 &lt;- Sys.time()
 my_infile &lt;- &quot;S288C_reference_sequence_R64-2-1_20150113.fsa.gz&quot;
 my_out &lt;- basename(my_infile)
@@ -585,16 +597,14 @@ if( !file.exists( paste(my_out, &quot;_nuccomp.csv&quot;, sep = &quot;&quot;) ) 
 }</code></pre>
 <pre class="r"><code>st3 &lt;- Sys.time()
 st3-st2</code></pre>
-<pre><code>## Time difference of 0.05626845 secs</code></pre>
+<pre><code>## Time difference of 0.05379272 secs</code></pre>
 <p>This will create a comma delimited text file that has the same name
 as your FASTA file with the added suffix <code>_nuccomp.csv</code>.</p>
-<div id="post-processing" class="section level3">
-<h3>Post-processing</h3>
+<div id="processing-sequence_comp.py-output" class="section level3">
+<h3>Processing sequence_comp.py output</h3>
 <p>Once we have summarized our FASTA data we’ll want to present it. This
 can be accomplished with summary statistics and graphics. Here we
-demonstrate how to summarize this data. Note that the end user may have
-to adjust the manual placement of text in each plot as well as the
-binwidth used for the histograms.</p>
+demonstrate how to summarize this data.</p>
 <pre class="r"><code>my_nucs &lt;- readr::read_csv(paste(my_out, &quot;_nuccomp.csv&quot;, sep = &quot;&quot;))</code></pre>
 <pre><code>## Rows: 17 Columns: 24
 ## ── Column specification ────────────────────────────────────────────────────────
@@ -733,6 +743,8 @@ motifs[1:3, ]</code></pre>
 <div id="visualization" class="section level2">
 <h2>Visualization</h2>
 <p>Graphical summaries can be created in R as follows.</p>
+<p>Note that the end user may have to adjust the manual placement of
+text in each plot as well as the binwidth used for the histograms.</p>
 <pre class="r"><code>library(ggplot2)</code></pre>
 <pre class="r"><code>my_df &lt;- data.frame(Length = my_nucs$Length,
                     GC = rowSums(my_nucs[,c(&quot;c&quot;, &quot;C&quot;, &quot;g&quot;, &quot;G&quot;)])
@@ -1240,7 +1252,7 @@ function <code>Sys.time()</code>. We can now use these timestamps to
 evaluate total execution time.</p>
 <pre class="r"><code>st4 &lt;- Sys.time()
 st4 - st1</code></pre>
-<pre><code>## Time difference of 9.539064 secs</code></pre>
+<pre><code>## Time difference of 9.156718 secs</code></pre>
 <p>Lastly, we can use the <code>sessionInfo()</code> function to report
 the version of <code>R()</code> we are using as well as the packages and
 their versions. This is important information to include if we want to
