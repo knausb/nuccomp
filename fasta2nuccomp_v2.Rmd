@@ -23,6 +23,21 @@ st1 <- Sys.time()
 ```
 
 
+## Three way to implement
+
+- Command line python
+- Copy and paste code chunks
+- Compile/knit RMarkdown document
+
+
+- Dependencies
+- Implementation
+  - python scripts
+  - copy and paste R chunks
+  - compile/knit RMarkdown
+
+
+
 ## Overview
 
 - Manage dependencies, validate that example data executes properly
