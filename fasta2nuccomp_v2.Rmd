@@ -660,8 +660,10 @@ my_ymax <- ceiling(max(my_nucs$Length)/yunits) * yunits
 p <- p + scale_y_continuous(
 #  breaks = seq( 0, my_ymax, by = yunits * 1e2),
 #  labels = seq( 0, my_ymax/1e3, by = 1e2),
-  breaks = seq( 0, my_ymax, by = yunits * 2e-1),
-  labels = seq( 0, my_ymax/yunits, by = 2e-1),
+#  breaks = seq( 0, my_ymax, by = yunits * 1e-0),
+#  labels = seq( 0, my_ymax/yunits, by = 1e-0),
+  breaks = seq( 0, my_ymax, by = yunits * 5e-1),
+  labels = seq( 0, my_ymax/yunits, by = 5e-1),
 )
 #p <- p + ggplot2::ylab("Position (Kbp)")
 p <- p + ggplot2::ylab("Position (Mbp)")
@@ -739,6 +741,9 @@ ggarrange(
 # ggsave(filename = paste(my_out, ".tiff", sep = ""), device = "tiff",
 #        width = 6.5, height = 6.5, units = "in", compression = "lzw")
 ```
+
+
+## Tabular output
 
 
 For the purpose of publication we may desire to save this "dashboard" as a graphic.

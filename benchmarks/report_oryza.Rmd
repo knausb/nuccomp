@@ -29,6 +29,9 @@ You'll also want to include fasta2nuccomp.py and it's full path.
 
 ```{r}
 st2 <- Sys.time()
+#system("wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/642/375/GCA_001642375.2_Mlong_CMEN585_v3/GCA_001642375.2_Mlong_CMEN585_v3_genomic.fna.gz")
+#system("wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/925/245/GCA_019925245.1_MQ-UA-ANU_Oaus-KR_1.0/GCA_019925245.1_MQ-UA-ANU_Oaus-KR_1.0_genomic.fna.gz")
+
 #my_infile <- "GCA_001642375.2_Mlong_CMEN585_v3_genomic.fna"
 my_infile <- "GCA_019925245.1_MQ-UA-ANU_Oaus-KR_1.0_genomic.fna"
 my_out <- basename(my_infile)

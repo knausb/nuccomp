@@ -13,7 +13,8 @@ parser = argparse.ArgumentParser(description='Count motifs in windows of FAST[AQ
 parser.add_argument("INFILE", help="FAST[AQ] file containing nucleotides.")
 parser.add_argument('--motif', nargs='?', default="CG", const="CG", type=str, help="Motif to count in each window (CG).")
 parser.add_argument('--invert', action='store_true', help="Invert the scaled data [TRUE]")
-parser.add_argument('--win_size', nargs='?', const=1000000, type=int, default=1000000)
+#parser.add_argument('--win_size', nargs='?', const=1000000, type=int, default=1000000)
+parser.add_argument('--win_size', nargs='?', const=1000000, type=str, default=1000000)
 parser.add_argument("-v", "--verbose", help="increase output verbosity",
                     action="store_true")
 
@@ -166,6 +167,9 @@ if args.verbose:
     print("verbosity turned on")
 
 win_size = args.win_size
+win_size = float(win_size)
+win_size = int(win_size)
+
 file_dict = check_file(args.INFILE)
 
 file_dict[ 'outname' ] = file_dict[ 'outname' ] + "_" + str(args.motif) + '_wins.bed'
