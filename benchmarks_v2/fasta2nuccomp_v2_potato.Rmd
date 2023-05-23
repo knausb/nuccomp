@@ -12,8 +12,9 @@ editor_options:
 
 
 ```{r setup, include=FALSE}
-#knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(echo = FALSE)
+#
+knitr::opts_chunk$set(echo = TRUE)
+#knitr::opts_chunk$set(echo = FALSE)
 knitr::opts_chunk$set(fig.align = "center")
 knitr::opts_chunk$set(fig.height = 4)
 knitr::opts_chunk$set(fig.width = 4)
@@ -35,6 +36,7 @@ my_motif_counter <- "~/gits/fasta2nuccomp/motif_counter.py"
 #window_size <- 100000L
 #
 window_size <- 1e5
+# window_size <- 1e6
 ```
 
 
@@ -59,23 +61,6 @@ my_infile <- "GCF_000226075.1_SolTub_3.0_genomic.fna.gz"
 #my_infile <- "S288C_reference_sequence_R64-2-1_20150113.fsa.gz"
 
 ```
-
-
-
-
-## Three way to implement
-
-- Command line python
-- Copy and paste code chunks
-- Compile/knit RMarkdown document
-
-
-- Dependencies
-- Implementation
-  - python scripts
-  - copy and paste R chunks
-  - compile/knit RMarkdown
-
 
 
 ## Overview
@@ -124,30 +109,6 @@ From an ```R``` prompt we can query which version of ```python``` we are using.
 my_python <- system("python3 -V", intern = TRUE)
 my_python
 ```
-
-
-From an interactive ```python``` prompt we can query which version of Biopython we have installed, as follows.
-
-
-```{r include=FALSE}
-options(prompt = '>>> ')
-```
-
-
-```{python biopython_check, prompt=FALSE, eval=FALSE}
-import Bio
-print(Bio.__version__)
-```
-
-
-```{r include=FALSE}
-options(prompt = '> ')
-```
-
-
-Note that these options have been set as 'eval=FALSE' in the RMarkdown chunk options.
-This is in order to allow this document to be compiled on systems where these resources are unavailable.
-If your system does have these resources available it might be nice for you to set these to be executed as a validation that these resources are actually available.
 
 
 We'll also want at least R 4.0.2.
@@ -217,13 +178,6 @@ Note that ```fasta2nuccomp.py``` must either be in the user's path or the path t
 ```{r, eval=TRUE}
 st2 <- Sys.time()
 
-#system("wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/735/GCF_000001735.4_TAIR10.1/GCF_000001735.4_TAIR10.1_genomic.fna.gz")
-#my_infile <- "GCF_000001735.4_TAIR10.1_genomic.fna.gz"
-#my_infile <- "GCF_000226075.1_SolTub_3.0_genomic.fna.gz"
-
-#system("wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/925/245/GCA_019925245.1_MQ-UA-ANU_Oaus-KR_1.0/GCA_019925245.1_MQ-UA-ANU_Oaus-KR_1.0_genomic.fna.gz")
-#my_infile <- "GCA_019925245.1_MQ-UA-ANU_Oaus-KR_1.0_genomic.fna.gz"
-#my_infile <- "S288C_reference_sequence_R64-2-1_20150113.fsa.gz"
 my_out <- basename(my_infile)
 my_out <- sub("\\.gz$", "", my_out)
 my_out <- sub("\\.fna$", "", my_out)
@@ -231,7 +185,8 @@ my_out <- sub("\\.fsa$", "", my_out)
 my_out <- sub("\\.fasta$", "", my_out)
 # Only run python script if it's outfile does not exist. 
 if( !file.exists( paste(my_out, "_nuccomp.csv", sep = "") ) ){
-  system(paste("~/gits/fasta2nuccomp/fasta2nuccomp.py", my_infile))
+#  system(paste("~/gits/fasta2nuccomp/fasta2nuccomp.py", my_infile))
+  system(paste(my_fasta2nuccomp, my_infile))
 }
 ```
 
@@ -291,16 +246,13 @@ format(n50, big.mark = ",")
 ```
 
 
-## Motifs
+## Run motif_counter.py
 
 
 ```{r}
 my_bed <- paste(my_out, "_CG_wins.bed", sep = "")
-#my_infile
-#my_cmd <- paste("~/gits/hempy/bin/motif_counter.py --win_size 50000", my_infile, sep = "")
-#my_cmd <- paste("~/gits/hempy/bin/motif_counter.py --win_size 1000000", my_infile, sep = " ")
-#my_cmd <- paste("~/gits/hempy/bin/motif_counter.py --win_size", window_size, my_infile, sep = " ")
-my_cmd <- paste("~/gits/fasta2nuccomp/motif_counter.py --win_size", window_size, my_infile, sep = " ")
+#my_cmd <- paste("~/gits/fasta2nuccomp/motif_counter.py --win_size", window_size, my_infile, sep = " ")
+my_cmd <- paste( my_motif_counter, "--win_size", window_size, my_infile, sep = " ")
 #my_cmd <- paste(my_cmd, "-v")
 #my_cmd <- paste(my_cmd, "--no-invert")
 if( !file.exists( my_bed ) ){
@@ -320,6 +272,7 @@ colnames(motifs) <- my_header
 #motifs[1:3, ]
 #nrow(motifs)
 
+knitr::kable(motifs[1:5, ])
 ```
 
 
