@@ -12,7 +12,9 @@ import re
 parser = argparse.ArgumentParser(description='Count motifs in windows of FAST[AQ] files. Requires python >=3.7.3 and Biopython >= 1.78.')
 parser.add_argument("INFILE", help="FAST[AQ] file containing nucleotides.")
 parser.add_argument('--motif', nargs='?', default="CG", const="CG", type=str, help="Motif to count in each window (CG).")
-parser.add_argument('--invert', action='store_true', help="Invert the scaled data [TRUE]")
+parser.add_argument('--invert', action='store_true', help="Invert the scaled counts [True]")
+parser.add_argument('--no-invert', dest='invert', action='store_false')
+parser.set_defaults(invert=True)
 #parser.add_argument('--win_size', nargs='?', const=1000000, type=int, default=1000000)
 parser.add_argument('--win_size', nargs='?', const=1000000, type=str, default=1000000)
 parser.add_argument("-v", "--verbose", help="increase output verbosity",
@@ -97,8 +99,10 @@ def chrom_to_win(chrom, win_size, motif, out_file):
                      '244,102,92', '252,140,99', '254,178,122',
                      '254,216,154','252,253,191']
 
-#    print("win_number: ", win_number)    
+#    print("win_number: ", win_number)
+    # Loop over windows.
     for i in range( win_number ):
+        # Window coordinates.
         my_starts[i] = i * win_size
         my_ends[i] = my_starts[i] + win_size - 1
         if my_ends[i] > len(chrom):
@@ -106,6 +110,7 @@ def chrom_to_win(chrom, win_size, motif, out_file):
         my_seq = chrom.seq[my_starts[i]:my_ends[i] + 1]
         my_lens[i] = len(my_seq)
         my_counts[i] = len( re.findall( motif, str(my_seq) ) )
+        # Check chromosome minimum and maximum values, store for scaling.
         if my_counts[i] < chrom_min:
             chrom_min = my_counts[i]
         if my_counts[i] > chrom_max:
@@ -114,6 +119,7 @@ def chrom_to_win(chrom, win_size, motif, out_file):
 
 #    print( "chrom_min: ", chrom_min)
 #    print( "chrom_max: ", chrom_max)
+    # Compute score and RGB columns.
     if win_number == 1:
         i = 0
         my_scores[i] = my_counts[i] / my_lens[i]    
@@ -181,6 +187,8 @@ if args.verbose:
     print("Output file: " + file_dict[ 'outname' ])
     print("File compression: " + file_dict[ 'compression' ])
     print("Window size: " + str(win_size))
+    print("Invert score: " + str(args.invert))
+
 
 if file_dict[ 'compression' ] == 'GZ':
     f = gzip.open( file_dict[ 'inname' ], 'rt' )

@@ -177,7 +177,8 @@ Note that ```fasta2nuccomp.py``` must either be in the user's path or the path t
 ```{r, eval=TRUE}
 st2 <- Sys.time()
 #system("wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/925/245/GCA_019925245.1_MQ-UA-ANU_Oaus-KR_1.0/GCA_019925245.1_MQ-UA-ANU_Oaus-KR_1.0_genomic.fna.gz")
-my_infile <- "GCA_019925245.1_MQ-UA-ANU_Oaus-KR_1.0_genomic.fna.gz"
+#my_infile <- "GCA_019925245.1_MQ-UA-ANU_Oaus-KR_1.0_genomic.fna.gz"
+my_infile <- "GCF_001433935.1_IRGSP-1.0_genomic.fna.gz"
 #my_infile <- "S288C_reference_sequence_R64-2-1_20150113.fsa.gz"
 my_out <- basename(my_infile)
 my_out <- sub("\\.gz$", "", my_out)
@@ -263,6 +264,9 @@ my_header <- sub("(^# c\\(|\\))", "", my_header)
 my_header <- sub("[[:blank:]]", "", my_header)
 colnames(motifs) <- my_header
 motifs[1:3, ]
+
+
+
 ```
 
 

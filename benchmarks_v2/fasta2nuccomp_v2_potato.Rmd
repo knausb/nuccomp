@@ -28,13 +28,36 @@ st1 <- Sys.time()
 
 
 ```{r}
+my_fasta2nuccomp <- "~/gits/fasta2nuccomp/fasta2nuccomp.py"
+my_motif_counter <- "~/gits/fasta2nuccomp/motif_counter.py"
+# The "L" suppresses scientific notation.
+# Scientific notation doesn't pass well to python.
+#window_size <- 100000L
+#
+window_size <- 1e5
+```
+
+
+```{r}
+# Arabidopsis
 #my_infile <- "GCF_000001735.4_TAIR10.1_genomic.fna.gz"
+# Hazelnut
+# my_infile <- "GCA_901000735.2_CavTom2PMs-1.0_genomic.fna.gz"
+# Hemp
+# my_infile <- "GCF_900626175.2_cs10_genomic.fna.gz"
+# Potato
 #
 my_infile <- "GCF_000226075.1_SolTub_3.0_genomic.fna.gz"
-#my_infile <- "GCA_019925245.1_MQ-UA-ANU_Oaus-KR_1.0_genomic.fna.gz"
+# Rice
+# my_infile <- "GCF_001433935.1_IRGSP-1.0_genomic.fna.gz"
+# Mint
+# my_infile <- "GCA_001642375.2_Mlong_CMEN585_v3_genomic.fna.gz"
+# Populus
+# my_infile <- "GCF_000002775.5_P.trichocarpa_v4.1_genomic.fna.gz"
+
+# Yeast
 #my_infile <- "S288C_reference_sequence_R64-2-1_20150113.fsa.gz"
-#window_size <- 1000000
-window_size <- 100000L
+
 ```
 
 
@@ -276,7 +299,10 @@ my_bed <- paste(my_out, "_CG_wins.bed", sep = "")
 #my_infile
 #my_cmd <- paste("~/gits/hempy/bin/motif_counter.py --win_size 50000", my_infile, sep = "")
 #my_cmd <- paste("~/gits/hempy/bin/motif_counter.py --win_size 1000000", my_infile, sep = " ")
-my_cmd <- paste("~/gits/hempy/bin/motif_counter.py --win_size", window_size, my_infile, sep = " ")
+#my_cmd <- paste("~/gits/hempy/bin/motif_counter.py --win_size", window_size, my_infile, sep = " ")
+my_cmd <- paste("~/gits/fasta2nuccomp/motif_counter.py --win_size", window_size, my_infile, sep = " ")
+#my_cmd <- paste(my_cmd, "-v")
+#my_cmd <- paste(my_cmd, "--no-invert")
 if( !file.exists( my_bed ) ){
   system( my_cmd )
 }
@@ -291,7 +317,9 @@ my_header <- scan(my_bed,
 my_header <- sub("(^# c\\(|\\))", "", my_header)
 my_header <- sub("[[:blank:]]", "", my_header)
 colnames(motifs) <- my_header
-motifs[1:3, ]
+#motifs[1:3, ]
+#nrow(motifs)
+
 ```
 
 
@@ -312,6 +340,8 @@ if( nseq > nrow(my_nucs) ){
 my_nucs <- my_nucs[1:nseq, ]
 motifs <- motifs[motifs$chrom %in% my_nucs$Id, ]
 table(motifs$chrom)
+
+#ggplot2::ggplot( data = motifs, ggplot2::aes( x = blockCount, y = score, color = chrom ) ) + ggplot2::geom_point() + ggplot2::theme(legend.position = "none")
 ```
 
 
