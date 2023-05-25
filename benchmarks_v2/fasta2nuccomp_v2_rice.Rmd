@@ -12,7 +12,9 @@ editor_options:
 
 
 ```{r setup, include=FALSE}
+#
 knitr::opts_chunk$set(echo = TRUE)
+#knitr::opts_chunk$set(echo = FALSE)
 knitr::opts_chunk$set(fig.align = "center")
 knitr::opts_chunk$set(fig.height = 4)
 knitr::opts_chunk$set(fig.width = 4)
@@ -23,31 +25,51 @@ st1 <- Sys.time()
 ```
 
 
-## Three way to implement
+## User inputs
 
-- Command line python
-- Copy and paste code chunks
-- Compile/knit RMarkdown document
-
-
-- Dependencies
-- Implementation
-  - python scripts
-  - copy and paste R chunks
-  - compile/knit RMarkdown
+The user should provide the paths to the python scripts in this repository.
+They can also specify a window size.
+Windows of 1 Mbp tend to work well for chromosomes (sequences) around 10 - 100 Mbp.
+Window size is parameterizable so that investigators can explore values they feel may be appropriate.
 
 
+```{r}
+my_fasta2nuccomp <- "~/gits/fasta2nuccomp/fasta2nuccomp.py"
+my_motif_counter <- "~/gits/fasta2nuccomp/motif_counter.py"
+# The "L" suppresses scientific notation.
+# Scientific notation doesn't pass well to python.
+#window_size <- 100000L
+# window_size <- 1e5
+# 
+window_size <- 1e6
+```
 
-## Overview
 
-- Manage dependencies, validate that example data executes properly
-- Run sequence_comp.py
-- Run motif_counter.py
-- Compile RMarkdown using results from sequence_comp.py and motif_counter.py
+Here we specify the FAST[AQ] format input file.
+The FAST[AQ] extension, and possible gzip extension, are removed to create a base name in both python scripts.
+This basename is used to create output files \*_nuccomp.csv and \*_wins.bed.
+If these files have already been generated (e.g., the python scripts were run independently), they can be placed in the directory where this RMarkdown is compiled and they should be found by the script, avoid the need to call the python scripts.
 
 
-The repository ```fasta2nuccomp``` includes tools to help investigators rapidly summarize the contents of a file in the FASTA format.
-The python script ```fasta2nuccomp.py``` can be run independently or called from Rmarkdown, as we will see in this document.
+```{r}
+# Arabidopsis
+# my_infile <- "GCF_000001735.4_TAIR10.1_genomic.fna.gz"
+# Hazelnut
+# my_infile <- "GCA_901000735.2_CavTom2PMs-1.0_genomic.fna.gz"
+# Hemp
+# my_infile <- "GCF_900626175.2_cs10_genomic.fna.gz"
+# Potato
+# my_infile <- "GCF_000226075.1_SolTub_3.0_genomic.fna.gz"
+# Rice
+# 
+my_infile <- "GCF_001433935.1_IRGSP-1.0_genomic.fna.gz"
+# Mint
+# my_infile <- "GCA_001642375.2_Mlong_CMEN585_v3_genomic.fna.gz"
+# Populus
+# my_infile <- "GCF_000002775.5_P.trichocarpa_v4.1_genomic.fna.gz"
+# Yeast
+#my_infile <- "S288C_reference_sequence_R64-2-1_20150113.fsa.gz"
+```
 
 
 ## Dependencies
@@ -84,30 +106,6 @@ From an ```R``` prompt we can query which version of ```python``` we are using.
 my_python <- system("python3 -V", intern = TRUE)
 my_python
 ```
-
-
-From an interactive ```python``` prompt we can query which version of Biopython we have installed, as follows.
-
-
-```{r include=FALSE}
-options(prompt = '>>> ')
-```
-
-
-```{python biopython_check, prompt=FALSE, eval=FALSE}
-import Bio
-print(Bio.__version__)
-```
-
-
-```{r include=FALSE}
-options(prompt = '> ')
-```
-
-
-Note that these options have been set as 'eval=FALSE' in the RMarkdown chunk options.
-This is in order to allow this document to be compiled on systems where these resources are unavailable.
-If your system does have these resources available it might be nice for you to set these to be executed as a validation that these resources are actually available.
 
 
 We'll also want at least R 4.0.2.
@@ -176,10 +174,7 @@ Note that ```fasta2nuccomp.py``` must either be in the user's path or the path t
 
 ```{r, eval=TRUE}
 st2 <- Sys.time()
-#system("wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/925/245/GCA_019925245.1_MQ-UA-ANU_Oaus-KR_1.0/GCA_019925245.1_MQ-UA-ANU_Oaus-KR_1.0_genomic.fna.gz")
-#my_infile <- "GCA_019925245.1_MQ-UA-ANU_Oaus-KR_1.0_genomic.fna.gz"
-my_infile <- "GCF_001433935.1_IRGSP-1.0_genomic.fna.gz"
-#my_infile <- "S288C_reference_sequence_R64-2-1_20150113.fsa.gz"
+
 my_out <- basename(my_infile)
 my_out <- sub("\\.gz$", "", my_out)
 my_out <- sub("\\.fna$", "", my_out)
@@ -187,7 +182,8 @@ my_out <- sub("\\.fsa$", "", my_out)
 my_out <- sub("\\.fasta$", "", my_out)
 # Only run python script if it's outfile does not exist. 
 if( !file.exists( paste(my_out, "_nuccomp.csv", sep = "") ) ){
-  system(paste("~/gits/fasta2nuccomp/fasta2nuccomp.py", my_infile))
+#  system(paste("~/gits/fasta2nuccomp/fasta2nuccomp.py", my_infile))
+  system(paste(my_fasta2nuccomp, my_infile))
 }
 ```
 
@@ -211,7 +207,13 @@ Here we demonstrate how to summarize this data.
 
 ```{r}
 my_nucs <- readr::read_csv(paste(my_out, "_nuccomp.csv", sep = ""))
-my_nucs
+
+if( nrow(my_nucs) > 10 ){
+  max_row <- 10
+} else {
+  max_row <- nrow(my_nucs)
+}
+knitr::kable(my_nucs[1:max_row, c(1, 2, 3:10, 23, 24)], format.args = list( big.mark = ","))
 ```
 
 
@@ -241,77 +243,79 @@ format(n50, big.mark = ",")
 ```
 
 
-## Motifs
+## Run motif_counter.py
+
+
+The python script `motif_counter.py` takes as input a FASTA of FASTQ file and a motif.
+The sequence in this file is divided into non-overlapping windows of user specified length.
+Each window is queried for a motif using a regular expression and the count of the matches is reported.
+The motif 'CG' has been selected as default because it is associated with methylation and may help identify centromeric regions.
+The counts of the motif, a scaled and inverted score, and an RGB code based on the score are reported in a \*.BED format file.
+This \*.BED file has embedded comments for header suggestions in R and python.
 
 
 ```{r}
 my_bed <- paste(my_out, "_CG_wins.bed", sep = "")
-#my_infile
-#my_cmd <- paste("~/gits/hempy/bin/motif_counter.py --win_size 50000", my_infile, sep = "")
-my_cmd <- paste("~/gits/hempy/bin/motif_counter.py --win_size 1000000", my_infile, sep = " ")
+#my_cmd <- paste("~/gits/fasta2nuccomp/motif_counter.py --win_size", window_size, my_infile, sep = " ")
+my_cmd <- paste( my_motif_counter, "--win_size", window_size, my_infile, sep = " ")
+#my_cmd <- paste(my_cmd, "-v")
+#my_cmd <- paste(my_cmd, "--no-invert")
 if( !file.exists( my_bed ) ){
   system( my_cmd )
 }
 ```
 
 
+### Processing results from motif_counter.py
+
+
+Results from `motif_counter.py` are presented in a *.BED format file.
+More information on the BED format can be found at the [UCSC BED file format FAQ](https://genome.ucsc.edu/FAQ/FAQformat.html#format1) and at Wikipedia's [BED format page](https://en.wikipedia.org/wiki/BED_(file_format)).
+A BED file can be seen as tabular data that minimally includes a chromosome, start, and end coordinates.
+The BED file produced by `motif_counter.py` includes 'blockCount', the motif count for the window, 'blockSizes' for each window (the last window for each sequence should be smaller than the others), and 'score' which is 1 minus the blockCount divided by blockSizes and multiplied by 1000 to range from 0 - 1000, as specified by the format.
+There is also 'itemRGB' which is based on the score.
+Below is an example of how to read this file into R and use the header suggestion.
+
+
 ```{r}
 motifs <- read.table(my_bed, sep = "\t", header = FALSE)
 my_header <- scan(my_bed, 
                   what = "character", sep = ",", skip = 1, nlines = 1)
-
 my_header <- sub("(^# c\\(|\\))", "", my_header)
 my_header <- sub("[[:blank:]]", "", my_header)
 colnames(motifs) <- my_header
-motifs[1:3, ]
-
-
-
+#motifs[1:3, ]
+#nrow(motifs)
+knitr::kable(motifs[1:5, ])
 ```
 
 
-Limit number of sequences (i.e., chromosomes, scaffolds, contigs, etc.).
+The BED file includes a 'chrom' column, which is typically a string.
+For plotting purposes it's frequently convenient to have a numerical representation for each chromosome.
+Here we use the order reported in the nuccomp output to assign chromosome numbers and add these to the motif_counter data.
 
 
 ```{r}
-# nseq <- 10
-# nseq <- 15
-# nseq <- 17
-# 
-nseq <- 20
-
-if( nseq > nrow(my_nucs) ){
-  nseq <- nrow(my_nucs)
-}
-
-my_nucs <- my_nucs[1:nseq, ]
-motifs <- motifs[motifs$chrom %in% my_nucs$Id, ]
-table(motifs$chrom)
-```
-
-
-Add chromosome number for plotting.
-
-
-```{r}
-my_nucs$chrom_num <- 1:nseq
+my_nucs$chrom_num <- 1:nrow(my_nucs)
 motifs$chrom_num <- 0
 for( i in 1:nrow(my_nucs) ){
   motifs$chrom_num[ motifs$chrom == my_nucs$Id[i] ] <- my_nucs$chrom_num[i]
 }
-motifs[1:3, ]
+#motifs[1:3, ]
 ```
 
 
-Add window color
+The BED file includes 'itemRGB' which can be converted to hexadecimal for plotting in R.
 
 
 ```{r}
 #motifs[1:3, ]
-range(motifs$score)
-my_col <- round( motifs$score/max(motifs$score) * 99 + 1 )
-motifs$wincol <- viridisLite::magma(n=1e2, alpha = 1, begin = 0.3, end = 0.95, direction = -1)[my_col]
-motifs[1:3, ]
+motifs$wincol <- unlist(lapply(strsplit(motifs$itemRGB, split = ","), function(x){ rgb(red = x[1], green = x[2], blue = x[3], maxColorValue = 255) }))
+# range(motifs$score)
+# my_col <- round( motifs$score/max(motifs$score) * 99 + 1 )
+# motifs$wincol <- viridisLite::magma(n=1e2, alpha = 1, begin = 0.3, end = 0.95, direction = -1)[my_col]
+#motifs[1:3, ]
+knitr::kable(motifs[1:5, ])
 ```
 
 
@@ -320,13 +324,7 @@ motifs[1:3, ]
 
 
 Graphical summaries can be created in R as follows.
-
 Note that the end user may have to adjust the manual placement of text in each plot as well as the binwidth used for the histograms.
-
-
-```{r}
-library(ggplot2)
-```
 
 
 ```{r}
@@ -360,12 +358,12 @@ my_text <- paste("Nucleotides:\n", format(my_len, big.mark = ","),
 
 
 ```{r}
-
+library(ggplot2)
 pl <- ggplot(my_df, aes(x = Length))
 #pl <- pl + geom_histogram(binwidth=2e4, fill = "blue")
 
 #pl <- pl + geom_histogram(binwidth = 2e1, fill = "blue")
-pl <- pl + geom_histogram( fill = "blue" )
+pl <- pl + geom_histogram( fill = "blue", binwidth = 1 )
 pl <- pl + theme_bw()
 pl <- pl + geom_vline(xintercept = n50/my_denom, color = "#B22222",
                       #size = 1.5,
@@ -417,11 +415,13 @@ tmp$Base <- "Guanine"
 #tmp$Base <- "G"
 my_df <- rbind(my_df, tmp)
 #my_df$Base <- factor(my_df$Base, levels = c("A", "T", "G", "C"))
-dput(unique(my_df$Base))
+#dput(unique(my_df$Base))
 my_df$Base <- factor(my_df$Base, levels = c("Adenine", "Cytosine", "Thymine", "Guanine"))
 #my_df$Base <- factor(my_df$Base, levels = c("A", "C", "T", "G"))
 
-my_df[1:3, ]
+my_df <- my_df[!is.na(my_df$nucs), ]
+
+#my_df[1:3, ]
 
 #my_pal <- c("#5157FB", "#DD0A17", "#1CBE20", "#E6E431")
 my_pal <- c("#DD0A17", "#5157FB", "#1CBE20", "#E6E431")
@@ -436,7 +436,7 @@ pat <- pat + theme_bw()
 #pat <- pat + theme( strip.background = element_rect( fill = "#D3D3D3" ) )
 pat <- pat + theme( strip.background = element_rect( fill = "#F5F5F5" ) )
 
-pat <- pat + xlim( c( 0, 0.5 ) )
+#pat <- pat + xlim( c( 0, 0.5 ) )
 pat <- pat + xlab("Base frequency in sequence")
 pat <- pat + ylab("Sequence count")
 #pat + scale_color_manual(values=c("#999999", "#E69F00", "#56B4E9", "#56B4E9"))
@@ -454,6 +454,10 @@ pat
 ```{r}
 my_df <- as.data.frame(rowSums(my_nucs[,c("w","W", "s", "S", "m", "M", "k", "K", "r", "R", "y", "Y")])/my_nucs$Length)
 names(my_df) <- "nucs"
+my_df <- my_df[ !is.na(my_df$nucs), , drop = FALSE ]
+my_df <- my_df[ my_df$nucs > 0, , drop = FALSE ]
+#my_df[1:3, , drop = FALSE]
+#head(my_df)
 
 pu <- ggplot(my_df, aes(x = nucs))
 pu <- pu + geom_histogram(binwidth=0.01, fill = "#AD26FA")
@@ -485,11 +489,15 @@ The ambiguity codes can be looked up on Wikipedia's [nucleotide](https://en.wiki
 ```{r}
 my_df <- as.data.frame(rowSums(my_nucs[,c("n","N")])/my_nucs$Length)
 names(my_df) <- "nucs"
+my_df <- my_df[!is.na(my_df$nucs), , drop = FALSE]
+my_df <- my_df[my_df$nucs > 0, , drop = FALSE]
+#head(my_df)
+#range(my_df$nucs)
 
 pn <- ggplot(my_df, aes(x = nucs))
 pn <- pn + geom_histogram(binwidth=0.01, fill = "#AD26FA")
 pn <- pn + theme_bw()
-pn <- pn + xlim(c(0,1))
+#pn <- pn + xlim(c(0,1))
 pn <- pn + xlab("Any base (N,n)")
 pn <- pn + ylab("Count")
 pn <- pn + theme(axis.title.x = element_text(size = 10, hjust = 0.5),
@@ -513,9 +521,14 @@ length of values !NA: `r format(length(!is.na(my_nucs$Length)), big.mark=",")`.
 ```{r}
 my_df <- as.data.frame(
   my_nucs$Length - 
-  rowSums(my_nucs[,c("a", "A", "c", "C", "g", "G", "t", "T", "w", "W", "s", "S", "m", "M", "k", "K", "r", "R", "y", "Y", "n", "N")])/
-  my_nucs$Length)
+  rowSums(my_nucs[,c("a", "A", "c", "C", "g", "G", "t", "T", "w", "W", "s", "S", "m", "M", "k", "K", "r", "R", "y", "Y", "n", "N")]))
 names(my_df) <- "nucs"
+my_df$nucs <- my_df$nucs/my_nucs$Length
+
+my_df <- my_df[!is.na(my_df$nucs), , drop = FALSE]
+my_df <- my_df[my_df$nucs > 0, , drop = FALSE]
+#
+head(my_df)
 
 pe <- ggplot(my_df, aes(x = nucs))
 pe <- pe + geom_histogram(binwidth=0.01, fill = "#AD26FA")
@@ -561,7 +574,7 @@ pgc <- pgc + theme(axis.title.y = element_text(size = 10, hjust = 0.5))
 
 pgc
 
-my_nucs$Id[my_df$GC < 0.2]
+#my_nucs$Id[my_df$GC < 0.2]
 ```
 
 
@@ -576,6 +589,31 @@ It's been my experience that the mitochondrion will tend to have a different GC 
 ### Ideogram
 
 
+Plotting of an ideogram, or cartoon, for modest numbers of sequences helps visualize the relative lengths for sequences.
+For chromosome scale assemblies this may benefit from a manual step to ensure that only the chromosomes are included in the ideogram.
+Other assemblies may benefit from sorting the sequences by lenght so that the longest sequences are presented.
+Here we subset the sequences to the first few using an arbitrary threshold, but encourage a manual step here when possible.
+
+
+```{r}
+# nseq <- 10
+# nseq <- 15
+# nseq <- 17
+# 
+nseq <- 20
+
+if( nseq > nrow(my_nucs) ){
+  nseq <- nrow(my_nucs)
+}
+
+my_nucs2 <- my_nucs[1:nseq, ]
+motifs <- motifs[motifs$chrom %in% my_nucs2$Id, ]
+table(motifs$chrom)
+
+#ggplot2::ggplot( data = motifs, ggplot2::aes( x = blockCount, y = score, color = chrom ) ) + ggplot2::geom_point() + ggplot2::theme(legend.position = "none")
+```
+
+
 ```{r}
 library(ggplot2)
 chrom_wid <- 0.1
@@ -585,7 +623,7 @@ p <- ggplot( )
 
 # Add chromosomes.
 p <- p + geom_rect( 
-  data = my_nucs, 
+  data = my_nucs2, 
   aes( xmin = chrom_num - chrom_wid,
        xmax = chrom_num + chrom_wid,
        ymin = 1, ymax = Length),
@@ -596,19 +634,42 @@ p <- p + geom_rect(
 # Theme options.
 p <- p + theme_bw()
 p <- p + scale_x_continuous( 
-  breaks = my_nucs$chrom_num,
-  labels = my_nucs$Id
+  breaks = my_nucs2$chrom_num,
+  labels = my_nucs2$Id
 )
 #p
-#yunits <- 1e3
-yunits <- 1e6
-my_ymax <- ceiling(max(my_nucs$Length)/yunits) * yunits
-p <- p + scale_y_continuous(
+
+
+if( max(my_nucs2$Length) > 1e7 ){
+  yunits <- 1e7
+  my_ymax <- ceiling(max(my_nucs2$Length)/yunits) * yunits
+  p <- p + scale_y_continuous(
+    breaks = seq( 0, my_ymax, by = yunits ),
+    labels = seq( 0, my_ymax, by = yunits)/yunits * 10,
+  )
+} else if( max(my_nucs2$Length) > 1e6 ){
+  yunits <- 1e6
+  my_ymax <- ceiling(max(my_nucs2$Length)/yunits) * yunits
+  p <- p + scale_y_continuous(
+    breaks = seq( 0, my_ymax, by = yunits ),
+    labels = seq( 0, my_ymax, by = yunits)/yunits,
+  )
+} else if( max(my_nucs2$Length) > 1e5 ){
+  yunits <- 1e5
+  my_ymax <- ceiling(max(my_nucs2$Length)/yunits) * yunits
+  p <- p + scale_y_continuous(
+    breaks = seq( 0, my_ymax, by = yunits ),
+    labels = seq( 0, my_ymax, by = yunits)/yunits * 0.1,
+  )
+}
+
+
+
 #  breaks = seq( 0, my_ymax, by = yunits * 1e2),
 #  labels = seq( 0, my_ymax/1e3, by = 1e2),
-  breaks = seq( 0, my_ymax, by = yunits * 2e-1),
-  labels = seq( 0, my_ymax/yunits, by = 2e-1),
-)
+#  breaks = seq( 0, my_ymax, by = yunits * 2e-1),
+#  labels = seq( 0, my_ymax/yunits, by = 2e-1),
+#)
 #p <- p + ggplot2::ylab("Position (Kbp)")
 p <- p + ggplot2::ylab("Position (Mbp)")
 
@@ -642,7 +703,7 @@ library(ggplot2)
 motifs[1:3, ]
 #motifs$wincol
 # Initialize empty plot.
-p <- ggplot( )
+#p <- ggplot( )
 
 # Add windows.
 p <- p + geom_rect( 
@@ -650,47 +711,10 @@ p <- p + geom_rect(
   aes( xmin = chrom_num - score/1e3 * 0.4,
       xmax = chrom_num + score/1e3 * 0.4,
        ymin = chromStart, ymax = chromEnd),
-#  fill = "#DCDCDC",
   fill = motifs$wincol,
-#  color = "#000000"
   color = "#00000055"
 )
 
-# Theme options.
-p <- p + theme_bw()
-p <- p + scale_x_continuous( 
-  breaks = my_nucs$chrom_num,
-  labels = my_nucs$Id
-)
-#p
-
-#yunits <- 1e3
-yunits <- 1e6
-my_ymax <- ceiling(max(my_nucs$Length)/yunits) * yunits
-p <- p + scale_y_continuous(
-#  breaks = seq( 0, my_ymax, by = yunits * 1e2),
-#  labels = seq( 0, my_ymax/1e3, by = 1e2),
-#  breaks = seq( 0, my_ymax, by = yunits * 1e-0),
-#  labels = seq( 0, my_ymax/yunits, by = 1e-0),
-  breaks = seq( 0, my_ymax, by = yunits * 5e-1),
-  labels = seq( 0, my_ymax/yunits, by = 5e-1),
-)
-#p <- p + ggplot2::ylab("Position (Kbp)")
-p <- p + ggplot2::ylab("Position (Mbp)")
-
-#p
-p <- p + ggplot2::theme( 
-    panel.grid.minor.x = ggplot2::element_line( linewidth = 0.4, color = "#C0C0C0", linetype = 3 ),
-    axis.text.x = element_text(angle = 60, hjust = 1),
-    axis.title.x=element_blank(),
-    panel.grid.major.y = ggplot2::element_line( linewidth = 0.4, color = "#C0C0C0", linetype = 1 ),
-    panel.grid.minor.y = ggplot2::element_line( linewidth = 0.4, color = "#C0C0C0", linetype = 3 )
-  )
-#p
-#
-#p <- p + ggplot2::ylab("Position (Kbp)")
-p <- p + ggplot2::ylab("Position (Mbp)")
-#p <- p + ggtitle( "My sequences" )
 ```
 
 
@@ -699,7 +723,6 @@ p
 # Uncomment to include window graphic instead of ideogram (above).
 # 
 pwin <- p
-
 ```
 
 
@@ -753,13 +776,16 @@ ggarrange(
 ```
 
 
-## Tabular output
-
-
 For the purpose of publication we may desire to save this "dashboard" as a graphic.
 After the above code has been run, the ```ggsave()``` function can be uncommented and run.
 You'll want to include a meaningful filename.
 This will save the dashboard as a ```*.png``` or ```*.tiff``` graphic.
+
+
+## Tabular output
+
+A tabular presentation of the data may also be desirable.
+Below is an example of a tabular presentation.
 
 
 ```{r}
@@ -769,23 +795,35 @@ genome_df <- data.frame(matrix(
     "Number of sequences (count)", nrow(my_nucs),
     "N50 (bp)", n50,
     "Median length (bp)", median(my_nucs$Length),
-    "Maximun length (bp)", max(my_nucs$Length),
+    "Maximum length (bp)", max(my_nucs$Length),
     "Tenth longest sequence (bp)", sort(my_nucs$Length, decreasing = TRUE)[10],
     "Total A,a,C,c,G,g,T,t (bp)", sum(colSums(my_nucs[, c("A", "a", "C", "c", "G", "g", "T", "t")])),
     "Total C,c,G,g (bp)", sum(colSums(my_nucs[, c("C", "c", "G", "g")])),
     "GC/ACGT (percentage)", sum(colSums(my_nucs[, c("C", "c", "G", "g")]))/sum(colSums(my_nucs[, c("A", "a", "C", "c", "G", "g", "T", "t")])) * 1e2,
-    "GC/Total length (percentage)", sum(colSums(my_nucs[, c("C", "c", "G", "g")]))/sum(my_nucs$Length) * 1e2
+    "GC/Total length (percentage)", sum(colSums(my_nucs[, c("C", "c", "G", "g")]))/sum(my_nucs$Length) * 1e2,
+    "Number of Nn", sum(colSums(my_nucs[, c("N", "n")])),
+    "Number of IUPAC ambiguous: wWsSmMkKrRyY", sum(colSums(my_nucs[, c("w", "W", "s", "S", "m", "M", "k", "K", "r", "R", "y", "Y")])),
+    "Number of unexpected", sum(my_nucs$Length) - sum(rowSums(my_nucs[,c("a", "A", "c", "C", "g", "G", "t", "T", "w", "W", "s", "S", "m", "M", "k", "K", "r", "R", "y", "Y", "n", "N")]))
+#)
   ),
   ncol = 2, byrow = TRUE
 ))
 genome_df <- as.data.frame(genome_df)
 names(genome_df) <- c("Category", "Value")
 genome_df$Value <- as.numeric(genome_df$Value)
+
+proc_time <- Sys.time() - st1
+genome_df <- rbind(genome_df, c("Processing time", format( proc_time, units = "mins")))
+
 knitr::kable(genome_df, 
              digits = 3, 
-             format.args = list(big.mark = ","),
+             format.args = list(scientific = FALSE, big.mark = ","),
              caption = "**Table X** Summary of the sequences.")
 ```
+
+
+In order to use this information in other analyses it may be desirable to provide a form suitable for copy and paste operations.
+This can be accomplished with modest size datasets using the command `dput()`.
 
 
 ```{r, comment=NA}
@@ -795,8 +833,18 @@ colnames( genome_df ) <- genome_df[1, ]
 genome_df <- genome_df[-1, , drop = FALSE]
 #
 dput(genome_df)
-# write.table( x = t(genome_df), file = "fasta2nuccomp_summary.csv",
-#              sep = ",", row.names = FALSE, col.names = FALSE )
+```
+
+
+File output can be accomplished with the following example that outputs to comma delimited format.
+
+
+```{r, comment=NA}
+write.table( x = genome_df, 
+#             file = "fasta2nuccomp_summary.csv",
+             file = paste(my_out, "_nuccomp_summary.csv", sep = ""),
+             sep = ",",
+             row.names = FALSE, col.names = TRUE )
 ```
 
 

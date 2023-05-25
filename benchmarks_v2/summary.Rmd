@@ -1,0 +1,141 @@
+---
+title: "Summary nuccomp"
+author: "Insert authors here"
+date: "`r format(Sys.time(), '%Y, %B %d')`"
+output:
+  html_document:
+    toc: true
+    code_folding: hide
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r setup, include=FALSE}
+#
+knitr::opts_chunk$set(echo = TRUE)
+#knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(fig.align = "center")
+knitr::opts_chunk$set(fig.height = 4)
+knitr::opts_chunk$set(fig.width = 4)
+#library(reticulate)
+#use_python("/usr/bin/python3")
+#use_python("/usr/bin/env python3")
+st1 <- Sys.time()
+```
+
+
+
+```{r}
+# system( "make knit" )
+```
+
+
+## Summarize processed genomes
+
+
+```{r}
+my_files <- list.files(path = ".", pattern = "_nuccomp_summary.csv")
+
+snames <- rep(NA, times = length(my_files))
+snames[ grep("GCA_001642375", my_files) ] <- "Mint"
+snames[ grep("GCA_901000735", my_files) ] <- "Hazelnut"
+snames[ grep("GCF_000001735", my_files) ] <- "Arabidopsis"
+snames[ grep("GCF_000002775", my_files) ] <- "Cottonwood"
+snames[ grep("GCF_000226075", my_files) ] <- "Potato"
+snames[ grep("GCF_001433935", my_files) ] <- "Rice"
+snames[ grep("GCF_900626175", my_files) ] <- "Hemp"
+
+
+my_summ <- read.csv( my_files[1], check.names = FALSE )
+
+for( i in 2:length(my_files) ){
+  tmp <- read.csv( my_files[i], check.names = FALSE )
+  my_summ <- rbind( my_summ, tmp )
+}
+
+rownames(my_summ) <- snames
+
+
+my_summ$`GC/ACGT (percentage)` <- round(my_summ$`GC/ACGT (percentage)`, digits = 1)
+
+my_summ$`Processing time` <- as.numeric(sub(" secs", "", my_summ$`Processing time`))
+my_summ$`Processing time` <- round(my_summ$`Processing time`, digits = 1)
+names(my_summ)[14] <- "Processing time (secs)"
+
+my_summ <- my_summ[sort.int(my_summ$`Processing time (secs)`, decreasing = TRUE, index.return = TRUE)$ix, ]
+
+```
+
+
+```{r}
+#my_summ <- t(my_summ)
+#library(kableExtra)
+#knitr::kable( my_summ[, c(1, 2, 3, 4, 5, 6, 9, 14)], 
+knitr::kable( my_summ[, c(1, 2, 3, 4, 5, 9, 14)], 
+              format.args = list( scientific = FALSE, big.mark = "," ),
+              bootstrap_options = "striped",
+              caption = "**Table X.** Properties of the genomes (length, number of sequences, etc.) and processing time.",
+              escape = FALSE ) #%>% scroll_box(width = "80%") #%>% kable_styling(full_width = T)
+
+```
+
+
+
+```{r, fig.cap="**Figure X.** Execution time scales linearly with assembly length."}
+library(ggplot2)
+#names(my_summ)
+my_summ$`Length (Mbp)` <- my_summ$`Total length (bp)`/1e6
+p <- ggplot( data = my_summ, 
+             aes( 
+#                 x = `Total length (bp)`, 
+                 x = `Length (Mbp)`, 
+                 y = `Processing time (secs)`
+                 )
+            )
+p <- p + geom_point( size = 4, shape = 16 )
+p <- p + theme_bw()
+p <- p + geom_smooth(formula = y ~ x, method=lm, se=TRUE)
+p
+```
+
+
+```{r}
+p <- ggplot( data = my_summ, 
+             aes( 
+                 x = `Number of sequences (count)`, 
+                 y = `Processing time (secs)`
+                 )
+            )
+p <- p + geom_point( size = 2, shape = 23 )
+p <- p + theme_bw()
+p <- p + geom_smooth(formula = y ~ x, method=lm, se=FALSE)
+#p
+```
+
+
+```{r}
+#lm1 <- lm( `Processing time (secs)` ~ `Total length (bp)`, data = my_summ)
+lm1 <- lm( `Processing time (secs)` ~ `Length (Mbp)`, data = my_summ)
+# summary(lm1)
+library(broom)
+library(knitr)
+library(magrittr)
+
+lm1 %>% tidy() %>% kable( caption = "**Table X** Linear model describing the relationship among assembly length (nucleotides) and processing time (seconds)." )
+
+# coefficients(lm1)[1] + my_summ$`Length (Mbp)`[1] * coefficients(lm1)[2]
+# coefficients(lm1)[1] + 3099 * coefficients(lm1)[2]
+
+```
+
+
+## Session Info
+
+
+```{r}
+sessionInfo()
+```
+
+
+

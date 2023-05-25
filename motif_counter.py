@@ -98,6 +98,7 @@ def chrom_to_win(chrom, win_size, motif, out_file):
                      '156,46,127','190,58,119', '222,73,104',
                      '244,102,92', '252,140,99', '254,178,122',
                      '254,216,154','252,253,191']
+    viridis_magma.reverse()
 
 #    print("win_number: ", win_number)
     # Loop over windows.
