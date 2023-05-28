@@ -9,14 +9,22 @@ import ntpath
 import os
 import re
 
-parser = argparse.ArgumentParser(description='Count motifs in windows of FAST[AQ] files. Requires python >=3.7.3 and Biopython >= 1.78.')
+parser = argparse.ArgumentParser(
+    prog='motif_counter.py',
+    description='Count motifs in windows of FAST[AQ] files. Requires python >=3.7.3 and Biopython >= 1.78.')
+
 parser.add_argument("INFILE", help="FAST[AQ] file containing nucleotides.")
 parser.add_argument('--motif', nargs='?', default="CG", const="CG", type=str, help="Motif to count in each window (CG).")
-parser.add_argument('--invert', action='store_true', help="Invert the scaled counts [True]")
-parser.add_argument('--no-invert', dest='invert', action='store_false')
+
+parser.add_argument('--invert', dest='invert', action='store_true', help="Invert the scaled counts [default]")
+parser.add_argument('--no-invert', dest='invert', action='store_false', help="Do not invert the scaled counts")
 parser.set_defaults(invert=True)
+
+#parser.add_argument('--invert', action='store_true', help="Invert the scaled counts [True]")
+#parser.add_argument('--no-invert', dest='invert', action='store_false')
+#parser.set_defaults(invert=True)
 #parser.add_argument('--win_size', nargs='?', const=1000000, type=int, default=1000000)
-parser.add_argument('--win_size', nargs='?', const=1000000, type=str, default=1000000)
+parser.add_argument('--win_size', nargs='?', const=1000000, type=str, default=1000000, help="Window size [default = 1000000]")
 parser.add_argument("-v", "--verbose", help="increase output verbosity",
                     action="store_true")
 
@@ -77,31 +85,48 @@ def check_file(infile):
 def chrom_to_win(chrom, win_size, motif, out_file):
     chrom.seq = chrom.seq.upper()
     #chrom.seq = chrom.seq.lower()
+    # Initialize the number of windows in this chromosome.
+    # Taking the int() is equivalent to floor(), so we add one.
     win_number = int( len(chrom) / win_size )
     win_number = win_number + 1
     # print( "win_number: ", win_number )
+
+    # Initialize lists for chromosomal summaries.
     my_starts = [0] * win_number
     my_ends = [0] * win_number
     my_lens = [0] * win_number
     my_counts = [0] * win_number
     my_scores = [0] * win_number
     my_rgbs = [0] * win_number
-    chrom_min = 1000000
-    chrom_max = 0
-    
-#    viridis_magma = ["59,15,112", "96,24,128", "131,38,129",
-#                     "168,50,125", "205,64,113", "235,87,96",
-#                     "250,127,94", "254,170,116", "254,212,150",
-#                     "252,253,191"]
+
+    # Initialize a min and max for scaling.
+#    chrom_min = 1000000
+#    chrom_max = 0
+    chrom_min = -999
+    chrom_max = -999
                     
-    viridis_magma = ['59,15,112', '92,22,127', '124,35,130',
-                     '156,46,127','190,58,119', '222,73,104',
-                     '244,102,92', '252,140,99', '254,178,122',
-                     '254,216,154','252,253,191']
+#    viridis_magma = ['59,15,112', '92,22,127', '124,35,130',
+#                     '156,46,127','190,58,119', '222,73,104',
+#                     '244,102,92', '252,140,99', '254,178,122',
+#                     '254,216,154','252,253,191']
+    # R> dput(apply(col2rgb(viridisLite::magma( n=10, alpha = 1, begin = 0.2, end = 0.9, direction  =1)), MARGIN = 2, function(x){ paste(x, collapse = ",") }))
+#    viridis_magma = ["59,15,112", "92,22,127", "122,35,130", 
+#                     "154,45,127", "187,56,120", "217,70,107",
+#                     "241,96,93", "251,133,96", "254,170,116",
+#                     "254,206,145"]
+
+    # R> dput(apply(col2rgb(viridisLite::magma( n=11, alpha = 1, begin = 0.2, end = 0.9, direction  =1)), MARGIN = 2, function(x){ paste(x, collapse = ",") }))
+    viridis_magma = ["59,15,112", "89,21,126", "116,33,129",
+                     "145,43,129", "173,52,124", "203,62,114",
+                     "228,79,100", "245,107,92", "252,140,99",
+                      "254,173,119", "254,206,145"]
+
     viridis_magma.reverse()
 
 #    print("win_number: ", win_number)
-    # Loop over windows.
+    # Loop over windows
+    # to count regex matches
+    # and collect chromosome max and min.
     for i in range( win_number ):
         # Window coordinates.
         my_starts[i] = i * win_size
@@ -111,32 +136,47 @@ def chrom_to_win(chrom, win_size, motif, out_file):
         my_seq = chrom.seq[my_starts[i]:my_ends[i] + 1]
         my_lens[i] = len(my_seq)
         my_counts[i] = len( re.findall( motif, str(my_seq) ) )
+        my_scores[i] = my_counts[i] / my_lens[i]
         # Check chromosome minimum and maximum values, store for scaling.
-        if my_counts[i] < chrom_min:
-            chrom_min = my_counts[i]
-        if my_counts[i] > chrom_max:
-            chrom_max = my_counts[i]
-
-
+        if i == 0:
+            chrom_min = my_scores[i]
+            chrom_max = my_scores[i]
+        if my_scores[i] < chrom_min:
+            chrom_min = my_scores[i]
+        if my_scores[i] > chrom_max:
+            chrom_max = my_scores[i]
 #    print( "chrom_min: ", chrom_min)
 #    print( "chrom_max: ", chrom_max)
     # Compute score and RGB columns.
-    if win_number == 1:
-        i = 0
-        my_scores[i] = my_counts[i] / my_lens[i]    
-        if args.invert:
-            my_scores[i] = 1 - my_scores[i]
-        my_scores[i] = my_scores[i] * 1000
-        my_scores[i] = int( my_scores[i] )
-        my_index = int( my_scores[i] / 100 )
-#        print( my_index )
-        my_rgbs[i] = viridis_magma[ my_index ]        
-    else:
-        for i in range( win_number ):
+#    if win_number == 1:
+#        i = 0
+#        my_scores[i] = my_counts[i] / my_lens[i]    
+#        if args.invert:
+#            my_scores[i] = 1 - my_scores[i]
+#        my_scores[i] = my_scores[i] * 1000
+#        my_scores[i] = int( my_scores[i] )
+#        my_index = int( my_scores[i] / 100 )
+##        print( my_index )
+#        my_rgbs[i] = viridis_magma[ my_index ]        
+#    else:
+    for i in range( win_number ):
 #            print("    my_counts[i]: ", my_counts[i])
-            my_scores[i] = my_counts[i] / my_lens[i]
-            my_scores[i] = (my_scores[i] - chrom_min/my_lens[i] )
-            my_scores[i] = my_scores[i] / ( (chrom_max - chrom_min)/my_lens[i] )
+#            print(my_counts[i], my_lens[i], chrom_max, chrom_min)
+#            my_scores[i] = my_counts[i]
+#            print("--> ", chrom_max - chrom_min)
+#            my_scores[i] = my_counts[i] / my_lens[i]
+#            print("win_number: ", i)
+#            my_scores[i] = my_scores[i] - chrom_min/my_lens[i]
+            if (chrom_max - chrom_min) > 0:
+#                print("  1> my_scores[i]: ", my_scores[i], "; chrom_max:", chrom_max, "; chrom_min:", chrom_min, "; my_lens[i]:", my_lens[i])
+#                my_scores[i] = my_scores[i] - chrom_min/my_lens[i]
+                my_scores[i] = my_scores[i] - chrom_min
+#                print("  2> my_scores[i]: ", my_scores[i], "; chrom_max:", chrom_max, "; chrom_min:", chrom_min)
+#                my_scores[i] = my_scores[i] / ( (chrom_max - chrom_min)/my_lens[i] )
+                my_scores[i] = my_scores[i] / ( chrom_max - chrom_min )
+            #my_scores[i] = (my_counts[i] - chrom_min)/(chrom_max - chrom_min)
+#            if i == win_number - 1:
+#                print("  my_scores[i]: ", my_scores[i])
             if args.invert:
                 my_scores[i] = 1 - my_scores[i]
             my_scores[i] = my_scores[i] * 1000
