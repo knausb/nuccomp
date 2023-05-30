@@ -26,8 +26,10 @@ st1 <- Sys.time()
 
 
 
-```{r}
+```{r, eval=FALSE}
+# system( "make get_fa" )
 # system( "make knit" )
+# system( "make clean" )
 ```
 
 
