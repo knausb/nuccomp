@@ -62,6 +62,7 @@ If these files have already been generated (e.g., the python scripts were run in
 # Hemp
 # 
 my_infile <- "GCF_900626175.2_cs10_genomic.fna.gz"
+# my_infile <- "/media/knausb/E737-9B48/releases/scaffolded/EH23a/EH23a.softmasked.fasta.gz"
 # Mint
 # my_infile <- "GCA_001642375.2_Mlong_CMEN585_v3_genomic.fna.gz"
 # Potato

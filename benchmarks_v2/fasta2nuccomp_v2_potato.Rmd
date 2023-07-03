@@ -42,6 +42,11 @@ my_motif_counter <- "~/gits/fasta2nuccomp/motif_counter.py"
 #
 window_size <- 1e5
 # window_size <- 1e6
+# Sort the sequences by decreasing size.
+size_sort <- FALSE
+#size_sort <- TRUE
+clean_filess <- FALSE
+#clean_filess <- TRUE
 ```
 
 
@@ -70,6 +75,23 @@ my_infile <- "GCF_000226075.1_SolTub_3.0_genomic.fna.gz"
 # my_infile <- "GCF_001433935.1_IRGSP-1.0_genomic.fna.gz"
 # Yeast
 #my_infile <- "S288C_reference_sequence_R64-2-1_20150113.fsa.gz"
+```
+
+
+```{r}
+my_out <- basename(my_infile)
+my_out <- sub("\\.gz$", "", my_out)
+my_out <- sub("\\.fna$", "", my_out)
+my_out <- sub("\\.fsa$", "", my_out)
+my_out <- sub("\\.fasta$", "", my_out)
+```
+
+
+```{r}
+if( clean_filess == TRUE ){
+  unlink( paste(my_out, "_nuccomp.csv", sep = "") )
+  unlink( paste(my_out, "_CG_wins.bed", sep = "") )
+}
 ```
 
 
@@ -176,11 +198,6 @@ Note that ```fasta2nuccomp.py``` must either be in the user's path or the path t
 ```{r, eval=TRUE}
 st2 <- Sys.time()
 
-my_out <- basename(my_infile)
-my_out <- sub("\\.gz$", "", my_out)
-my_out <- sub("\\.fna$", "", my_out)
-my_out <- sub("\\.fsa$", "", my_out)
-my_out <- sub("\\.fasta$", "", my_out)
 # Only run python script if it's outfile does not exist. 
 if( !file.exists( paste(my_out, "_nuccomp.csv", sep = "") ) ){
 #  system(paste("~/gits/fasta2nuccomp/fasta2nuccomp.py", my_infile))
@@ -208,6 +225,10 @@ Here we demonstrate how to summarize this data.
 
 ```{r}
 my_nucs <- readr::read_csv(paste(my_out, "_nuccomp.csv", sep = ""))
+
+if( size_sort == TRUE ){
+  my_nucs <- my_nucs[ sort.int(my_nucs$Length, decreasing = TRUE, index.return = TRUE)$ix, ]
+}
 
 if( nrow(my_nucs) > 10 ){
   max_row <- 10
@@ -787,7 +808,8 @@ If we want to publish this information we may want to summarize this information
 This is illustrated below.
 
 
-```{r, fig.height=8, fig.width=8, fig.cap="**Figure X.** Summary of the genome. Panels **A**, **B**, **C**, and **D** summarize the occurrence of each nucleotide on a per sequence/contig basis. Lowercase characters may indicate that some form of 'masking' may have been implemented. Panel **E** summarizes the length of each sequence/contig, a dashed vertical red line indicates the N50 for the set of sequences/contigs. Panel **F** summarizes the number of positions where [IUPAC ambiguity codes](https://en.wikipedia.org/wiki/Nucleic_acid_sequence#Notation) occured (excluding A, a, C, c, G, g, T, t, N, and n). Panel **G** summarizes the occurence of 'any nucleotide' (N, n) in each sequence/contig. Panel **H** summarizes the occurence of unexpected characters in the sequences, and is expected to be zero. Panel **I** presents the relationship between the length of each sequence/contig and it's G/C content."}
+```{r, fig.height=8, fig.width=8, fig.cap="**Figure X.** Summary of the assembly (FAST[AQ]) file. **Panel A** summarizes the distribution of sequence lengths in the assembly. **Panel B** summarizes the per sequence distribution for the rate of each nucleotide (case insensitive). **Panel C** is an ideogram (cartoon) for the first sequences where the height of each bar represents the sequence length and the with and color for windows is based on the per window inverse abundance of the 'CG' motif. **Panels D, E, and F** summarize the occurrence of IUPAC ambiguous nucleotides (wWsSmMkKrRyY), any nucelotide (nN), and any unexpected nucleotides on a per sequence/contig basis. **Panel G** presents the relationship between the length of each sequence/contig and it's G/C content."}
+
 library(ggpubr)
 
 # ggarrange(pl, pat,

@@ -439,7 +439,7 @@ display: none;
 
 <h1 class="title toc-ignore">fasta2nuccomp</h1>
 <h4 class="author">Insert authors here</h4>
-<h4 class="date">2023, May 28</h4>
+<h4 class="date">2023, May 29</h4>
 
 </div>
 
@@ -510,6 +510,7 @@ avoid the need to call the python scripts.</p>
 # Hemp
 # 
 my_infile &lt;- &quot;GCF_900626175.2_cs10_genomic.fna.gz&quot;
+# my_infile &lt;- &quot;/media/knausb/E737-9B48/releases/scaffolded/EH23a/EH23a.softmasked.fasta.gz&quot;
 # Mint
 # my_infile &lt;- &quot;GCA_001642375.2_Mlong_CMEN585_v3_genomic.fna.gz&quot;
 # Potato
@@ -623,7 +624,7 @@ if( !file.exists( paste(my_out, &quot;_nuccomp.csv&quot;, sep = &quot;&quot;) ) 
 }</code></pre>
 <pre class="r"><code>st3 &lt;- Sys.time()
 st3-st2</code></pre>
-<pre><code>## Time difference of 26.78459 secs</code></pre>
+<pre><code>## Time difference of 0.01382375 secs</code></pre>
 <p>This will create a comma delimited text file that has the same name
 as your FASTA file with the added suffix <code>_nuccomp.csv</code>.</p>
 <div id="processing-sequence_comp.py-output" class="section level3">
@@ -1799,7 +1800,7 @@ knitr::kable(genome_df,
 </tr>
 <tr class="even">
 <td align="left">Processing time</td>
-<td align="left">48.5091 secs</td>
+<td align="left">7.842283 secs</td>
 </tr>
 </tbody>
 </table>
@@ -1815,7 +1816,7 @@ genome_df &lt;- genome_df[-1, , drop = FALSE]
 dput(genome_df)</code></pre>
 <pre><code>structure(c(&quot;876147649&quot;, &quot;221&quot;, &quot;91913879&quot;, &quot;47123&quot;, &quot;104987320&quot;, 
 &quot;61561104&quot;, &quot;736579359&quot;, &quot;246856385&quot;, &quot;33.5138884878798&quot;, &quot;28.1752037207144&quot;, 
-&quot;139568290&quot;, &quot;0&quot;, &quot;0&quot;, &quot;48.5091 secs&quot;), dim = c(1L, 14L), dimnames = list(
+&quot;139568290&quot;, &quot;0&quot;, &quot;0&quot;, &quot;7.842283 secs&quot;), dim = c(1L, 14L), dimnames = list(
     &quot;Value&quot;, c(&quot;Total length (bp)&quot;, &quot;Number of sequences (count)&quot;, 
     &quot;N50 (bp)&quot;, &quot;Median length (bp)&quot;, &quot;Maximum length (bp)&quot;, 
     &quot;Tenth longest sequence (bp)&quot;, &quot;Total A,a,C,c,G,g,T,t (bp)&quot;, 
@@ -1839,7 +1840,7 @@ function <code>Sys.time()</code>. We can now use these timestamps to
 evaluate total execution time.</p>
 <pre class="r"><code>st4 &lt;- Sys.time()
 st4 - st1</code></pre>
-<pre><code>## Time difference of 48.54387 secs</code></pre>
+<pre><code>## Time difference of 7.89199 secs</code></pre>
 <p>Lastly, we can use the <code>sessionInfo()</code> function to report
 the version of <code>R()</code> we are using as well as the packages and
 their versions. This is important information to include if we want to
