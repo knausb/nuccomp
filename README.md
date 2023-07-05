@@ -1,20 +1,20 @@
 # Table of Contents
-1. [fasta2nuccomp](#fasta2nuccomp)
+1. [nuccomp](#nuccomp)
 2. [Installation](#installation)
-3. [Use_case_1](#use-case-1): command line python
-4. [Use case 2](#use-case-2): Calling python from Rmarkdown
+3. [Input files](#input-files): FAST[AQ] format
+4. [Use_case_1](#use-case-1): command line python
+5. [Use case 2](#use-case-2): Calling python from Rmarkdown
 
 
+## nuccomp
 
-## fasta2nuccomp
-
-Summarize the contents of FASTA files.
+Summarize the contents of FAST[AQ] files.
 This project consists of three main files.
 
 
-- **fasta2nuccomp.py** a python script to summarize a FASTA file
-- **fasta2nuccomp.Rmd** an RMarkdown script to create a report including visualization of the FASTA file summary
-- **fasta2nuccomp.Rproj** an RStudio project to edit and knit the RMarkdown
+- **nuccomp.py** a python script to summarize a FASTA file
+- **nuccomp.Rmd** an RMarkdown script to create a report including visualization of the FASTA file summary
+- **nuccomp.Rproj** an RStudio project to edit and knit the RMarkdown
 
 
 The python script fasta2nuccomp.py takes a FASTA file as an argument and produces a per sequence tabular summary of the file.
