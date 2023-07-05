@@ -439,7 +439,7 @@ display: none;
 
 <h1 class="title toc-ignore">fasta2nuccomp</h1>
 <h4 class="author">Insert authors here</h4>
-<h4 class="date">2023, June 29</h4>
+<h4 class="date">2023, July 03</h4>
 
 </div>
 
@@ -482,8 +482,11 @@ repository. They can also specify a window size. Windows of 1 Mbp tend
 to work well for chromosomes (sequences) around 10 - 100 Mbp. Window
 size is parameterizable so that investigators can explore values they
 feel may be appropriate.</p>
-<pre class="r"><code>my_fasta2nuccomp &lt;- &quot;~/gits/fasta2nuccomp/fasta2nuccomp.py&quot;
-my_motif_counter &lt;- &quot;~/gits/fasta2nuccomp/motif_counter.py&quot;
+<pre class="r"><code># The location of nuccomp.py
+my_fasta2nuccomp &lt;- &quot;~/gits/fasta2nuccomp/python/fasta2nuccomp.py&quot;
+# The location of motif_counter.py
+my_motif_counter &lt;- &quot;~/gits/fasta2nuccomp/python/motif_counter.py&quot;
+
 # The &quot;L&quot; suppresses scientific notation.
 # Scientific notation doesn&#39;t pass well to python.
 #window_size &lt;- 100000L
@@ -527,10 +530,13 @@ my_infile &lt;- &quot;GCF_000226075.1_SolTub_3.0_genomic.fna.gz&quot;
 my_out &lt;- sub(&quot;\\.gz$&quot;, &quot;&quot;, my_out)
 my_out &lt;- sub(&quot;\\.fna$&quot;, &quot;&quot;, my_out)
 my_out &lt;- sub(&quot;\\.fsa$&quot;, &quot;&quot;, my_out)
-my_out &lt;- sub(&quot;\\.fasta$&quot;, &quot;&quot;, my_out)</code></pre>
+my_out &lt;- sub(&quot;\\.fasta$&quot;, &quot;&quot;, my_out)
+
+ncomp_out &lt;- paste(my_out, &quot;_nuccomp.csv&quot;, sep = &quot;&quot;)
+motif_out &lt;- paste(my_out, &quot;_CG_wins.bed&quot;, sep = &quot;&quot;)</code></pre>
 <pre class="r"><code>if( clean_filess == TRUE ){
-  unlink( paste(my_out, &quot;_nuccomp.csv&quot;, sep = &quot;&quot;) )
-  unlink( paste(my_out, &quot;_CG_wins.bed&quot;, sep = &quot;&quot;) )
+  unlink( ncomp_out )
+  unlink( motif_out )
 }</code></pre>
 </div>
 <div id="dependencies" class="section level2">
@@ -626,13 +632,14 @@ path to the script must be included below.</p>
 <pre class="r"><code>st2 &lt;- Sys.time()
 
 # Only run python script if it&#39;s outfile does not exist. 
-if( !file.exists( paste(my_out, &quot;_nuccomp.csv&quot;, sep = &quot;&quot;) ) ){
+#if( !file.exists( paste(my_out, &quot;_nuccomp.csv&quot;, sep = &quot;&quot;) ) ){
+if( !file.exists( ncomp_out ) ){
 #  system(paste(&quot;~/gits/fasta2nuccomp/fasta2nuccomp.py&quot;, my_infile))
   system(paste(my_fasta2nuccomp, my_infile))
 }</code></pre>
 <pre class="r"><code>st3 &lt;- Sys.time()
 st3-st2</code></pre>
-<pre><code>## Time difference of 0.007227659 secs</code></pre>
+<pre><code>## Time difference of 0.007375956 secs</code></pre>
 <p>This will create a comma delimited text file that has the same name
 as your FASTA file with the added suffix <code>_nuccomp.csv</code>.</p>
 <div id="processing-sequence_comp.py-output" class="section level3">
@@ -640,7 +647,8 @@ as your FASTA file with the added suffix <code>_nuccomp.csv</code>.</p>
 <p>Once we have summarized our FASTA data we’ll want to present it. This
 can be accomplished with summary statistics and graphics. Here we
 demonstrate how to summarize this data.</p>
-<pre class="r"><code>my_nucs &lt;- readr::read_csv(paste(my_out, &quot;_nuccomp.csv&quot;, sep = &quot;&quot;))</code></pre>
+<pre class="r"><code>#my_nucs &lt;- readr::read_csv(paste(my_out, &quot;_nuccomp.csv&quot;, sep = &quot;&quot;))
+my_nucs &lt;- readr::read_csv( ncomp_out )</code></pre>
 <pre><code>## Rows: 14854 Columns: 24
 ## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
@@ -872,12 +880,13 @@ regions. The counts of the motif, a scaled and inverted score, and an
 RGB code based on the score are reported in a *.BED format file. This
 *.BED file has embedded comments for header suggestions in R and
 python.</p>
-<pre class="r"><code>my_bed &lt;- paste(my_out, &quot;_CG_wins.bed&quot;, sep = &quot;&quot;)
+<pre class="r"><code>#my_bed &lt;- paste(my_out, &quot;_CG_wins.bed&quot;, sep = &quot;&quot;)
 #my_cmd &lt;- paste(&quot;~/gits/fasta2nuccomp/motif_counter.py --win_size&quot;, window_size, my_infile, sep = &quot; &quot;)
 my_cmd &lt;- paste( my_motif_counter, &quot;--win_size&quot;, window_size, my_infile, sep = &quot; &quot;)
 #my_cmd &lt;- paste(my_cmd, &quot;-v&quot;)
 #my_cmd &lt;- paste(my_cmd, &quot;--no-invert&quot;)
-if( !file.exists( my_bed ) ){
+#if( !file.exists( my_bed ) ){
+if( !file.exists( motif_out ) ){
   system( my_cmd )
 }</code></pre>
 <div id="processing-results-from-motif_counter.py" class="section level3">
@@ -894,9 +903,11 @@ minus the blockCount divided by blockSizes and multiplied by 1000 to
 range from 0 - 1000, as specified by the format. There is also ‘itemRGB’
 which is based on the score. Below is an example of how to read this
 file into R and use the header suggestion.</p>
-<pre class="r"><code>motifs &lt;- read.table(my_bed, sep = &quot;\t&quot;, header = FALSE)
-my_header &lt;- scan(my_bed, 
-                  what = &quot;character&quot;, sep = &quot;,&quot;, skip = 1, nlines = 1)
+<pre class="r"><code>#motifs &lt;- read.table(my_bed, sep = &quot;\t&quot;, header = FALSE)
+motifs &lt;- read.table(motif_out, sep = &quot;\t&quot;, header = FALSE)
+my_header &lt;- scan(motif_out, 
+                  what = &quot;character&quot;, 
+                  sep = &quot;,&quot;, skip = 1, nlines = 1)
 my_header &lt;- sub(&quot;(^# c\\(|\\))&quot;, &quot;&quot;, my_header)
 my_header &lt;- sub(&quot;[[:blank:]]&quot;, &quot;&quot;, my_header)
 colnames(motifs) &lt;- my_header
@@ -1810,7 +1821,7 @@ knitr::kable(genome_df,
 </tr>
 <tr class="even">
 <td align="left">Processing time</td>
-<td align="left">11.52742 secs</td>
+<td align="left">11.57393 secs</td>
 </tr>
 </tbody>
 </table>
@@ -1826,7 +1837,7 @@ genome_df &lt;- genome_df[-1, , drop = FALSE]
 dput(genome_df)</code></pre>
 <pre><code>structure(c(&quot;705934411&quot;, &quot;14854&quot;, &quot;1344915&quot;, &quot;420&quot;, &quot;7090834&quot;, 
 &quot;3946082&quot;, &quot;663289804&quot;, &quot;230996876&quot;, &quot;34.8259349995978&quot;, &quot;32.7221442106468&quot;, 
-&quot;42644607&quot;, &quot;0&quot;, &quot;0&quot;, &quot;11.52742 secs&quot;), dim = c(1L, 14L), dimnames = list(
+&quot;42644607&quot;, &quot;0&quot;, &quot;0&quot;, &quot;11.57393 secs&quot;), dim = c(1L, 14L), dimnames = list(
     &quot;Value&quot;, c(&quot;Total length (bp)&quot;, &quot;Number of sequences (count)&quot;, 
     &quot;N50 (bp)&quot;, &quot;Median length (bp)&quot;, &quot;Maximum length (bp)&quot;, 
     &quot;Tenth longest sequence (bp)&quot;, &quot;Total A,a,C,c,G,g,T,t (bp)&quot;, 
@@ -1850,7 +1861,7 @@ function <code>Sys.time()</code>. We can now use these timestamps to
 evaluate total execution time.</p>
 <pre class="r"><code>st4 &lt;- Sys.time()
 st4 - st1</code></pre>
-<pre><code>## Time difference of 11.5551 secs</code></pre>
+<pre><code>## Time difference of 11.60623 secs</code></pre>
 <p>Lastly, we can use the <code>sessionInfo()</code> function to report
 the version of <code>R()</code> we are using as well as the packages and
 their versions. This is important information to include if we want to

@@ -12,15 +12,11 @@ editor_options:
 
 
 ```{r setup, include=FALSE}
-#
 knitr::opts_chunk$set(echo = TRUE)
 #knitr::opts_chunk$set(echo = FALSE)
 knitr::opts_chunk$set(fig.align = "center")
 knitr::opts_chunk$set(fig.height = 4)
 knitr::opts_chunk$set(fig.width = 4)
-#library(reticulate)
-#use_python("/usr/bin/python3")
-#use_python("/usr/bin/env python3")
 st1 <- Sys.time()
 ```
 
@@ -34,8 +30,11 @@ Window size is parameterizable so that investigators can explore values they fee
 
 
 ```{r}
-my_fasta2nuccomp <- "~/gits/fasta2nuccomp/fasta2nuccomp.py"
-my_motif_counter <- "~/gits/fasta2nuccomp/motif_counter.py"
+# The location of nuccomp.py
+my_fasta2nuccomp <- "~/gits/fasta2nuccomp/python/fasta2nuccomp.py"
+# The location of motif_counter.py
+my_motif_counter <- "~/gits/fasta2nuccomp/python/motif_counter.py"
+
 # The "L" suppresses scientific notation.
 # Scientific notation doesn't pass well to python.
 #window_size <- 100000L
@@ -84,13 +83,16 @@ my_out <- sub("\\.gz$", "", my_out)
 my_out <- sub("\\.fna$", "", my_out)
 my_out <- sub("\\.fsa$", "", my_out)
 my_out <- sub("\\.fasta$", "", my_out)
+
+ncomp_out <- paste(my_out, "_nuccomp.csv", sep = "")
+motif_out <- paste(my_out, "_CG_wins.bed", sep = "")
 ```
 
 
 ```{r}
 if( clean_filess == TRUE ){
-  unlink( paste(my_out, "_nuccomp.csv", sep = "") )
-  unlink( paste(my_out, "_CG_wins.bed", sep = "") )
+  unlink( ncomp_out )
+  unlink( motif_out )
 }
 ```
 
@@ -199,7 +201,8 @@ Note that ```fasta2nuccomp.py``` must either be in the user's path or the path t
 st2 <- Sys.time()
 
 # Only run python script if it's outfile does not exist. 
-if( !file.exists( paste(my_out, "_nuccomp.csv", sep = "") ) ){
+#if( !file.exists( paste(my_out, "_nuccomp.csv", sep = "") ) ){
+if( !file.exists( ncomp_out ) ){
 #  system(paste("~/gits/fasta2nuccomp/fasta2nuccomp.py", my_infile))
   system(paste(my_fasta2nuccomp, my_infile))
 }
@@ -224,7 +227,8 @@ Here we demonstrate how to summarize this data.
 
 
 ```{r}
-my_nucs <- readr::read_csv(paste(my_out, "_nuccomp.csv", sep = ""))
+#my_nucs <- readr::read_csv(paste(my_out, "_nuccomp.csv", sep = ""))
+my_nucs <- readr::read_csv( ncomp_out )
 
 if( size_sort == TRUE ){
   my_nucs <- my_nucs[ sort.int(my_nucs$Length, decreasing = TRUE, index.return = TRUE)$ix, ]
@@ -277,12 +281,13 @@ This \*.BED file has embedded comments for header suggestions in R and python.
 
 
 ```{r}
-my_bed <- paste(my_out, "_CG_wins.bed", sep = "")
+#my_bed <- paste(my_out, "_CG_wins.bed", sep = "")
 #my_cmd <- paste("~/gits/fasta2nuccomp/motif_counter.py --win_size", window_size, my_infile, sep = " ")
 my_cmd <- paste( my_motif_counter, "--win_size", window_size, my_infile, sep = " ")
 #my_cmd <- paste(my_cmd, "-v")
 #my_cmd <- paste(my_cmd, "--no-invert")
-if( !file.exists( my_bed ) ){
+#if( !file.exists( my_bed ) ){
+if( !file.exists( motif_out ) ){
   system( my_cmd )
 }
 ```
@@ -300,9 +305,11 @@ Below is an example of how to read this file into R and use the header suggestio
 
 
 ```{r}
-motifs <- read.table(my_bed, sep = "\t", header = FALSE)
-my_header <- scan(my_bed, 
-                  what = "character", sep = ",", skip = 1, nlines = 1)
+#motifs <- read.table(my_bed, sep = "\t", header = FALSE)
+motifs <- read.table(motif_out, sep = "\t", header = FALSE)
+my_header <- scan(motif_out, 
+                  what = "character", 
+                  sep = ",", skip = 1, nlines = 1)
 my_header <- sub("(^# c\\(|\\))", "", my_header)
 my_header <- sub("[[:blank:]]", "", my_header)
 colnames(motifs) <- my_header
