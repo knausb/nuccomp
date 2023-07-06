@@ -4,13 +4,13 @@
 # https://stackoverflow.com/a/49908054
 
 knit :
-	Rscript -e "rmarkdown::render('fasta2nuccomp_v2_Arabidopsis.Rmd')"
-	Rscript -e "rmarkdown::render('fasta2nuccomp_v2_cottonwood.Rmd')"
-	Rscript -e "rmarkdown::render('fasta2nuccomp_v2_hazelnut.Rmd')"
-	Rscript -e "rmarkdown::render('fasta2nuccomp_v2_hemp.Rmd')"
-	Rscript -e "rmarkdown::render('fasta2nuccomp_v2_mint.Rmd')"
-	Rscript -e "rmarkdown::render('fasta2nuccomp_v2_potato.Rmd')"
-	Rscript -e "rmarkdown::render('fasta2nuccomp_v2_rice.Rmd')"
+	Rscript -e "rmarkdown::render('nuccomp_Arabidopsis.Rmd')"
+	Rscript -e "rmarkdown::render('nuccomp_cottonwood.Rmd')"
+	Rscript -e "rmarkdown::render('nuccomp_hazelnut.Rmd')"
+	Rscript -e "rmarkdown::render('nuccomp_hemp.Rmd')"
+	Rscript -e "rmarkdown::render('nuccomp_mint.Rmd')"
+	Rscript -e "rmarkdown::render('nuccomp_potato.Rmd')"
+	Rscript -e "rmarkdown::render('nuccomp_rice.Rmd')"
 
 
         
