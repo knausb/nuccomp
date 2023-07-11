@@ -131,7 +131,7 @@ In order to use the output in the compilation of this RMarkdown document the fil
 ```{r, eval=TRUE}
 st2 <- Sys.time()
 # Only run python script if it's outfile does not exist. 
-my_cmd <- paste(my_nuccomp, my_infile)
+my_cmd <- paste("python", my_nuccomp, my_infile)
 if( !file.exists( ncomp_out ) ){
   system( my_cmd )
 }
