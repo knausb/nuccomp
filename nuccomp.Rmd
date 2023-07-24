@@ -156,7 +156,7 @@ This \*.BED file has embedded comments for header suggestions in R and python.
 
 ```{r}
 st4 <- Sys.time()
-my_cmd <- paste( my_motif_counter, "--win_size", window_size, my_infile, sep = " ")
+my_cmd <- paste( "python", my_motif_counter, "--win_size", window_size, my_infile, sep = " ")
 # Only run python script if it's outfile does not exist. 
 if( !file.exists( motif_out ) ){
   system( my_cmd )
