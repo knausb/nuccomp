@@ -40,8 +40,9 @@ Window size is parameterizable so that investigators can explore values they fee
 
 
 ```{r}
-window_size <- 1.5e4
-# window_size <- 1e6
+# window_size <- 1.5e4
+# 
+window_size <- 1e6
 # Sort the sequences by decreasing size.
 size_sort <- FALSE
 #size_sort <- TRUE
@@ -87,6 +88,7 @@ This can then be used to test if the files already exist before running the scri
 ```{r}
 my_out <- basename(my_infile)
 my_out <- sub("\\.gz$", "", my_out)
+my_out <- sub("\\.fa$", "", my_out)
 my_out <- sub("\\.fna$", "", my_out)
 my_out <- sub("\\.fsa$", "", my_out)
 my_out <- sub("\\.fasta$", "", my_out)
@@ -119,7 +121,7 @@ We'll also see how to get this information in the section 'Session information.'
 You do not need RStudio, but it is recommended.
 
 
-## Pyrthon scripts
+## Python scripts
 
 ### Running nuccomp.py
 
