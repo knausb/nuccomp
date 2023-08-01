@@ -439,7 +439,7 @@ display: none;
 
 <h1 class="title toc-ignore">nuccomp</h1>
 <h4 class="author">Insert authors here</h4>
-<h4 class="date">2023, July 05</h4>
+<h4 class="date">2023, July 29</h4>
 
 </div>
 
@@ -537,6 +537,7 @@ name to create the output file names we expect. This can then be used to
 test if the files already exist before running the script.</p>
 <pre class="r"><code>my_out &lt;- basename(my_infile)
 my_out &lt;- sub(&quot;\\.gz$&quot;, &quot;&quot;, my_out)
+my_out &lt;- sub(&quot;\\.fa$&quot;, &quot;&quot;, my_out)
 my_out &lt;- sub(&quot;\\.fna$&quot;, &quot;&quot;, my_out)
 my_out &lt;- sub(&quot;\\.fsa$&quot;, &quot;&quot;, my_out)
 my_out &lt;- sub(&quot;\\.fasta$&quot;, &quot;&quot;, my_out)
@@ -579,7 +580,7 @@ if( !file.exists( ncomp_out ) ){
 }
 st3 &lt;- Sys.time()
 st3-st2</code></pre>
-<pre><code>## Time difference of 13.13409 secs</code></pre>
+<pre><code>## Time difference of 11.63339 secs</code></pre>
 <p>This will create a comma delimited text file that has the same name
 as your FASTA file with the added suffix <code>_nuccomp.csv</code>.</p>
 </div>
@@ -603,7 +604,7 @@ if( !file.exists( motif_out ) ){
 }
 st5 &lt;- Sys.time()
 st5-st4</code></pre>
-<pre><code>## Time difference of 8.027953 secs</code></pre>
+<pre><code>## Time difference of 7.257543 secs</code></pre>
 <p>This will create a BED format text file that has the same name as
 your FASTA file with the added suffix that includes the motif and the
 *.bed extension, for example <code>_CG_wins.bed</code>.</p>
@@ -1721,7 +1722,8 @@ example of a tabular presentation.</p>
     &quot;GC/ACGT (percentage)&quot;, sum(colSums(my_nucs[, c(&quot;C&quot;, &quot;c&quot;, &quot;G&quot;, &quot;g&quot;)]))/sum(colSums(my_nucs[, c(&quot;A&quot;, &quot;a&quot;, &quot;C&quot;, &quot;c&quot;, &quot;G&quot;, &quot;g&quot;, &quot;T&quot;, &quot;t&quot;)])) * 1e2,
     &quot;GC/Total length (percentage)&quot;, sum(colSums(my_nucs[, c(&quot;C&quot;, &quot;c&quot;, &quot;G&quot;, &quot;g&quot;)]))/sum(my_nucs$Length) * 1e2,
     &quot;Number of Nn&quot;, sum(colSums(my_nucs[, c(&quot;N&quot;, &quot;n&quot;)])),
-    &quot;Number of IUPAC ambiguous: wWsSmMkKrRyY&quot;, sum(colSums(my_nucs[, c(&quot;w&quot;, &quot;W&quot;, &quot;s&quot;, &quot;S&quot;, &quot;m&quot;, &quot;M&quot;, &quot;k&quot;, &quot;K&quot;, &quot;r&quot;, &quot;R&quot;, &quot;y&quot;, &quot;Y&quot;)])),
+#    &quot;Number of IUPAC ambiguous: wWsSmMkKrRyY&quot;, sum(colSums(my_nucs[, c(&quot;w&quot;, &quot;W&quot;, &quot;s&quot;, &quot;S&quot;, &quot;m&quot;, &quot;M&quot;, &quot;k&quot;, &quot;K&quot;, &quot;r&quot;, &quot;R&quot;, &quot;y&quot;, &quot;Y&quot;)])),
+    &quot;Number of IUPAC ambiguous (wWsSmMkKrRyY)&quot;, sum(colSums(my_nucs[, c(&quot;w&quot;, &quot;W&quot;, &quot;s&quot;, &quot;S&quot;, &quot;m&quot;, &quot;M&quot;, &quot;k&quot;, &quot;K&quot;, &quot;r&quot;, &quot;R&quot;, &quot;y&quot;, &quot;Y&quot;)])),
     &quot;Number of unexpected&quot;, sum(my_nucs$Length) - sum(rowSums(my_nucs[,c(&quot;a&quot;, &quot;A&quot;, &quot;c&quot;, &quot;C&quot;, &quot;g&quot;, &quot;G&quot;, &quot;t&quot;, &quot;T&quot;, &quot;w&quot;, &quot;W&quot;, &quot;s&quot;, &quot;S&quot;, &quot;m&quot;, &quot;M&quot;, &quot;k&quot;, &quot;K&quot;, &quot;r&quot;, &quot;R&quot;, &quot;y&quot;, &quot;Y&quot;, &quot;n&quot;, &quot;N&quot;)]))
 #)
   ),
@@ -1792,7 +1794,7 @@ knitr::kable(genome_df,
 <td align="left">118255</td>
 </tr>
 <tr class="even">
-<td align="left">Number of IUPAC ambiguous: wWsSmMkKrRyY</td>
+<td align="left">Number of IUPAC ambiguous (wWsSmMkKrRyY)</td>
 <td align="left">3</td>
 </tr>
 <tr class="odd">
@@ -1801,7 +1803,7 @@ knitr::kable(genome_df,
 </tr>
 <tr class="even">
 <td align="left">Processing time</td>
-<td align="left">28.02167 secs</td>
+<td align="left">25.04841 secs</td>
 </tr>
 </tbody>
 </table>
@@ -1817,12 +1819,12 @@ genome_df &lt;- genome_df[-1, , drop = FALSE]
 dput(genome_df)</code></pre>
 <pre><code>structure(c(&quot;374422835&quot;, &quot;58&quot;, &quot;29958434&quot;, &quot;12838&quot;, &quot;43270923&quot;, 
 &quot;27531856&quot;, &quot;374304577&quot;, &quot;163070101&quot;, &quot;43.5661520110132&quot;, &quot;43.5523920436103&quot;, 
-&quot;118255&quot;, &quot;3&quot;, &quot;0&quot;, &quot;28.02167 secs&quot;), dim = c(1L, 14L), dimnames = list(
+&quot;118255&quot;, &quot;3&quot;, &quot;0&quot;, &quot;25.04841 secs&quot;), dim = c(1L, 14L), dimnames = list(
     &quot;Value&quot;, c(&quot;Total length (bp)&quot;, &quot;Number of sequences (count)&quot;, 
     &quot;N50 (bp)&quot;, &quot;Median length (bp)&quot;, &quot;Maximum length (bp)&quot;, 
     &quot;Tenth longest sequence (bp)&quot;, &quot;Total A,a,C,c,G,g,T,t (bp)&quot;, 
     &quot;Total C,c,G,g (bp)&quot;, &quot;GC/ACGT (percentage)&quot;, &quot;GC/Total length (percentage)&quot;, 
-    &quot;Number of Nn&quot;, &quot;Number of IUPAC ambiguous: wWsSmMkKrRyY&quot;, 
+    &quot;Number of Nn&quot;, &quot;Number of IUPAC ambiguous (wWsSmMkKrRyY)&quot;, 
     &quot;Number of unexpected&quot;, &quot;Processing time&quot;)))</code></pre>
 <p>File output can be accomplished with the following example that
 outputs to comma delimited format.</p>
@@ -1840,7 +1842,7 @@ function <code>Sys.time()</code>. We can now use these timestamps to
 evaluate total execution time.</p>
 <pre class="r"><code>st4 &lt;- Sys.time()
 st4 - st1</code></pre>
-<pre><code>## Time difference of 28.05249 secs</code></pre>
+<pre><code>## Time difference of 25.07661 secs</code></pre>
 <p>Lastly, we can use the <code>sessionInfo()</code> function to report
 the version of <code>R()</code> we are using as well as the packages and
 their versions. This is important information to include if we want to

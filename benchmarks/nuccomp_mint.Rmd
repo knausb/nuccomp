@@ -65,12 +65,12 @@ If these files have already been generated (e.g., the python scripts were run in
 # Cottonwood
 # my_infile <- "GCF_000002775.5_P.trichocarpa_v4.1_genomic.fna.gz"
 # Hazelnut
-# 
-my_infile <- "GCA_901000735.2_CavTom2PMs-1.0_genomic.fna.gz"
+# my_infile <- "GCA_901000735.2_CavTom2PMs-1.0_genomic.fna.gz"
 # Hemp
 # my_infile <- "GCF_900626175.2_cs10_genomic.fna.gz"
 # Mint
-# my_infile <- "GCA_001642375.2_Mlong_CMEN585_v3_genomic.fna.gz"
+# 
+my_infile <- "GCA_001642375.2_Mlong_CMEN585_v3_genomic.fna.gz"
 # Potato
 #my_infile <- "GCF_000226075.1_SolTub_3.0_genomic.fna.gz"
 # Rice
@@ -88,6 +88,7 @@ This can then be used to test if the files already exist before running the scri
 ```{r}
 my_out <- basename(my_infile)
 my_out <- sub("\\.gz$", "", my_out)
+my_out <- sub("\\.fa$", "", my_out)
 my_out <- sub("\\.fna$", "", my_out)
 my_out <- sub("\\.fsa$", "", my_out)
 my_out <- sub("\\.fasta$", "", my_out)
@@ -771,7 +772,8 @@ genome_df <- data.frame(matrix(
     "GC/ACGT (percentage)", sum(colSums(my_nucs[, c("C", "c", "G", "g")]))/sum(colSums(my_nucs[, c("A", "a", "C", "c", "G", "g", "T", "t")])) * 1e2,
     "GC/Total length (percentage)", sum(colSums(my_nucs[, c("C", "c", "G", "g")]))/sum(my_nucs$Length) * 1e2,
     "Number of Nn", sum(colSums(my_nucs[, c("N", "n")])),
-    "Number of IUPAC ambiguous: wWsSmMkKrRyY", sum(colSums(my_nucs[, c("w", "W", "s", "S", "m", "M", "k", "K", "r", "R", "y", "Y")])),
+#    "Number of IUPAC ambiguous: wWsSmMkKrRyY", sum(colSums(my_nucs[, c("w", "W", "s", "S", "m", "M", "k", "K", "r", "R", "y", "Y")])),
+    "Number of IUPAC ambiguous (wWsSmMkKrRyY)", sum(colSums(my_nucs[, c("w", "W", "s", "S", "m", "M", "k", "K", "r", "R", "y", "Y")])),
     "Number of unexpected", sum(my_nucs$Length) - sum(rowSums(my_nucs[,c("a", "A", "c", "C", "g", "G", "t", "T", "w", "W", "s", "S", "m", "M", "k", "K", "r", "R", "y", "Y", "n", "N")]))
 #)
   ),

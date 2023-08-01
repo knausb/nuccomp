@@ -40,8 +40,8 @@ Window size is parameterizable so that investigators can explore values they fee
 
 
 ```{r}
-#window_size <- 1.5e4
-#
+# window_size <- 1.5e4
+# 
 window_size <- 1e6
 # Sort the sequences by decreasing size.
 size_sort <- FALSE
@@ -63,8 +63,7 @@ If these files have already been generated (e.g., the python scripts were run in
 # Arabidopsis
 # my_infile <- "GCF_000001735.4_TAIR10.1_genomic.fna.gz"
 # Cottonwood
-# 
-my_infile <- "GCF_000002775.5_P.trichocarpa_v4.1_genomic.fna.gz"
+# my_infile <- "GCF_000002775.5_P.trichocarpa_v4.1_genomic.fna.gz"
 # Hazelnut
 # my_infile <- "GCA_901000735.2_CavTom2PMs-1.0_genomic.fna.gz"
 # Hemp
@@ -76,7 +75,8 @@ my_infile <- "GCF_000002775.5_P.trichocarpa_v4.1_genomic.fna.gz"
 # Rice
 # my_infile <- "GCF_001433935.1_IRGSP-1.0_genomic.fna.gz"
 # Yeast
-#my_infile <- "S288C_reference_sequence_R64-2-1_20150113.fsa.gz"
+#
+my_infile <- "S288C_reference_sequence_R64-2-1_20150113.fsa.gz"
 ```
 
 
@@ -88,6 +88,7 @@ This can then be used to test if the files already exist before running the scri
 ```{r}
 my_out <- basename(my_infile)
 my_out <- sub("\\.gz$", "", my_out)
+my_out <- sub("\\.fa$", "", my_out)
 my_out <- sub("\\.fna$", "", my_out)
 my_out <- sub("\\.fsa$", "", my_out)
 my_out <- sub("\\.fasta$", "", my_out)
@@ -120,7 +121,7 @@ We'll also see how to get this information in the section 'Session information.'
 You do not need RStudio, but it is recommended.
 
 
-## Pyrthon scripts
+## Python scripts
 
 ### Running nuccomp.py
 
@@ -132,7 +133,7 @@ In order to use the output in the compilation of this RMarkdown document the fil
 ```{r, eval=TRUE}
 st2 <- Sys.time()
 # Only run python script if it's outfile does not exist. 
-my_cmd <- paste(my_nuccomp, my_infile)
+my_cmd <- paste("python", my_nuccomp, my_infile)
 if( !file.exists( ncomp_out ) ){
   system( my_cmd )
 }
@@ -157,7 +158,7 @@ This \*.BED file has embedded comments for header suggestions in R and python.
 
 ```{r}
 st4 <- Sys.time()
-my_cmd <- paste( my_motif_counter, "--win_size", window_size, my_infile, sep = " ")
+my_cmd <- paste( "python", my_motif_counter, "--win_size", window_size, my_infile, sep = " ")
 # Only run python script if it's outfile does not exist. 
 if( !file.exists( motif_out ) ){
   system( my_cmd )
@@ -809,10 +810,10 @@ File output can be accomplished with the following example that outputs to comma
 
 
 ```{r, comment=NA}
-write.table( x = genome_df,
-             file = paste(my_out, "_nuccomp_summary.csv", sep = ""),
-             sep = ",",
-             row.names = FALSE, col.names = TRUE )
+# write.table( x = genome_df, 
+#              file = paste(my_out, "_nuccomp_summary.csv", sep = ""),
+#              sep = ",",
+#              row.names = FALSE, col.names = TRUE )
 ```
 
 
