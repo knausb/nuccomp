@@ -2,7 +2,7 @@
 1. [nuccomp](#nuccomp)
 2. [Installation](#installation)
 3. [Input files](#input-files): FAST[AQ] format
-4. [Use_case_1](#use-case-1): command line python
+4. [Use case 1](#use-case-1): command line python
 5. [Use case 2](#use-case-2): Calling python from Rmarkdown
 
 
