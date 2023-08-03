@@ -439,7 +439,7 @@ display: none;
 
 <h1 class="title toc-ignore">nuccomp</h1>
 <h4 class="author">Insert authors here</h4>
-<h4 class="date">2023, August 01</h4>
+<h4 class="date">2023, August 02</h4>
 
 </div>
 
@@ -580,7 +580,7 @@ if( !file.exists( ncomp_out ) ){
 }
 st3 &lt;- Sys.time()
 st3-st2</code></pre>
-<pre><code>## Time difference of 0.613492 secs</code></pre>
+<pre><code>## Time difference of 0.6263709 secs</code></pre>
 <p>This will create a comma delimited text file that has the same name
 as your FASTA file with the added suffix <code>_nuccomp.csv</code>.</p>
 </div>
@@ -604,7 +604,7 @@ if( !file.exists( motif_out ) ){
 }
 st5 &lt;- Sys.time()
 st5-st4</code></pre>
-<pre><code>## Time difference of 0.4480219 secs</code></pre>
+<pre><code>## Time difference of 0.4754429 secs</code></pre>
 <p>This will create a BED format text file that has the same name as
 your FASTA file with the added suffix that includes the motif and the
 *.bed extension, for example <code>_CG_wins.bed</code>.</p>
@@ -1798,7 +1798,7 @@ knitr::kable(genome_df,
 </tr>
 <tr class="even">
 <td align="left">Processing time</td>
-<td align="left">7.304628 secs</td>
+<td align="left">7.388743 secs</td>
 </tr>
 </tbody>
 </table>
@@ -1814,7 +1814,7 @@ genome_df &lt;- genome_df[-1, , drop = FALSE]
 dput(genome_df)</code></pre>
 <pre><code>structure(c(&quot;12157105&quot;, &quot;17&quot;, &quot;924431&quot;, &quot;745751&quot;, &quot;1531933&quot;, 
 &quot;666816&quot;, &quot;12157105&quot;, &quot;4637676&quot;, &quot;38.1478649727875&quot;, &quot;38.1478649727875&quot;, 
-&quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;7.304628 secs&quot;), dim = c(1L, 14L), dimnames = list(
+&quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;7.388743 secs&quot;), dim = c(1L, 14L), dimnames = list(
     &quot;Value&quot;, c(&quot;Total length (bp)&quot;, &quot;Number of sequences (count)&quot;, 
     &quot;N50 (bp)&quot;, &quot;Median length (bp)&quot;, &quot;Maximum length (bp)&quot;, 
     &quot;Tenth longest sequence (bp)&quot;, &quot;Total A,a,C,c,G,g,T,t (bp)&quot;, 
@@ -1837,7 +1837,7 @@ function <code>Sys.time()</code>. We can now use these timestamps to
 evaluate total execution time.</p>
 <pre class="r"><code>st4 &lt;- Sys.time()
 st4 - st1</code></pre>
-<pre><code>## Time difference of 7.331515 secs</code></pre>
+<pre><code>## Time difference of 7.415918 secs</code></pre>
 <p>Lastly, we can use the <code>sessionInfo()</code> function to report
 the version of <code>R()</code> we are using as well as the packages and
 their versions. This is important information to include if we want to
