@@ -12,7 +12,7 @@
 <meta name="author" content="Brian J. Knaus and Kelly J. Vining" />
 
 
-<title>nuccomp: a tool to rapidly summarize the contents of FASTA and FASTQ files containing nucleotides</title>
+<title>nuccomp: rapidly summarize the contents of FASTA and FASTQ files containing nucleotides</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -208,83 +208,6 @@ window.buildTabsets = function(tocID) {
 };
 
 </script>
-<script>
-window.initializeCodeFolding = function(show) {
-
-  // handlers for show-all and hide all
-  $("#rmd-show-all-code").click(function() {
-    $('div.r-code-collapse').each(function() {
-      $(this).collapse('show');
-    });
-  });
-  $("#rmd-hide-all-code").click(function() {
-    $('div.r-code-collapse').each(function() {
-      $(this).collapse('hide');
-    });
-  });
-
-  // index for unique code element ids
-  var currentIndex = 1;
-
-  // select all R code blocks
-  var rCodeBlocks = $('pre.r, pre.python, pre.bash, pre.sql, pre.cpp, pre.stan, pre.julia, pre.foldable');
-  rCodeBlocks.each(function() {
-    // skip if the block has fold-none class
-    if ($(this).hasClass('fold-none')) return;
-
-    // create a collapsable div to wrap the code in
-    var div = $('<div class="collapse r-code-collapse"></div>');
-    var showThis = (show || $(this).hasClass('fold-show')) && !$(this).hasClass('fold-hide');
-    var id = 'rcode-643E0F36' + currentIndex++;
-    div.attr('id', id);
-    $(this).before(div);
-    $(this).detach().appendTo(div);
-
-    // add a show code button right above
-    var showCodeText = $('<span>' + (showThis ? 'Hide' : 'Code') + '</span>');
-    var showCodeButton = $('<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm code-folding-btn pull-right float-right"></button>');
-    showCodeButton.append(showCodeText);
-    showCodeButton
-        .attr('data-toggle', 'collapse')
-        .attr('data-bs-toggle', 'collapse') // BS5
-        .attr('data-target', '#' + id)
-        .attr('data-bs-target', '#' + id)   // BS5
-        .attr('aria-expanded', showThis)
-        .attr('aria-controls', id);
-
-    var buttonRow = $('<div class="row"></div>');
-    var buttonCol = $('<div class="col-md-12"></div>');
-
-    buttonCol.append(showCodeButton);
-    buttonRow.append(buttonCol);
-
-    div.before(buttonRow);
-
-    // show the div if necessary
-    if (showThis) div.collapse('show');
-
-    // update state of button on show/hide
-    //   * Change text
-    //   * add a class for intermediate states styling
-    div.on('hide.bs.collapse', function () {
-      showCodeText.text('Code');
-      showCodeButton.addClass('btn-collapsing');
-    });
-    div.on('hidden.bs.collapse', function () {
-      showCodeButton.removeClass('btn-collapsing');
-    });
-    div.on('show.bs.collapse', function () {
-      showCodeText.text('Hide');
-      showCodeButton.addClass('btn-expanding');
-    });
-    div.on('shown.bs.collapse', function () {
-      showCodeButton.removeClass('btn-expanding');
-    });
-
-  });
-
-}
-</script>
 <style type="text/css">.hljs-literal {
 color: #990073;
 }
@@ -430,9 +353,6 @@ display: none;
 </style>
 
 <!-- code folding -->
-<style type="text/css">
-.code-folding-btn { margin-bottom: 4px; }
-</style>
 
 
 
@@ -449,20 +369,12 @@ display: none;
 
 <div id="header">
 
-<div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
-<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
-<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
-</ul>
-</div>
 
 
-
-<h1 class="title toc-ignore">nuccomp: a tool to rapidly summarize the
-contents of FASTA and FASTQ files containing nucleotides</h1>
+<h1 class="title toc-ignore">nuccomp: rapidly summarize the contents of
+FASTA and FASTQ files containing nucleotides</h1>
 <h4 class="author">Brian J. Knaus and Kelly J. Vining</h4>
-<h4 class="date">2023, August 02</h4>
+<h4 class="date">2023, August 11</h4>
 
 </div>
 
@@ -486,8 +398,6 @@ contents of FASTA and FASTQ files containing nucleotides</h1>
 <li>up to 4 pages; this is approx. 2,600 words or 2,000 words plus one
 figure</li>
 </ul></li>
-<li><p>New name: seqcomp (taken); seqcounter</p></li>
-<li><p>Add motif_counter?</p></li>
 <li><p>export to word?</p></li>
 <li><p>Cover letter</p></li>
 <li><p>350 dpi tif figures; single (86 mm) or double (178 mm) column
@@ -526,34 +436,34 @@ quality control.</p>
 chain of nucleotides organized into genes, non-genic sequence, and
 eventually chromosomes. Current genome sequencing technology reports
 this biochemical structure in a text file organized in the FASTA or
-FASTQ format <span class="citation">(Cock et al. 2010)</span>. Genomics
-projects therefore involve managing FASTA and FASTQ files. Part of this
-management involves summarizing the contents of these large files in
-order to validate their contents as well as aid in project organization.
-Currently, part of the management of these files involves collection of
-summaries of the FASTA files from the various workflow outputs. This
-creates a situation where a significant amount of project time is
-invested in determining which summaries are available from which output
-and how to present this information.</p>
+FASTQ format <span class="citation">(Cock <em>et al.</em> 2010)</span>.
+Genomics projects therefore involve managing FASTA and FASTQ files. Part
+of this management involves summarizing the contents of these large
+files in order to validate their contents as well as aid in project
+organization. Currently, part of the management of these files involves
+collection of summaries of the FASTA files from the various workflow
+outputs. This creates a situation where a significant amount of project
+time is invested in determining which summaries are available from which
+output and how to present this information.</p>
 <p>Various tools for summarizing bioinformatic exist, but they are
 currently distributed among many software programs designed to work on
-various file formats. For example, the software FastQC <span class="citation">(Andrews et al. 2010; Bioinformatics 2011)</span>
-summarizes raw sequencing reads in the FASTQ format that are a typical
-result from Illumina sequencing. The trimmomatic <span class="citation">(Bolger, Lohse, and Usadel 2014)</span> attempts to
-remove nucleotides from low quality Illumina sequencing data. In order
-to infer whether gene space has been well assembled BUSCO <span class="citation">(Seppey, Manni, and Zdobnov 2019)</span> queries for
-conserved genes from several databases throughout the phylogenetic tree
-of life. Blobtools <span class="citation">(Laetsch and Blaxter
-2017)</span> uses GC content and read coverage to attempt to improve
-assemblies. Some of these tools are not specific to FASTA format data,
-or may be a part of a more computationally expensive analysis that may
-be undesireable to repeat if only a summary is desired. A solution
-specific to data in the FASTA format that provides several summaries of
-the data, examples of the presentation of these summaries, as well as
-the flexibility to allow the end user to customize these summaries would
-aid the management of genomics projects as well as the presentation of
-this information in genome announcements and pangenomic
-investigations.</p>
+various file formats. For example, the software FastQC <span class="citation">(Andrews <em>et al.</em> 2010)</span> summarizes raw
+sequencing reads in the FASTQ format that are a typical result from
+Illumina sequencing. The trimmomatic <span class="citation">(Bolger,
+Lohse and Usadel 2014)</span> attempts to remove nucleotides from low
+quality Illumina sequencing data. In order to infer whether gene space
+has been well assembled BUSCO <span class="citation">(Simão <em>et
+al.</em> 2015)</span> queries for conserved genes from several databases
+throughout the phylogenetic tree of life. Blobtools <span class="citation">(Laetsch and Blaxter 2017)</span> uses GC content and
+read coverage to attempt to improve assemblies. Some of these tools are
+not specific to FASTA format data, or may be a part of a more
+computationally expensive analysis that may be undesireable to repeat if
+only a summary is desired. A solution specific to data in the FASTA
+format that provides several summaries of the data, examples of the
+presentation of these summaries, as well as the flexibility to allow the
+end user to customize these summaries would aid the management of
+genomics projects as well as the presentation of this information in
+genome announcements and pangenomic investigations.</p>
 <p>We present nuccomp, a suite of tools intended to summarize the
 content of FASTA format files that contain nucleotides. These tools
 consist of a python script that summarizes the FASTA file in a tabular
@@ -567,30 +477,53 @@ end user can customize this presentation.</p>
 </div>
 <div id="methods" class="section level2">
 <h2>Methods</h2>
-<p>The repository nuccomp contains a python script, an RMarkdown script,
-example data, and example output. The python script takes a FASTA format
-file, consisting of nucleotides, as input. The python (≥ 3.8.2) script
-uses biopython (≥ 1.79; <span class="citation">Cock et al.
-(2009)</span>) to read in the file and to collect the length, as well as
-the (case sensitive) number of nucleotides and IUPAC ambiguous
-nucleotides. This information is output to a comma delimited text file.
-This script can be run independently or can be called from the RMarkdown
-script. The RMarkdown <span class="citation">(Xie, Allaire, and
-Grolemund 2018)</span> script uses R <span class="citation">(R Core Team
-2020)</span> and reads in the comma delimited text file and summarizes
-it. Graphical summaries are made using ggplot2 <span class="citation">(Wickham 2016)</span> and ggpubr <span class="citation">(Kassambara 2020)</span> and consist of histograms of
+<p>The repository nuccomp contains a python script, an RMarkdown
+document, example data, and example output. The python script takes a
+FASTA or FASTQ format file, consisting of nucleotides, as input. The
+output from the python script is summarized graphically and with tables
+using the RMarkdown document. The result can be an html document
+suitable for internal reports as well as publication quality graphics
+(*.png, *.tiff, and other formats).</p>
+<p>The python script nuccomp.py takes as input a FASTA or FASQ format
+file, which may or may not be compressed with gzip, as input. The python
+(≥ 3.8.2) script uses biopython (≥ 1.79; <span class="citation">Cock
+<em>et al.</em> (2009)</span>) to read in the file and to collect the
+length, as well as the (case sensitive) number of nucleotides and IUPAC
+ambiguous nucleotides. This information is output to a comma delimited
+text file. This script may be run independently or may be called from
+the RMarkdown script.</p>
+<p>The python script motif_counter.py divides each sequence in a FASTA
+or FASTQ file into windows of user specified length and then counts the
+number of motifs found with a regular expression within each window. The
+python (≥ 3.8.2) script uses biopython (≥ 1.79; <span class="citation">Cock <em>et al.</em> (2009)</span>) to read in the file
+and custom python to divide each sequence into windows and count the
+number of times a regular expression is matched within each window. This
+count is converted to a rate by dividing each count by it’s window size,
+scaled by subtracting the minimum and dividing by the maximum (after
+subtracting the minimum). Creating a rate (motifs per position) helps to
+accommodate the last window of each sequence which is expected to be
+smaller than the user specified window size. This scaled rate can then
+be inverted by subtracting it from one and is reported in the BED format
+output as the ‘score’ column 5. The coordinates for each window, the
+count, and score are reported in a BED format file.</p>
+<p>The RMarkdown <span class="citation">(Xie, Allaire and Grolemund
+2018)</span> document uses R <span class="citation">(R Core Team
+2020)</span> and reads in the comma delimited text file resulting from
+nuccomp.py and the BED file from motif_counter.py and summarizes them.
+Graphical summaries are made using ggplot2 <span class="citation">(Wickham 2016)</span> and ggpubr <span class="citation">(Kassambara 2020)</span> and consist of histograms of
 A, T, G, and C content, length of sequences, IUPAC ambiguity nucleotides
 (excluding A, C, G, T, and N), undetermined nucleotides (N), as well as
 a sanity check for unexpected characters. Numerical summaries are made
 as well such as the total number of nucleotides, N50, the number of
 sequences, and the median for these histograms. Examples are provided on
 how to output these graphical summaries to *.png format and publication
-quality *.tiff format. The <em>Saccharomyces cerevisiae</em> <a href="http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/">genome</a>
-<span class="citation">(Engel et al. 2014)</span> has been included as
-an example and a form of unit test. Benchmarking was performed on a
-MacBook Pro with a 2.6 GHz Quad-Core Intel Core i7 CPU and 16 GB 1600
-MHz DDR3 RAM. The repository nuccomp is currently available on GitHub
-(<a href="https://github.com/knausb/nuccomp">https://github.com/knausb/nuccomp</a>).</p>
+quality *.tiff format.</p>
+<p>The <em>Saccharomyces cerevisiae</em> <a href="http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/">genome</a>
+<span class="citation">(Engel <em>et al.</em> 2014)</span> has been
+included as an example and a form of unit test. Benchmarking was
+performed on a MacBook Pro with a 2.6 GHz Quad-Core Intel Core i7 CPU
+and 16 GB 1600 MHz DDR3 RAM. The repository nuccomp is currently
+available on GitHub (<a href="https://github.com/knausb/nuccomp">https://github.com/knausb/nuccomp</a>).</p>
 </div>
 <div id="results" class="section level2">
 <h2>Results</h2>
@@ -628,116 +561,138 @@ relationship between the length of each sequence and it’s G/C content.
 </div>
 <div id="discussion" class="section level2">
 <h2>Discussion</h2>
-<p>We present nuccomp as a suite of tools that utilizes the speed of
-python and Biopython <span class="citation">(Cock et al. 2009)</span>
-with the graphics and RMarkdown <span class="citation">(Allaire et al.
-2021)</span> report generation of R <span class="citation">(R Core Team
-2020)</span> to summarize the contents of FASTA files containing
-nucleotides. A python script counts the length and nucleotide content
-for each sequence and saves this information as a comma delimited text
-file. This script can be run on a local workstation or be deployed in a
-high performance computing environment. The file resulting from this
-script can either be moved to a local machine, or processing can simply
-continue if already working on a local workstation. These per sequence
-summaries can be further summarized, such as calculating N50 or the
-number of sequences in the file, or their distribution can be visualized
-using graphical tools, such as histograms, in R. The tool nuccomp
-provides an RMarkdown script to demonstrate these tasks and provides the
-user the option for customization. The RMarkdown can be compiled into
-several formats, such as *.html and *.pdf, to provide a report that
-includes descriptive text as well as graphics and tables produced in R.
-Because the R code to produce summaries is included in this RMarkdown
-document the workflow is documented and the end user is also free to
-customize these examples to fit their specific needs.</p>
-<p>Several currently-available software tools contain functions to
-output various summaries of fasta and fastq files, such as QUAST and
-SeqKit (refs). But there does not appear to be a tool to efficiently
-provides a standardized suite of summaries. Instead, investigators find
-themselves collating summaries from several outputs and then presenting
-this information in a uniform manner. Some of these summaries are output
-at the end of a time intensive analysis (such as assembly), a step that
-is typically not justified if only a summary is desired. For example, an
-investigator may obtain an accessioned version of a genome and want to
-validate the published values. This is particularly important because
-some publications may summarize assembled “chromosomes” while accessions
-versions may include unplaced contigs, plus non-autosomal contigs
-representing the mitochondrion and, for plants, the chloroplast. Having
-a rapid tool to calculate many summaries provides a quick way to
-validate if downloaded data files matched the published description.
+<p>The repository nuccomp consists of a suite of tools that utilizes the
+speed of python and Biopython <span class="citation">(Cock <em>et
+al.</em> 2009)</span> with the graphics and statistical resources of R
+<span class="citation">(R Core Team 2020)</span> combined with RMarkdown
+<span class="citation">(Allaire <em>et al.</em> 2021)</span> for report
+generation to summarize the contents of FASTA and FASTQ files containing
+nucleotides. Genomics project typically include aggregating files of
+sequence data, such as genomes acquired from NCBI or sequencing
+consortia, as well as sequencing libraries that may be assembled
+multiple times to explore assembly options. This creates a need to
+rapidly inventory the contents of these FASTA and FASTQ format sequence
+files. The repository nuccomp provides a rapid solution to help
+inventory the contents of these files and presents this information in
+graphical and tabular forms.</p>
+<p>Other tools</p>
+<p>Several currently available software tools contain functions to
+output various summaries of FASTA and FASTQ files.</p>
+<p>QUAST</p>
+<p>FastQC</p>
+<p>BlobTools</p>
+<p>BUSCO</p>
+<p>, such as QUAST <span class="citation">(Gurevich <em>et al.</em>
+2013)</span> and SeqKit (refs). But there does not appear to be a tool
+to efficiently provides a standardized suite of summaries. Instead,
+investigators find themselves collating summaries from several outputs
+and then presenting this information in a uniform manner. Some of these
+summaries are output at the end of a time intensive analysis (such as
+assembly), a step that is typically not justified if only a summary is
+desired. For example, an investigator may obtain an accessioned version
+of a genome and want to validate the published values. This is
+particularly important because some publications may summarize assembled
+“chromosomes” while accessions versions may include unplaced contigs,
+plus non-autosomal contigs representing the mitochondrion and, for
+plants, the chloroplast.</p>
+<p>Literate programming</p>
+<p>The use of an RMarkdown document facilitates the summary of the data
+and also provides a high level code example for the summaries made. This
+RMarkdown document is a text file that is compiled, or ‘knit’, into
+several formats, such as *html or *pdf. The text file includes text as
+well as code chunks, as an attempt at literate programming. This means
+that the N50 summary statistic in the report includes the code used to
+generate the summary, providing transparency and educational value.
+Similarly, the graphical summaries include code examples for how the
+plots were generated. It is hoped that by providing this functionality
+will allow users to create their own innovations derived from this
+foundation.</p>
+<p>Having a rapid tool to calculate many summaries provides a quick way
+to validate if downloaded data files matched the published description.
 Because the summary table is saved as a text file and all of the code
 was made available other users have the potential to invent combinations
 of this information that the present authors never imagined. The tool
 nuccomp provides rapid summaries of genomes as an initial step for
 workflows in FASTA based genomic investigations.</p>
+<p>The study of genomics could currently be characturized as the study
+of text files in the FASTA and FASTQ formats. These files are acquired
+through data centers and sequencing consortia as benchmarks of quality
+and to build upon our existing knowledge base. These files are also
+generated at multiple steps during research projects, such as receiving
+sequence libraries from a sequencing center, the result of assembling
+these sequences, as well as any results from attempts at scaffolding
+these assemblies into more contiguous representations of chromosomes and
+genomes. The repository nuccomp contributes to the collection of similar
+tools designed to summarize the contents of FASTA and/or FASTQ data
+(<span class="citation">Andrews <em>et al.</em> (2010)</span>, <span class="citation">Gurevich <em>et al.</em> (2013)</span>, <span class="citation">Laetsch and Blaxter (2017)</span>). Through providing
+nuccomp as a high level solution, using RMarkdown, it is hoped that this
+will empower investigators to not only prepare reports and summaries as
+demonstrated here, but will also provide a foundation that inspires
+users to innovate their own representations of genomic information.</p>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-allaire_etal2021" class="csl-entry">
-Allaire, JJ, Yihui Xie, Jonathan McPherson, Javier Luraschi, Kevin
-Ushey, Aron Atkins, Hadley Wickham, Joe Cheng, Winston Chang, and
-Richard Iannone. 2021. <em>Rmarkdown: Dynamic Documents for
-<span>R</span></em>. <a href="https://github.com/rstudio/rmarkdown">https://github.com/rstudio/rmarkdown</a>.
+Allaire J, Xie Y, McPherson J <em>et al.</em> <em><a href="https://github.com/rstudio/rmarkdown">Rmarkdown: Dynamic Documents
+for <span>R</span></a></em>., 2021.
 </div>
 <div id="ref-andrews2010fastqc" class="csl-entry">
-Andrews, Simon et al. 2010. <span>“FastQC: A Quality Control Tool for
-High Throughput Sequence Data.”</span> Babraham Bioinformatics, Babraham
-Institute, Cambridge, United Kingdom.
-</div>
-<div id="ref-bioinformatics2011fastqc" class="csl-entry">
-Bioinformatics, Babraham. 2011. <span>“FastQC: A Quality Control Tool
-for High Throughput Sequence Data.”</span> <em>Cambridge, UK: Babraham
-Institute</em>.
+Andrews S <em>et al.</em> <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC:
+A quality control tool for high throughput sequence data</a>. 2010.
 </div>
 <div id="ref-bolger2014trimmomatic" class="csl-entry">
-Bolger, Anthony M, Marc Lohse, and Bjoern Usadel. 2014.
-<span>“Trimmomatic: A Flexible Trimmer for Illumina Sequence
-Data.”</span> <em>Bioinformatics</em> 30 (15): 2114–20.
+Bolger AM, Lohse M, Usadel B. <a href="https://doi.org/10.1093/bioinformatics/btu170">Trimmomatic: A
+flexible trimmer for illumina sequence data</a>. <em>Bioinformatics</em>
+2014;<strong>30</strong>:2114–20.
 </div>
 <div id="ref-cock2009biopython" class="csl-entry">
-Cock, Peter JA, Tiago Antao, Jeffrey T Chang, Brad A Chapman, Cymon J
-Cox, Andrew Dalke, Iddo Friedberg, et al. 2009. <span>“Biopython: Freely
-Available Python Tools for Computational Molecular Biology and
-Bioinformatics.”</span> <em>Bioinformatics</em> 25 (11): 1422–23.
+Cock PJ, Antao T, Chang JT <em>et al.</em> <a href="https://doi.org/10.1093/bioinformatics/btp163">Biopython: Freely
+available python tools for computational molecular biology and
+bioinformatics</a>. <em>Bioinformatics</em>
+2009;<strong>25</strong>:1422–3.
 </div>
 <div id="ref-cock2010sanger" class="csl-entry">
-Cock, Peter JA, Christopher J Fields, Naohisa Goto, Michael L Heuer, and
-Peter M Rice. 2010. <span>“The Sanger FASTQ File Format for Sequences
-with Quality Scores, and the Solexa/Illumina FASTQ Variants.”</span>
-<em>Nucleic Acids Research</em> 38 (6): 1767–71.
+Cock PJ, Fields CJ, Goto N <em>et al.</em> <a href=" https://doi.org/10.1093/nar/gkp1137">The sanger FASTQ file format
+for sequences with quality scores, and the solexa/illumina FASTQ
+variants</a>. <em>Nucleic acids research</em>
+2010;<strong>38</strong>:1767–71.
 </div>
 <div id="ref-engel2014reference" class="csl-entry">
-Engel, Stacia R, Fred S Dietrich, Dianna G Fisk, Gail Binkley, Rama
-Balakrishnan, Maria C Costanzo, Selina S Dwight, et al. 2014. <span>“The
-Reference Genome Sequence of Saccharomyces Cerevisiae: Then and
-Now.”</span> <em>G3: Genes, Genomes, Genetics</em> 4 (3): 389–98.
+Engel SR, Dietrich FS, Fisk DG <em>et al.</em> The reference genome
+sequence of saccharomyces cerevisiae: Then and now. <em>G3: Genes,
+Genomes, Genetics</em> 2014;<strong>4</strong>:389–98.
+</div>
+<div id="ref-gurevich2013quast" class="csl-entry">
+Gurevich A, Saveliev V, Vyahhi N <em>et al.</em> <a href="https://doi.org/10.1093/bioinformatics/btt086">QUAST: Quality
+assessment tool for genome assemblies</a>. <em>Bioinformatics</em>
+2013;<strong>29</strong>:1072–5.
 </div>
 <div id="ref-ggpubr" class="csl-entry">
-Kassambara, Alboukadel. 2020. <em>Ggpubr: ’Ggplot2’ Based Publication
-Ready Plots</em>. <a href="https://CRAN.R-project.org/package=ggpubr">https://CRAN.R-project.org/package=ggpubr</a>.
+Kassambara A. <em><a href="https://CRAN.R-project.org/package=ggpubr">Ggpubr: ’Ggplot2’ Based
+Publication Ready Plots</a></em>., 2020.
 </div>
 <div id="ref-laetsch2017blobtools" class="csl-entry">
-Laetsch, Dominik R, and Mark L Blaxter. 2017. <span>“BlobTools:
-Interrogation of Genome Assemblies.”</span> <em>F1000Research</em> 6
-(1287): 1287.
+Laetsch DR, Blaxter ML. BlobTools: Interrogation of genome assemblies.
+<em>F1000Research</em> 2017;<strong>6</strong>:1287.
 </div>
 <div id="ref-R" class="csl-entry">
-R Core Team. 2020. <em>R: A Language and Environment for Statistical
-Computing</em>. Vienna, Austria: R Foundation for Statistical Computing.
-<a href="https://www.R-project.org/">https://www.R-project.org/</a>.
+R Core Team. <em><a href="https://www.R-project.org/">R: A Language and
+Environment for Statistical Computing</a></em>. Vienna, Austria: R
+Foundation for Statistical Computing, 2020.
 </div>
-<div id="ref-seppey2019busco" class="csl-entry">
-Seppey, Mathieu, Mosè Manni, and Evgeny M Zdobnov. 2019. <span>“BUSCO:
-Assessing Genome Assembly and Annotation Completeness.”</span> In
-<em>Gene Prediction</em>, 227–45. Springer.
+<div id="ref-simao2015busco" class="csl-entry">
+Simão FA, Waterhouse RM, Ioannidis P <em>et al.</em> <a href="https://doi.org/10.1093/bioinformatics/btv351">BUSCO: Assessing
+genome assembly and annotation completeness with single-copy
+orthologs</a>. <em>Bioinformatics</em> 2015;<strong>31</strong>:3210–2.
 </div>
 <div id="ref-ggplot2" class="csl-entry">
-Wickham, Hadley. 2016. <em>Ggplot2: Elegant Graphics for Data
-Analysis</em>. Springer-Verlag New York. <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>.
+Wickham H. <em><a href="https://ggplot2.tidyverse.org">Ggplot2: Elegant
+Graphics for Data Analysis</a></em>. Springer-Verlag New York, 2016.
 </div>
 <div id="ref-rmarkdown" class="csl-entry">
-Xie, Yihui, J. J. Allaire, and Garrett Grolemund. 2018. <em>R Markdown:
-The Definitive Guide</em>. Boca Raton, Florida: Chapman; Hall/CRC. <a href="https://bookdown.org/yihui/rmarkdown">https://bookdown.org/yihui/rmarkdown</a>.
+Xie Y, Allaire JJ, Grolemund G. <em><a href="https://bookdown.org/yihui/rmarkdown">R Markdown: The Definitive
+Guide</a></em>. Boca Raton, Florida: Chapman; Hall/CRC, 2018.
 </div>
 </div>
 </div>
@@ -775,11 +730,6 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
-});
-</script>
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
