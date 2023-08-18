@@ -39,15 +39,15 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Abstract
 
 
-Bioinformatic projects frequently begin with a large FASTA or FASTQ format file, such as a genome.
-However, the quality of the contents of these files varies from project to project.
-For example, some genomes may include large numbers of ambiguous nucleotides which may present issues to other software used in a project.
-This presents a need to rapidly assess the contents of these files.
-We present nuccomp as a tool to query and present summaries of the contents of FASTA files containing nucleotides.
+Bioinformatic projects include the management of large FASTA and FASTQ format files, such as a genomes.
+The contents of these files, and their quality, varies from project to project and file to file.
+For example, some genomes may include large numbers of ambiguous nucleotides which may present issues to other software used to analyze these files.
+This presents a need to rapidly determine the contents of these files.
+We present nuccomp as a tool to query and present summaries of the contents of FASTA and FASTQ files containing nucleotides.
 This tool consists of a python script and an RMarkdown document.
-The python script can be run on local machines or high performance computing facilities and it rapidly summarizes the nucleotide composition for each sequence in the file.
+The python script can be run on local machines or high performance computing facilities and it rapidly summarizes the nucleotide composition for each sequence in each file.
 The RMarkdown provides an example of how this summary can be graphically presented as a report or as publication quality figures.
-With nuccomp we can rapidly assess the contents of FASTA format files so we can move on to downstream procedures with confidence in knowing what the file contains.
+With nuccomp we can rapidly determine the contents of FASTA and FASTQ format files so we can move on to downstream procedures with confidence in knowing the contents of these files.
 
 
 Keywords: FASTA, FASTQ, genome announcement, nucleotide composition, quality control.
@@ -56,7 +56,7 @@ Keywords: FASTA, FASTQ, genome announcement, nucleotide composition, quality con
 ## Introduction
 
 
-A genome is thought to consist of a double stranded polysaccharide chain of nucleotides organized into genes, non-genic sequence, and eventually chromosomes.
+A genome is thought to consist of a double stranded polysaccharide chain of nucleotides organized into genes, intergenic sequence, and eventually chromosomes.
 Current genome sequencing technology reports this biochemical structure in a text file organized in the FASTA or FASTQ format [@cock2010sanger].
 Genomics projects therefore involve managing FASTA and FASTQ files.
 Part of this management involves summarizing the contents of these large files in order to validate their contents as well as aid in project organization.
@@ -69,8 +69,8 @@ For example, the software FastQC [@andrews2010fastqc] summarizes raw sequencing 
 The trimmomatic [@bolger2014trimmomatic] attempts to remove nucleotides from low quality Illumina sequencing data.
 In order to infer whether gene space has been well assembled BUSCO [@simao2015busco] queries for conserved genes from several databases throughout the phylogenetic tree of life.
 Blobtools [@laetsch2017blobtools] uses GC content and read coverage to attempt to improve assemblies.
-Some of these tools are not specific to FASTA format data, or may be a part of a more computationally expensive analysis that may be undesireable to repeat if only a summary is desired.
-A solution specific to data in the FASTA format that provides several summaries of the data, examples of the presentation of these summaries, as well as the flexibility to allow the end user to customize these summaries would aid the management of genomics projects as well as the presentation of this information in genome announcements and pangenomic investigations.
+Some of these tools are not specific to FASTA or FASTQ format data, or may be a part of a more computationally expensive analysis that may be undesireable to repeat if only a summary is desired.
+A solution specific to data in the FASTA and FASTQ format that provides several summaries of the data, examples of the presentation of these summaries, as well as the flexibility to allow the end user to customize these summaries would aid the management of genomics projects as well as the presentation of this information in genome announcements and pangenomic investigations.
 
 
 We present nuccomp, a suite of tools intended to summarize the content of FASTA format files that contain nucleotides.
@@ -82,16 +82,16 @@ The use of RMarkdown not only provides an example of how to present this data in
 ## Methods
 
 
-The repository nuccomp contains a python script, an RMarkdown document, example data, and example output.
-The python script takes a FASTA or FASTQ format file, consisting of nucleotides, as input.
-The output from the python script is summarized graphically and with tables using the RMarkdown document.
+The repository nuccomp [@knausb2023] contains two python scripts, an RMarkdown document, example data, and example output.
+The python scripts takes a FASTA or FASTQ format file, consisting of nucleotides, as input.
+The output from the python scripts are summarized graphically and with tables using the RMarkdown document.
 The result can be an html document suitable for internal reports as well as publication quality graphics (\*.png, *.tiff, and other formats).
 
 
 The python script nuccomp.py takes as input a FASTA or FASQ format file, which may or may not be compressed with gzip, as input.
 The python (≥ 3.8.2) script uses biopython (≥ 1.79; @cock2009biopython) to read in the file and to collect the length, as well as the (case sensitive) number of nucleotides and IUPAC ambiguous nucleotides.
 This information is output to a comma delimited text file.
-This script may be run independently or may be called from the RMarkdown script.
+This script may be run independently or may be called from the RMarkdown document.
 
 
 The python script motif_counter.py divides each sequence in a FASTA or FASTQ file into windows of user specified length and then counts the number of motifs found with a regular expression within each window.
@@ -108,9 +108,10 @@ Numerical summaries are made as well such as the total number of nucleotides, N5
 Examples are provided on how to output these graphical summaries to \*.png format and publication quality \*.tiff format.
 
 
-The *Saccharomyces cerevisiae* [genome](http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/) [@engel2014reference] has been included as an example and a form of unit test.
-Benchmarking was performed on a MacBook Pro with a 2.6 GHz Quad-Core Intel Core i7 CPU and 16 GB 1600 MHz DDR3 RAM.
-The repository nuccomp is currently available on GitHub ([https://github.com/knausb/nuccomp](https://github.com/knausb/nuccomp)).
+The *Saccharomyces cerevisiae* genome (http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/; @engel2014reference) has been included as an example and a form of unit test.
+In addition, the potato (*Solanum tuberosum*; GCA_001642375.1), hemp (*Cannabis sativa*; GCF_900626175.2), mint (*Mentha longifolia*; GCA_001642375.2), rice (*Oryza sativa*; GCF_001433935.1) cottonwood (*Populus trichocarpa*; GCF_000002775.5), hazelnut (*Corylus avellana*; GCA_901000735.2), and *Arabidopsis thaliana* (GCF_000001735.4) genomes were used for benchmarking.
+Benchmarking was performed on computer using an Intel(R) Core(TM) i7-2600K CPU @ 3.40GHz CPU running Ubuntu 2022.04.2 LTS and R 4.3.0.
+The repository nuccomp is currently available on GitHub [@knausb2023].
 
 
 ## Results
@@ -118,14 +119,27 @@ The repository nuccomp is currently available on GitHub ([https://github.com/kna
 The python script "nuccomp.py" processed the 12 Mbp yeast genome, consisting of 17 sequences, in less than 1 second (large genomes consisting of more nucleotides and/or sequences should require more time).
 This resulted in a comma delimited text file consisting of 18 rows, a header describing the column contents, and a row for each of the 17 sequences in the S288C genome.
 This file included a column for the 'ID' of each sequence, it's length, and the number of each nucleotide (A, C, G, T) as well as each ambiguous nucleotide all in a case sensitive manner (to accommodate masking).
-The RMarkdown script ```nuccomp.Rmd``` reads in this tabular data and demonstrates how to create individual plots for information from the output of the python script and how to make a publication quality composite plot summarizing multiple data features.
+The python script "motif_counter.py" summarized the yeast genome into windows into counts of the motif 'CG' and reported this to a BED format file.
+The RMarkdown script ```nuccomp.Rmd``` read in this these data and demonstrates how to create individual plots for information from the output of the python script and how to make a publication quality composite plot summarizing multiple data features.
 An example of this plot is presented in Figure 1.
-Execution of this RMarkdown script, including checks for dependencies, the call to the python script, and the rendering of graphics, required less than 10 seconds.
+Execution of this RMarkdown script, including checks for dependencies, calls to the python scripts, and the rendering of graphics, required less than 10 seconds.
 
 
 ```{r fig, echo=FALSE, fig.align='center', fig.cap="**Figure 1.** Summary of the yeast S288C assembly (R64-2-1_20150113). Panel A is the distribution of sequence lengths. Panel B presents the distribution for per sequence, nucleotide frequencies. Panel C is an ideogram presenting the lengths (height) of sequences. Each sequence is partitioned into 15 kbp windows where the width and color was determined by the inverse scaled count of the motif 'CG' within each window. Panels D, E, and F summarize the occurrence of IUPAC ambiguous nucleotides (wWsSmMkKrRyY), any nucelotide (nN), and any unexpected nucleotides on a per sequence basis. Panel G presents the relationship between the length of each sequence and it’s G/C content.", out.width = '70%'}
 knitr::include_graphics("../S288C_reference_sequence_R64-2-1_20150113.png")
 ```
+
+
+In order to demonstrate the convenience of nuccomp, it was implemented on several publicly available genomes.
+The potato (*Solanum tuberosum*) genome, consisted of 705 Mbp and an N50 of 1.3 Mbp, required 46.6 seconds.
+The hemp (*Cannabis sativa*) genome, consisted of 876 Mbp and an N50 of 91 Mbp, required	45.7 seconds.
+The mint (*Mentha longifolia*) genome, consisted of 468 Mbp and an N50 of 37 Mbp, required 29.0 seconds.
+The rice (*Oryza sativa*) genome, consisted of 374 Mbp and an N50 of 29 Mbp, required 25.1 seconds.
+The cottonwood (*Populus trichocarpa*) genome, consisted of 392 Mbp and an N50 of 19 Mbp, required 24.6 seconds.
+The hazelnut (*Corylus avellana*) genome, consisted of 369 Mbp and an N50 of 36 Mbp, required 23.7 seconds.
+The *Arabidopsis thaliana* genome, consisted of 119 Mbp and an N50 of 23 Mbp required 12.4 seconds.
+Processing time included the running of python code and compiling ('kniting') the RMarkdown, includeing text input and graphics rendering.
+Benchmarking results can be found at the GitHub repository (@knausb2023) in the directory 'benchmarks'.
 
 
 ## Discussion
@@ -163,6 +177,7 @@ This is particularly important because some publications may summarize assembled
 
 
 
+
 Literate programming
 
 
@@ -186,7 +201,11 @@ The repository nuccomp contributes to the collection of similar tools designed t
 Through providing nuccomp as a high level solution, using RMarkdown, it is hoped that this will empower investigators to not only prepare reports and summaries as demonstrated here, but will also provide a foundation that inspires users to innovate their own representations of genomic information.
 
 
+## Acknowledgements
 
-# References
+This work was supported by OregonCBD (Independence, Oregon, USA) through a gift to the Oregon State University Foundation.
+
+
+## References
 
 
