@@ -1,0 +1,43 @@
+---
+title: "Cover letter"
+output: html_document
+date: "2023-08-18"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Editorial Board
+Bioinformatics
+
+
+We wish to submit the article 'nuccomp: rapidly summarize the contents of FASTA and FASTQ files containing nucleotides' for publication in the journal Bioinformatics.
+
+We confirm that this work is original and has not been published elsewhere, and is not currently being considered for publication elsewhere.
+
+
+
+
+We have no conflicts of interest to disclose.
+
+Thank you for considering this manuscript,
+
+Brian J. Knaus, Ph.D.    
+Faculty Research Associate    
+brian.knaus@oregonstate.edu    
+
+and
+
+Kelly J. Vining, Ph.D.    
+Associate Professor    
+Kelly.Vining@oregonstate.edu    
+
+Department of Horticulture    
+Oregon State University    
+4017 Agriculture and Life Sciences Building    
+Corvallis, OR 97331    
+
+
+

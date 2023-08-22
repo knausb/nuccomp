@@ -31,8 +31,6 @@ knitr::opts_chunk$set(echo = TRUE)
 - Applications notes: Title page, Short Structured Abstract, Text.
 - References: The journal follows Oxford SCIMED style.
 
-
-
 ---
 
 
