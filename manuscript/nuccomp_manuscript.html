@@ -374,7 +374,7 @@ display: none;
 <h1 class="title toc-ignore">nuccomp: rapidly summarize the contents of
 FASTA and FASTQ files containing nucleotides</h1>
 <h4 class="author">Brian J. Knaus and Kelly J. Vining</h4>
-<h4 class="date">2023, August 21</h4>
+<h4 class="date">2023, October 03</h4>
 
 </div>
 
@@ -603,10 +603,18 @@ graphical and tabular forms.</p>
 <p>Other tools</p>
 <p>Several currently available software tools contain functions to
 output various summaries of FASTA and FASTQ files.</p>
-<p>QUAST</p>
-<p>FastQC</p>
-<p>BlobTools</p>
-<p>BUSCO</p>
+<p>QUAST <span class="citation">(Gurevich <em>et al.</em> 2013)</span>
+summarizes assemblies by making it’s own summaries as well as
+aggregating information from other software. This makes it a feature
+rich option relative to nuccomp, however this richness comes with a
+performance cost. The simplicity of nuccomp lends itself to efficient
+execution time. This simplicity also lend itself to other applications.
+For example, we’ve begun using nuccomp.py to summarize PacBio sequencing
+libraries after receiving them from sequencing centers and prior to
+assembly as a form of quality control. Users interested in a rich set of
+reports may enjoy QUAST, while users interested in simplicity and R code
+that they may modify may enjoy nuccomp. We hope many users will enjoy
+them both for their respective strengths.</p>
 <p>, such as QUAST <span class="citation">(Gurevich <em>et al.</em>
 2013)</span> and SeqKit (refs). But there does not appear to be a tool
 to efficiently provides a standardized suite of summaries. Instead,
@@ -654,6 +662,11 @@ nuccomp as a high level solution, using RMarkdown, it is hoped that this
 will empower investigators to not only prepare reports and summaries as
 demonstrated here, but will also provide a foundation that inspires
 users to innovate their own representations of genomic information.</p>
+<p>Omit:</p>
+<p>FastQC</p>
+<p>BlobTools <span class="citation">(Laetsch and Blaxter
+2017)</span></p>
+<p>BUSCO <span class="citation">(Simão <em>et al.</em> 2015)</span></p>
 </div>
 <div id="acknowledgements" class="section level2">
 <h2>Acknowledgements</h2>
@@ -685,15 +698,15 @@ bioinformatics</a>. <em>Bioinformatics</em>
 2009;<strong>25</strong>:1422–3.
 </div>
 <div id="ref-cock2010sanger" class="csl-entry">
-Cock PJ, Fields CJ, Goto N <em>et al.</em> <a href=" https://doi.org/10.1093/nar/gkp1137">The sanger FASTQ file format
-for sequences with quality scores, and the solexa/illumina FASTQ
-variants</a>. <em>Nucleic acids research</em>
-2010;<strong>38</strong>:1767–71.
+Cock PJ, Fields CJ, Goto N <em>et al.</em> <a href=" https://doi.org/10.1093/nar/gkp1137">The <span>S</span>anger
+FASTQ file format for sequences with quality scores, and the
+<span>S</span>olexa/<span>I</span>llumina FASTQ variants</a>.
+<em>Nucleic acids research</em> 2010;<strong>38</strong>:1767–71.
 </div>
 <div id="ref-engel2014reference" class="csl-entry">
 Engel SR, Dietrich FS, Fisk DG <em>et al.</em> The reference genome
-sequence of saccharomyces cerevisiae: Then and now. <em>G3: Genes,
-Genomes, Genetics</em> 2014;<strong>4</strong>:389–98.
+sequence of <span>S</span>accharomyces cerevisiae: Then and now. <em>G3:
+Genes, Genomes, Genetics</em> 2014;<strong>4</strong>:389–98.
 </div>
 <div id="ref-gurevich2013quast" class="csl-entry">
 Gurevich A, Saveliev V, Vyahhi N <em>et al.</em> <a href="https://doi.org/10.1093/bioinformatics/btt086">QUAST: Quality
@@ -708,8 +721,9 @@ Publication Ready Plots</a></em>., 2020.
 Knaus BJ. <em>Nuccomp</em>. <a href="https://github.com/knausb/nuccomp" class="uri">https://github.com/knausb/nuccomp</a>; GitHub, 2023.
 </div>
 <div id="ref-laetsch2017blobtools" class="csl-entry">
-Laetsch DR, Blaxter ML. BlobTools: Interrogation of genome assemblies.
-<em>F1000Research</em> 2017;<strong>6</strong>:1287.
+Laetsch DR, Blaxter ML. <a href="https://doi.org/10.12688/f1000research.12232.1">BlobTools:
+Interrogation of genome assemblies</a>. <em>F1000Research</em>
+2017;<strong>6</strong>:1287.
 </div>
 <div id="ref-R" class="csl-entry">
 R Core Team. <em><a href="https://www.R-project.org/">R: A Language and

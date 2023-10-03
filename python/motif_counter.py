@@ -14,10 +14,10 @@ parser = argparse.ArgumentParser(
     description='Count motifs in windows of FAST[AQ] files. Requires python >=3.7.3 and Biopython >= 1.78.')
 
 parser.add_argument("INFILE", help="FAST[AQ] file containing nucleotides.")
-parser.add_argument('--motif', nargs='?', default="CG", const="CG", type=str, help="Motif to count in each window (CG).")
+parser.add_argument('--motif', nargs='?', default="CG", const="CG", type=str, help="Motif to count in each window [CG].")
 
-parser.add_argument('--invert', dest='invert', action='store_true', help="Invert the scaled counts [default]")
-parser.add_argument('--no-invert', dest='invert', action='store_false', help="Do not invert the scaled counts")
+parser.add_argument('--invert', dest='invert', action='store_true', help="Invert the scaled counts [default].")
+parser.add_argument('--no-invert', dest='invert', action='store_false', help="Do not invert the scaled counts.")
 parser.set_defaults(invert=True)
 
 #parser.add_argument('--invert', action='store_true', help="Invert the scaled counts [True]")
@@ -25,7 +25,7 @@ parser.set_defaults(invert=True)
 #parser.set_defaults(invert=True)
 #parser.add_argument('--win_size', nargs='?', const=1000000, type=int, default=1000000)
 parser.add_argument('--win_size', nargs='?', const=1000000, type=str, default=1000000, help="Window size [default = 1000000]")
-parser.add_argument("-v", "--verbose", help="increase output verbosity",
+parser.add_argument("-v", "--verbose", help="increase output verbosity.",
                     action="store_true")
 
 args = parser.parse_args()
