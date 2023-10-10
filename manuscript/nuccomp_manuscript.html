@@ -374,7 +374,7 @@ display: none;
 <h1 class="title toc-ignore">nuccomp: rapidly summarize the contents of
 FASTA and FASTQ files containing nucleotides</h1>
 <h4 class="author">Brian J. Knaus and Kelly J. Vining</h4>
-<h4 class="date">2023, October 03</h4>
+<h4 class="date">2023, October 10</h4>
 
 </div>
 
@@ -458,7 +458,7 @@ al.</em> 2015)</span> queries for conserved genes from several databases
 throughout the phylogenetic tree of life. Blobtools <span class="citation">(Laetsch and Blaxter 2017)</span> uses GC content and
 read coverage to attempt to improve assemblies. Some of these tools are
 not specific to FASTA or FASTQ format data, or may be a part of a more
-computationally expensive analysis that may be undesireable to repeat if
+computationally expensive analysis that may be undesirable to repeat if
 only a summary is desired. A solution specific to data in the FASTA and
 FASTQ format that provides several summaries of the data, examples of
 the presentation of these summaries, as well as the flexibility to allow
@@ -581,54 +581,22 @@ hazelnut (<em>Corylus avellana</em>) genome, consisted of 369 Mbp and an
 N50 of 36 Mbp, required 23.7 seconds. The <em>Arabidopsis thaliana</em>
 genome, consisted of 119 Mbp and an N50 of 23 Mbp required 12.4 seconds.
 Processing time included the running of python code and compiling
-(‘kniting’) the RMarkdown, includeing text input and graphics rendering.
+(‘knitting’) the RMarkdown, including text input and graphics rendering.
 Benchmarking results can be found at the GitHub repository (<span class="citation">Knaus (2023)</span>) in the directory ‘benchmarks’.</p>
 </div>
 <div id="discussion" class="section level2">
 <h2>Discussion</h2>
-<p>The repository nuccomp consists of a suite of tools that utilizes the
-speed of python and Biopython <span class="citation">(Cock <em>et
-al.</em> 2009)</span> with the graphics and statistical resources of R
-<span class="citation">(R Core Team 2020)</span> combined with RMarkdown
-<span class="citation">(Allaire <em>et al.</em> 2021)</span> for report
-generation to summarize the contents of FASTA and FASTQ files containing
-nucleotides. Genomics project typically include aggregating files of
-sequence data, such as genomes acquired from NCBI or sequencing
-consortia, as well as sequencing libraries that may be assembled
-multiple times to explore assembly options. This creates a need to
-rapidly inventory the contents of these FASTA and FASTQ format sequence
-files. The repository nuccomp provides a rapid solution to help
-inventory the contents of these files and presents this information in
-graphical and tabular forms.</p>
-<p>Other tools</p>
-<p>Several currently available software tools contain functions to
-output various summaries of FASTA and FASTQ files.</p>
-<p>QUAST <span class="citation">(Gurevich <em>et al.</em> 2013)</span>
-summarizes assemblies by making it’s own summaries as well as
-aggregating information from other software. This makes it a feature
-rich option relative to nuccomp, however this richness comes with a
-performance cost. The simplicity of nuccomp lends itself to efficient
-execution time. This simplicity also lend itself to other applications.
-For example, we’ve begun using nuccomp.py to summarize PacBio sequencing
-libraries after receiving them from sequencing centers and prior to
-assembly as a form of quality control. Users interested in a rich set of
-reports may enjoy QUAST, while users interested in simplicity and R code
-that they may modify may enjoy nuccomp. We hope many users will enjoy
-them both for their respective strengths.</p>
-<p>, such as QUAST <span class="citation">(Gurevich <em>et al.</em>
-2013)</span> and SeqKit (refs). But there does not appear to be a tool
-to efficiently provides a standardized suite of summaries. Instead,
-investigators find themselves collating summaries from several outputs
-and then presenting this information in a uniform manner. Some of these
-summaries are output at the end of a time intensive analysis (such as
-assembly), a step that is typically not justified if only a summary is
-desired. For example, an investigator may obtain an accessioned version
-of a genome and want to validate the published values. This is
-particularly important because some publications may summarize assembled
-“chromosomes” while accessions versions may include unplaced contigs,
-plus non-autosomal contigs representing the mitochondrion and, for
-plants, the chloroplast.</p>
-<p>Literate programming</p>
+<p>Genomic investigations typically begin with the management of FASTA
+and FASTQ format files, either produced by the investigator or
+aggregated from existing databases. The repository nuccomp consists of a
+suite of tools that utilizes the speed of python and Biopython <span class="citation">(Cock <em>et al.</em> 2009)</span> with the graphics
+and statistical resources of R <span class="citation">(R Core Team
+2020)</span> combined with RMarkdown <span class="citation">(Allaire
+<em>et al.</em> 2021)</span> for report generation to summarize the
+contents of FASTA and FASTQ files containing nucleotides. The repository
+nuccomp provides a rapid solution to help inventory the contents of
+these files and presents this information in graphical and tabular
+forms.</p>
 <p>The use of an RMarkdown document facilitates the summary of the data
 and also provides a high level code example for the summaries made. This
 RMarkdown document is a text file that is compiled, or ‘knit’, into
@@ -637,36 +605,37 @@ well as code chunks, as an attempt at literate programming. This means
 that the N50 summary statistic in the report includes the code used to
 generate the summary, providing transparency and educational value.
 Similarly, the graphical summaries include code examples for how the
-plots were generated. It is hoped that by providing this functionality
-will allow users to create their own innovations derived from this
-foundation.</p>
-<p>Having a rapid tool to calculate many summaries provides a quick way
-to validate if downloaded data files matched the published description.
-Because the summary table is saved as a text file and all of the code
-was made available other users have the potential to invent combinations
-of this information that the present authors never imagined. The tool
-nuccomp provides rapid summaries of genomes as an initial step for
-workflows in FASTA based genomic investigations.</p>
-<p>The study of genomics could currently be characturized as the study
-of text files in the FASTA and FASTQ formats. These files are acquired
-through data centers and sequencing consortia as benchmarks of quality
-and to build upon our existing knowledge base. These files are also
-generated at multiple steps during research projects, such as receiving
-sequence libraries from a sequencing center, the result of assembling
-these sequences, as well as any results from attempts at scaffolding
-these assemblies into more contiguous representations of chromosomes and
-genomes. The repository nuccomp contributes to the collection of similar
-tools designed to summarize the contents of FASTA and/or FASTQ data
-(<span class="citation">Andrews <em>et al.</em> (2010)</span>, <span class="citation">Gurevich <em>et al.</em> (2013)</span>, <span class="citation">Laetsch and Blaxter (2017)</span>). Through providing
-nuccomp as a high level solution, using RMarkdown, it is hoped that this
-will empower investigators to not only prepare reports and summaries as
-demonstrated here, but will also provide a foundation that inspires
-users to innovate their own representations of genomic information.</p>
-<p>Omit:</p>
-<p>FastQC</p>
-<p>BlobTools <span class="citation">(Laetsch and Blaxter
-2017)</span></p>
-<p>BUSCO <span class="citation">(Simão <em>et al.</em> 2015)</span></p>
+plots were generated. Because the summary table produced by nuccomp is
+saved as a text file, users have the potential to invent combinations of
+this information that the present authors never imagined. It is hoped
+that by providing this functionality will allow users to create their
+own innovations derived from this foundation.</p>
+<p>The existing software QUAST <span class="citation">(Gurevich <em>et
+al.</em> 2013)</span> similarly summarizes assemblies by making it’s own
+summaries as well as aggregating information from other software. This
+makes it a feature rich option relative to nuccomp, however this
+richness comes with a performance cost. The simplicity of nuccomp lends
+itself to efficient execution time. This simplicity also lend itself to
+other applications. For example, we’ve begun using nuccomp.py to
+summarize PacBio sequencing libraries after receiving them from
+sequencing centers and prior to assembly as a form of quality control.
+Users interested in a rich set of reports may enjoy QUAST, while users
+interested in simplicity and R code that they can modify may enjoy
+nuccomp. We hope many users will enjoy both options for their respective
+strengths.</p>
+<p>The study of genomics could currently be described as the study of
+biological sequence files in the FASTA and FASTQ formats. These files
+are acquired through data centers and sequencing consortia as benchmarks
+of quality and to build upon our existing knowledge base. These files
+are also generated at multiple steps during research projects, such as
+receiving sequence libraries from a sequencing center, the result of
+assembling these sequences, as well as any results from attempts at
+scaffolding these assemblies into more contiguous representations of
+chromosomes and genomes. Through providing nuccomp as a high level
+solution, using RMarkdown, it is hoped that this will empower
+investigators to not only prepare reports and summaries as demonstrated
+here, but will also provide a foundation that inspires users to innovate
+their own representations of genomic information.</p>
 </div>
 <div id="acknowledgements" class="section level2">
 <h2>Acknowledgements</h2>
