@@ -166,6 +166,10 @@ knitr::include_graphics("../S288C_reference_sequence_R64-2-1_20150113.png")
 ```
 
 
+<div custom-style=DivCol>
+Methods should be past tense???
+</div>
+
 In order to demonstrate the convenience of nuccomp, it was tested on several publicly available genomes.
 The potato (*Solanum tuberosum*) genome, with a size of 705 Mbp and an N50 of 1.3 Mbp, required 46.6 seconds.
 The hemp (*Cannabis sativa*) genome, consisting of 876 Mbp with an N50 of 91 Mbp, required	45.7 seconds.
@@ -194,17 +198,24 @@ This RMarkdown document is a text file that is compiled, or 'knit', into several
 The text file includes text as well as code chunks, as an attempt at literate programming.
 This means that the N50 summary statistic in the report includes the code used to generate the summary, providing transparency and educational value.
 Similarly, the graphical summaries include code examples for how the plots were generated.
-Because the summary table produced by nuccomp is saved as a text file, users have the potential to invent combinations of this information that the present authors never imagined.
-It is hoped that by providing this functionality will allow users to create their own innovations derived from this foundation.
+Because the summary table produced by nuccomp is saved as a text file, users have the potential to invent combinations of this information that the present authors haven't imagined.
+It is hoped that providing this functionality will allow users to create their own innovations derived from this foundation.
 
 
 The existing software QUAST [@gurevich2013quast] similarly summarizes assemblies by making it's own summaries as well as aggregating information from other software.
-This makes it a feature rich option relative to nuccomp, however this richness comes with a performance cost.
+This makes it a feature rich option relative to nuccomp; however this richness comes with a performance cost.
 The simplicity of nuccomp lends itself to efficient execution time.
 This simplicity also lend itself to other applications.
-For example, we've begun using nuccomp.py to summarize PacBio sequencing libraries after receiving them from sequencing centers and prior to assembly as a form of quality control.
+For example, we've begun using nuccomp.py to summarize long-read (PacBio) sequencing libraries after receiving them from sequencing centers and prior to assembly as a form of quality control.
 Users interested in a rich set of reports may enjoy QUAST, while users interested in simplicity and R code that they can modify may enjoy nuccomp.
-We hope many users will enjoy both options for their respective strengths.
+We hope many users will appreciate both options for their respective strengths.
+
+
+<div custom-style=DivCol>
+KV: Not sure what the intended message is here. There appear to be several ideas mixed together. Raw data fastq files from sequencing aren't by themselves "benchmarks of quality." Raw data downloaded from a data repository like the NCBI SRA can be vetted with nuccomp. 
+
+BK: Trying too hard to finish strong?
+</div>
 
 
 The study of genomics could currently be described as the study of biological sequence files in the FASTA and FASTQ formats.
