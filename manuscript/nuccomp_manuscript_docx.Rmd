@@ -71,6 +71,17 @@ Column 1: Software name. Column 2: Author.
 </div>
 
 
+```{r, echo=FALSE}
+my_dat <- data.frame(
+  Name = c("FastQC", "trimmomatic", "BUSCO", "Blobtools"),
+  Author = c("Andrews et al. 2010", "Bolger, Lohse and Usadel 2014", " Simão et al. 2015", "Laetsch and Blaxter 2017")
+)
+
+knitr::kable(my_dat, caption = "**Table 1.** Existing software that describes FASTA/Q files.")
+```
+
+
+
 Tools for summarizing bioinformatic files exist, but they are currently distributed among many software packages designed to work on various file formats.
 For example, the software FastQC [@andrews2010fastqc] summarizes raw sequencing reads in the FASTQ format that are a typical result from Illumina sequencing.
 The trimmomatic [@bolger2014trimmomatic] attempts to remove nucleotides from low quality Illumina sequencing data.
@@ -106,6 +117,19 @@ The python scripts takes a FASTA or FASTQ format file, consisting of DNA nucleot
 The outputs from the python scripts are summarized graphically and presented as formatted tables using the RMarkdown document.
 The RMarkdown is compiled, or 'knit', to an html document suitable for internal reports.
 Output can also be compiled to other formats supported by RMarkdown (html, pdf, docx; @rmarkdown) and ggplot (\*.png, \*.tiff, and other formats; @ggplot2).
+
+
+```{r, echo=FALSE}
+my_tab <- data.frame(
+  Script = c("nuccomp.py", "motif_counter.py", "nuccomp.Rmd"),
+  Language = c("python", "python", "RMarkdown/R"),
+  Purpose = c("Summarize whole sequences", 
+              "Windowize sequences", 
+              "Numeric and graphical presentation")
+)
+knitr::kable(my_tab, caption = "**Table 1.** Scripts included in nuccomp and their functionality.")
+```
+
 
 
 The python script nuccomp.py takes as input a FASTA or FASQ format file, which may or may not be compressed with gzip, as input.
