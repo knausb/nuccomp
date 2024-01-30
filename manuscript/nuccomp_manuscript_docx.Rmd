@@ -7,6 +7,8 @@ output:
     reference_docx: style_rmd_to_docx.docx
 bibliography: references.bib
 csl: oxford-university-press-scimed-author-date.csl
+editor_options: 
+  chunk_output_type: console
 ---
 
 
@@ -53,16 +55,21 @@ Keywords: FASTA, FASTQ, genome announcement, nucleotide composition, quality con
 ## Introduction
 
 <div custom-style=DivCol>
-Overly wordy intro.
+This paragraph is a great summary! This could be the first paragraph in the intro!
 </div>
 
-A genome consists of double stranded DNA packaged into chromosomes.
-The DNA contains features such as protein-coding genes, transposable elements, and various types of simple sequence repeats.
-Current genome sequencing technology reports this DNA in a text file organized in the FASTA or FASTQ format [@cock2010sanger].
-Genomics projects therefore involve managing FASTA and FASTQ files.
-Part of this management involves summarizing the contents of these large files in order to validate their contents as well as aid in project organization.
-This entails collection of summaries of the FASTA files from the various workflow outputs.
-A significant amount of project time is invested in determining which summaries are available from which output and how to present this information.
+Genomic investigations typically begin with the management of FASTA and FASTQ format files, either produced by the investigator or aggregated from existing databases.
+The repository nuccomp consists of a suite of tools that utilizes the speed of python and Biopython [@cock2009biopython] with the graphics and statistical resources of R [@R] combined with RMarkdown [@allaire_etal2021] for report generation to summarize the contents of FASTA and FASTQ files containing nucleotides.
+The repository nuccomp provides a rapid solution to help inventory the contents of these files and presents this information in graphical and tabular forms.
+
+
+Tools for summarizing bioinformatic files exist (Table 1), but they are currently distributed among many software packages designed to work on various file formats.
+For example, the software FastQC [@andrews2010fastqc] summarizes raw sequencing reads in the FASTQ format that are a typical result from Illumina sequencing.
+The trimmomatic [@bolger2014trimmomatic] attempts to remove nucleotides from low quality Illumina sequencing data.
+In order to infer whether gene space has been well assembled BUSCO [@simao2015busco] queries for conserved genes from several databases throughout the phylogenetic tree of life.
+Blobtools [@laetsch2017blobtools] uses GC content and read coverage to attempt to improve assemblies.
+Some of these tools are not specific to FASTA or FASTQ format data, or may be a part of a more computationally expensive analysis that may be undesirable to repeat if only a summary is desired.
+A solution specific to data in the FASTA and FASTQ format that provides several summaries of the data, examples of the presentation of these summaries, as well as the flexibility to allow the end user to customize these summaries would aid the management of genomics projects as well as the presentation of this information in genome announcements and pangenomic investigations.
 
 
 <div custom-style=DivCol>
@@ -77,18 +84,8 @@ my_dat <- data.frame(
   Author = c("Andrews et al. 2010", "Bolger, Lohse and Usadel 2014", " Simão et al. 2015", "Laetsch and Blaxter 2017")
 )
 
-knitr::kable(my_dat, caption = "**Table 1.** Existing software that describes FASTA/Q files.")
+knitr::kable(my_dat, caption = "**Table 1.** Existing software that describe the contents of FASTA/Q files.")
 ```
-
-
-
-Tools for summarizing bioinformatic files exist, but they are currently distributed among many software packages designed to work on various file formats.
-For example, the software FastQC [@andrews2010fastqc] summarizes raw sequencing reads in the FASTQ format that are a typical result from Illumina sequencing.
-The trimmomatic [@bolger2014trimmomatic] attempts to remove nucleotides from low quality Illumina sequencing data.
-In order to infer whether gene space has been well assembled BUSCO [@simao2015busco] queries for conserved genes from several databases throughout the phylogenetic tree of life.
-Blobtools [@laetsch2017blobtools] uses GC content and read coverage to attempt to improve assemblies.
-Some of these tools are not specific to FASTA or FASTQ format data, or may be a part of a more computationally expensive analysis that may be undesirable to repeat if only a summary is desired.
-A solution specific to data in the FASTA and FASTQ format that provides several summaries of the data, examples of the presentation of these summaries, as well as the flexibility to allow the end user to customize these summaries would aid the management of genomics projects as well as the presentation of this information in genome announcements and pangenomic investigations.
 
 
 <div custom-style=DivCol>
@@ -98,7 +95,7 @@ Perhaps this needs some sort of clarification?
 </div>
 
 
-We present nuccomp, a suite of tools intended to summarize the contents of FASTA and FASTQ format files that contain nucleotides.
+We present nuccomp, a suite of tools intended to summarize the contents of FASTA and FASTQ format files that contain nucleotides (Table 2).
 These tools consist of python scripts that summarize FASTA and FASTQ files in a tabular format and an RMarkdown script that numerically and graphically summarizes the tabular data.
 Together, these scripts provide a rapid way to summarize the contents of FASTA and FASTQ files and presents this information in publication quality graphics, as well as reports for internal use.
 The use of RMarkdown not only provides an example of how to present the data in a visual format, it also provides a working example for how the end user can customize its presentation.
@@ -112,7 +109,7 @@ However, RNA-Seq is 'DNA' sequencing, is that the question?
 </div>
 
 
-The GitHub repository nuccomp (https://github.com/knausb/nuccomp) contains two python scripts, an RMarkdown document, example data, and example output.
+The GitHub repository nuccomp (https://github.com/knausb/nuccomp) contains two python scripts, an RMarkdown document (Table 2), example data, and example output.
 The python scripts takes a FASTA or FASTQ format file, consisting of DNA nucleotides, as input.
 The outputs from the python scripts are summarized graphically and presented as formatted tables using the RMarkdown document.
 The RMarkdown is compiled, or 'knit', to an html document suitable for internal reports.
@@ -122,12 +119,12 @@ Output can also be compiled to other formats supported by RMarkdown (html, pdf, 
 ```{r, echo=FALSE}
 my_tab <- data.frame(
   Script = c("nuccomp.py", "motif_counter.py", "nuccomp.Rmd"),
-  Language = c("python", "python", "RMarkdown/R"),
+  Language = c("python/biopython", "python/biopython", "RMarkdown/R"),
   Purpose = c("Summarize whole sequences", 
               "Windowize sequences", 
               "Numeric and graphical presentation")
 )
-knitr::kable(my_tab, caption = "**Table 1.** Scripts included in nuccomp and their functionality.")
+knitr::kable(my_tab, caption = "**Table 2.** Scripts included in nuccomp, the language they are implemented in, and brief description of functionality.")
 ```
 
 
@@ -209,12 +206,16 @@ Benchmarking results can be found at the GitHub repository (@knausb2023) in the 
 ## Discussion
 
 <div custom-style=DivCol>
-This paragraph is a great summary! This could be the first paragraph in the intro!
+Overly wordy intro.
 </div>
 
-Genomic investigations typically begin with the management of FASTA and FASTQ format files, either produced by the investigator or aggregated from existing databases.
-The repository nuccomp consists of a suite of tools that utilizes the speed of python and Biopython [@cock2009biopython] with the graphics and statistical resources of R [@R] combined with RMarkdown [@allaire_etal2021] for report generation to summarize the contents of FASTA and FASTQ files containing nucleotides.
-The repository nuccomp provides a rapid solution to help inventory the contents of these files and presents this information in graphical and tabular forms.
+A genome consists of double stranded DNA packaged into chromosomes.
+The DNA contains features such as protein-coding genes, transposable elements, and various types of simple sequence repeats.
+Current genome sequencing technology reports this DNA in a text file organized in the FASTA or FASTQ format [@cock2010sanger].
+Genomics projects therefore involve managing FASTA and FASTQ files.
+Part of this management involves summarizing the contents of these large files in order to validate their contents as well as aid in project organization.
+This entails collection of summaries of the FASTA files from the various workflow outputs.
+A significant amount of project time is invested in determining which summaries are available from which output and how to present this information.
 
 
 The use of an RMarkdown document facilitates the summary of the data and also provides a high level code example for the summaries made.
@@ -237,15 +238,26 @@ We hope many users will appreciate both options for their respective strengths.
 
 <div custom-style=DivCol>
 KV: Not sure what the intended message is here. There appear to be several ideas mixed together. Raw data fastq files from sequencing aren't by themselves "benchmarks of quality." Raw data downloaded from a data repository like the NCBI SRA can be vetted with nuccomp. 
-
-BK: Trying too hard to finish strong?
 </div>
 
+
+<div custom-style=DivCol>
+BK: Trying too hard to finish strong?
 
 The study of genomics could currently be described as the study of biological sequence files in the FASTA and FASTQ formats.
 These files are acquired through data centers and sequencing consortia as benchmarks of quality and to build upon our existing knowledge base.
 These files are also  generated at multiple steps during research projects, such as receiving sequence libraries from a sequencing center, the result of assembling these sequences, as well as any results from attempts at scaffolding these assemblies into more contiguous representations of chromosomes and genomes.
 Through providing nuccomp as a high level solution, using RMarkdown, it is hoped that this will empower investigators to not only prepare reports and summaries as demonstrated here, but will also provide a foundation that inspires users to innovate their own representations of genomic information.
+</div>
+
+
+The study of genomics could currently be described as the study of biological sequence files in the FASTA and FASTQ formats.
+These investigations begin with the receipt of these files from data centers or collaborators.
+This presents a need to rapidly determine the contents of these files.
+We present the repository nuccomp which includes software to rapidly summarized the content of FASTA and FASTQ files.
+These summaries are further processed in RMarkdown as graphical presentations and with the hope that the use of RMarkdown will inspire users to customize these reports.
+The use of nuccomp is expected to facilitate investigations into individual genomes, such as genome announcement style investigations, as well as scale to many genomes, such as pan-genomic projects.
+
 
 
 ## Acknowledgements

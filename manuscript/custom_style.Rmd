@@ -1,0 +1,61 @@
+---
+title: "Custom style"
+output: 
+  word_document
+date: "2024-01-29"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+## Introduction
+
+
+```{r, echo=FALSE}
+knitr::kable(cars[1:4, ], caption = "**Table 1.** Cars data.frame.")
+```
+
+
+## Methods
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet felis nulla, eleifend sollicitudin nisi dictum vel. Ut id justo dui. Donec at arcu nibh. Duis posuere enim lectus, in porta tortor hendrerit sit amet. Curabitur ullamcorper, felis quis mattis placerat, enim velit aliquam ante, et egestas mauris sem nec augue. Morbi posuere imperdiet vulputate. Ut pharetra tempor dui, vitae congue odio tempus at. Ut luctus viverra erat eu maximus. Donec turpis enim, pellentesque ut interdum eget, faucibus sed augue. Sed nulla justo, mattis ac felis nec, varius viverra est. Aenean dictum quis lacus ac luctus. Morbi ultrices risus libero, ut porttitor erat mattis a. Proin fermentum iaculis tortor lobortis vestibulum. 
+
+
+```{r, echo=FALSE, fig.cap="**Figure 1.** Figure caption example."}
+plot(pressure)
+```
+
+
+## Results
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet felis nulla, eleifend sollicitudin nisi dictum vel. Ut id justo dui. Donec at arcu nibh. Duis posuere enim lectus, in porta tortor hendrerit sit amet. Curabitur ullamcorper, felis quis mattis placerat, enim velit aliquam ante, et egestas mauris sem nec augue. Morbi posuere imperdiet vulputate. Ut pharetra tempor dui, vitae congue odio tempus at. Ut luctus viverra erat eu maximus. Donec turpis enim, pellentesque ut interdum eget, faucibus sed augue. Sed nulla justo, mattis ac felis nec, varius viverra est. Aenean dictum quis lacus ac luctus. Morbi ultrices risus libero, ut porttitor erat mattis a. Proin fermentum iaculis tortor lobortis vestibulum. 
+
+## Discussion
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet felis nulla, eleifend sollicitudin nisi dictum vel. Ut id justo dui. Donec at arcu nibh. Duis posuere enim lectus, in porta tortor hendrerit sit amet. Curabitur ullamcorper, felis quis mattis placerat, enim velit aliquam ante, et egestas mauris sem nec augue. Morbi posuere imperdiet vulputate. Ut pharetra tempor dui, vitae congue odio tempus at. Ut luctus viverra erat eu maximus. Donec turpis enim, pellentesque ut interdum eget, faucibus sed augue. Sed nulla justo, mattis ac felis nec, varius viverra est. Aenean dictum quis lacus ac luctus. Morbi ultrices risus libero, ut porttitor erat mattis a. Proin fermentum iaculis tortor lobortis vestibulum. 
+
+
