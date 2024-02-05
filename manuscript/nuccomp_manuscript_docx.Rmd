@@ -43,7 +43,7 @@ The contents of these files, and their quality, varies from project to project a
 For example, some genomes may include large numbers of ambiguous nucleotides which may present issues to other software used to analyze these files.
 This presents a need to rapidly determine the contents of these files.
 We present nuccomp as a tool to query and present summaries of the contents of FASTA and FASTQ files containing nucleotides.
-This tool consists of a python script and an RMarkdown document.
+This tool consists of python scripts and an RMarkdown document.
 The python script can be run on local machines or high performance computing facilities and it rapidly summarizes the nucleotide composition for each sequence in each file.
 The RMarkdown provides an example of how this summary can be graphically presented as a report or as publication quality figures.
 With nuccomp we can rapidly determine the contents of FASTA and FASTQ format files so we can move on to downstream procedures with confidence in knowing the contents of these files.
@@ -63,13 +63,15 @@ The repository nuccomp consists of a suite of tools that utilizes the speed of p
 The repository nuccomp provides a rapid solution to help inventory the contents of these files and presents this information in graphical and tabular forms.
 
 
-Tools for summarizing bioinformatic files exist (Table 1), but they are currently distributed among many software packages designed to work on various file formats.
-For example, the software FastQC [@andrews2010fastqc] summarizes raw sequencing reads in the FASTQ format that are a typical result from Illumina sequencing.
+Tools for summarizing bioinformatic files exist (Table 1), but they are currently distributed among many software packages designed to work on various file types.
+For example, the software FastQC [@andrews2010fastqc] summarizes raw sequencing reads in the FASTQ format.
+QUAST [@gurevich2013quast] is designed to evaluate genome assemblies by summarizing it and optionally aggregating summaries from other software.
 The trimmomatic [@bolger2014trimmomatic] attempts to remove nucleotides from low quality Illumina sequencing data.
 In order to infer whether gene space has been well assembled BUSCO [@simao2015busco] queries for conserved genes from several databases throughout the phylogenetic tree of life.
 Blobtools [@laetsch2017blobtools] uses GC content and read coverage to attempt to improve assemblies.
 Some of these tools are not specific to FASTA or FASTQ format data, or may be a part of a more computationally expensive analysis that may be undesirable to repeat if only a summary is desired.
-A solution specific to data in the FASTA and FASTQ format that provides several summaries of the data, examples of the presentation of these summaries, as well as the flexibility to allow the end user to customize these summaries would aid the management of genomics projects as well as the presentation of this information in genome announcements and pangenomic investigations.
+Each of these tools does a fantastic job at what it was designed for.
+We feel that a solution specific to data in the FASTA and FASTQ format that is simple, so that it scales to multiple genomes, and includes elements that are implemented in high level code, so that they are easily customizable, would aid the management of genomics projects.
 
 
 <div custom-style=DivCol>
@@ -80,11 +82,12 @@ Column 1: Software name. Column 2: Author.
 
 ```{r, echo=FALSE}
 my_dat <- data.frame(
-  Name = c("FastQC", "trimmomatic", "BUSCO", "Blobtools"),
-  Author = c("Andrews et al. 2010", "Bolger, Lohse and Usadel 2014", " Simão et al. 2015", "Laetsch and Blaxter 2017")
+  Name = c("FastQC", "trimmomatic", "BUSCO", "Blobtools", "QUAST"),
+  Author = c("Andrews et al. 2010", "Bolger, Lohse and Usadel 2014", " Simão et al. 2015", "Laetsch and Blaxter 2017", "Gurevich et al. 2013")
 )
+my_dat <- my_dat[sort.int(my_dat$Name, index.return = TRUE)$ix, ]
 
-knitr::kable(my_dat, caption = "**Table 1.** Existing software that describe the contents of FASTA/Q files.")
+knitr::kable(my_dat, caption = "**Table 1.** Existing software that describe the contents of FASTA/Q files.", row.names = FALSE)
 ```
 
 
@@ -96,7 +99,7 @@ Perhaps this needs some sort of clarification?
 
 
 We present nuccomp, a suite of tools intended to summarize the contents of FASTA and FASTQ format files that contain nucleotides (Table 2).
-These tools consist of python scripts that summarize FASTA and FASTQ files in a tabular format and an RMarkdown script that numerically and graphically summarizes the tabular data.
+These tools consist of python scripts that summarize FASTA and FASTQ files in tabular format that is easy for other software to import, and an RMarkdown script that numerically and graphically summarizes the tabular data.
 Together, these scripts provide a rapid way to summarize the contents of FASTA and FASTQ files and presents this information in publication quality graphics, as well as reports for internal use.
 The use of RMarkdown not only provides an example of how to present the data in a visual format, it also provides a working example for how the end user can customize its presentation.
 
@@ -109,7 +112,7 @@ However, RNA-Seq is 'DNA' sequencing, is that the question?
 </div>
 
 
-The GitHub repository nuccomp (https://github.com/knausb/nuccomp) contains two python scripts, an RMarkdown document (Table 2), example data, and example output.
+The GitHub repository nuccomp [@knausb2023] contains two python scripts, an RMarkdown document (Table 2), example data, and example output.
 The python scripts takes a FASTA or FASTQ format file, consisting of DNA nucleotides, as input.
 The outputs from the python scripts are summarized graphically and presented as formatted tables using the RMarkdown document.
 The RMarkdown is compiled, or 'knit', to an html document suitable for internal reports.
@@ -128,8 +131,7 @@ knitr::kable(my_tab, caption = "**Table 2.** Scripts included in nuccomp, the la
 ```
 
 
-
-The python script nuccomp.py takes as input a FASTA or FASQ format file, which may or may not be compressed with gzip, as input.
+The python script nuccomp.py takes as input a FASTA or FASTQ format file, which may or may not be compressed with gzip, as input.
 The python (≥ 3.8.2) script uses biopython (≥ 1.79; @cock2009biopython) to read in the file and to collect the length, as well as the (case sensitive) number of nucleotides and IUPAC ambiguous nucleotides.
 This information is output to a comma delimited text file.
 This script may be run independently or may be called from the RMarkdown document.
@@ -146,9 +148,11 @@ Add formula for scaling and centering.
 
 The python script motif_counter.py divides each sequence in a FASTA or FASTQ file into windows of user specified length and then counts the number of motifs found with a regular expression within each window.
 The python (≥ 3.8.2) script uses biopython (≥ 1.79; @cock2009biopython) to read in the file and custom python to divide each sequence into windows and count the number of times a regular expression is matched within each window.
-This count is converted to a rate by dividing each count by it's window size, scaled by subtracting the minimum and dividing by the maximum (after subtracting the minimum).
+The default regular expression is 'CG', as an attempt to quantify methylation potential, but can be modified by users who are familiar with regular expressions.
+This count is converted to a rate by dividing each count by it's window size.
+This count is also scaled by subtracting the minimum and dividing by the maximum (after subtracting the minimum) and inverting by taking one and subtracting the scaled count (see equation).
 Creating a rate (motifs per position) helps to accommodate the last window of each sequence which is expected to be smaller than the user specified window size.
-This scaled rate is then inverted by subtracting it from one and is reported in the BED format output as column 5, the 'score'.
+This scaled rate is reported in the BED format output as column 5, the 'score' [@hts-specs].
 The coordinates for each window, the count, and score are reported in a BED format file.
 
 
@@ -159,7 +163,7 @@ scale = 1 - scale
 $$
 
 
-The RMarkdown [@rmarkdown] document uses R [@R] and reads in the comma delimited text file resulting from nuccomp.py and the BED file from motif_counter.py and summarizes them.
+The RMarkdown [@rmarkdown] document uses R [@R] and reads in the comma delimited text file resulting from nuccomp.py and the BED file from motif_counter.py to summarize them.
 Graphical summaries are made using ggplot2 [@ggplot2] and ggpubr [@ggpubr] and consist of histograms of A, T, G, and C content, length of sequences, IUPAC ambiguity nucleotides (excluding A, C, G, T, and N), undetermined nucleotides (N), as well as a sanity check for unexpected characters.
 Numerical summaries are made as well such as the total number of nucleotides, N50, the number of sequences, and the median for these histograms.
 Examples are provided on the GitHub repository to demonstrate how to output these graphical summaries to \*.png format and publication quality \*.tiff format.
@@ -173,11 +177,11 @@ The repository nuccomp is currently available on GitHub [@knausb2023].
 
 ## Results
 
-The python script "nuccomp.py" processed the 12 Mbp yeast genome, consisting of 17 sequences, in less than 1 second (large genomes consisting of more nucleotides and/or sequences should require more time).
+The python script nuccomp.py processed the 12 Mbp yeast genome, consisting of 17 sequences, in less than 1 second (large genomes consisting of more nucleotides and/or sequences should require more time).
 This resulted in a comma delimited text file consisting of 18 rows, a header describing the column contents, and a row for each of the 17 sequences in the S288C genome.
 This file included a column for the 'ID' of each sequence, it's length, and the number of each nucleotide (A, C, G, T) as well as each ambiguous nucleotide all in a case sensitive manner (to accommodate masking).
 The python script "motif_counter.py" summarized the yeast genome into windows into counts of the motif 'CG' and reported this to a BED format file.
-The RMarkdown script ```nuccomp.Rmd``` read in this these data, demonstrated the creation of individual plots from output of the python scripts, including a publication quality composite plot summarizing multiple data features.
+The RMarkdown script "nuccomp.Rmd" read in this these data, demonstrated the creation of individual plots from output of the python scripts, including a publication quality composite plot summarizing multiple data features.
 An example of this plot is presented in Figure 1.
 Execution of the RMarkdown script, including checks for dependencies, calls to the python scripts, and the rendering of graphics, required less than 10 seconds.
 
@@ -205,17 +209,12 @@ Benchmarking results can be found at the GitHub repository (@knausb2023) in the 
 
 ## Discussion
 
-<div custom-style=DivCol>
-Overly wordy intro.
-</div>
 
-A genome consists of double stranded DNA packaged into chromosomes.
-The DNA contains features such as protein-coding genes, transposable elements, and various types of simple sequence repeats.
 Current genome sequencing technology reports this DNA in a text file organized in the FASTA or FASTQ format [@cock2010sanger].
 Genomics projects therefore involve managing FASTA and FASTQ files.
 Part of this management involves summarizing the contents of these large files in order to validate their contents as well as aid in project organization.
 This entails collection of summaries of the FASTA files from the various workflow outputs.
-A significant amount of project time is invested in determining which summaries are available from which output and how to present this information.
+A significant amount of project time may be invested in determining which summaries are available from which output and how to present this information.
 
 
 The use of an RMarkdown document facilitates the summary of the data and also provides a high level code example for the summaries made.
@@ -234,30 +233,7 @@ This simplicity also lend itself to other applications.
 For example, we've begun using nuccomp.py to summarize long-read (PacBio) sequencing libraries after receiving them from sequencing centers and prior to assembly as a form of quality control.
 Users interested in a rich set of reports may enjoy QUAST, while users interested in simplicity and R code that they can modify may enjoy nuccomp.
 We hope many users will appreciate both options for their respective strengths.
-
-
-<div custom-style=DivCol>
-KV: Not sure what the intended message is here. There appear to be several ideas mixed together. Raw data fastq files from sequencing aren't by themselves "benchmarks of quality." Raw data downloaded from a data repository like the NCBI SRA can be vetted with nuccomp. 
-</div>
-
-
-<div custom-style=DivCol>
-BK: Trying too hard to finish strong?
-
-The study of genomics could currently be described as the study of biological sequence files in the FASTA and FASTQ formats.
-These files are acquired through data centers and sequencing consortia as benchmarks of quality and to build upon our existing knowledge base.
-These files are also  generated at multiple steps during research projects, such as receiving sequence libraries from a sequencing center, the result of assembling these sequences, as well as any results from attempts at scaffolding these assemblies into more contiguous representations of chromosomes and genomes.
-Through providing nuccomp as a high level solution, using RMarkdown, it is hoped that this will empower investigators to not only prepare reports and summaries as demonstrated here, but will also provide a foundation that inspires users to innovate their own representations of genomic information.
-</div>
-
-
-The study of genomics could currently be described as the study of biological sequence files in the FASTA and FASTQ formats.
-These investigations begin with the receipt of these files from data centers or collaborators.
-This presents a need to rapidly determine the contents of these files.
-We present the repository nuccomp which includes software to rapidly summarized the content of FASTA and FASTQ files.
-These summaries are further processed in RMarkdown as graphical presentations and with the hope that the use of RMarkdown will inspire users to customize these reports.
-The use of nuccomp is expected to facilitate investigations into individual genomes, such as genome announcement style investigations, as well as scale to many genomes, such as pan-genomic projects.
-
+And we hope that users searching for a simple and customizable way of summarizing FASTA and FASTQ data will consider nuccomp.
 
 
 ## Acknowledgements
