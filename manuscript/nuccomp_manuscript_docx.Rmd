@@ -17,24 +17,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
----
-
-**To do:**
-
-- Bioinformatics (impact factor: 6.931) - Application Notes 
-  - https://academic.oup.com/bioinformatics/pages/instructions_for_authors
-  - up to 4 pages; this is approx. 2,600 words or 2,000 words plus one figure 
-- export to word?
-
-- Cover letter
-- 350 dpi tif figures; single (86 mm) or double (178 mm) column width
-- second version of your figures at low-resolution for use in the review 
-- Applications notes: Title page, Short Structured Abstract, Text.
-- References: The journal follows Oxford SCIMED style.
-
----
-
-
 ## Abstract
 
 
@@ -54,10 +36,6 @@ Keywords: FASTA, FASTQ, genome announcement, nucleotide composition, quality con
 
 ## Introduction
 
-<div custom-style=DivCol>
-This paragraph is a great summary! This could be the first paragraph in the intro!
-</div>
-
 Genomic investigations typically begin with the management of FASTA and FASTQ format files, either produced by the investigator or aggregated from existing databases.
 The repository nuccomp consists of a suite of tools that utilizes the speed of python and Biopython [@cock2009biopython] with the graphics and statistical resources of R [@R] combined with RMarkdown [@allaire_etal2021] for report generation to summarize the contents of FASTA and FASTQ files containing nucleotides.
 The repository nuccomp provides a rapid solution to help inventory the contents of these files and presents this information in graphical and tabular forms.
@@ -74,12 +52,6 @@ Each of these tools does a fantastic job at what it was designed for.
 We feel that a solution specific to data in the FASTA and FASTQ format that is simple, so that it scales to multiple genomes, and includes elements that are implemented in high level code, so that they are easily customizable, would aid the management of genomics projects.
 
 
-<div custom-style=DivCol>
-Do we need a table of tools?
-Column 1: Software name. Column 2: Author.
-</div>
-
-
 ```{r, echo=FALSE}
 my_dat <- data.frame(
   Name = c("FastQC", "trimmomatic", "BUSCO", "Blobtools", "QUAST"),
@@ -91,13 +63,6 @@ knitr::kable(my_dat, caption = "**Table 1.** Existing software that describe the
 ```
 
 
-<div custom-style=DivCol>
-Is nuccomp a 'suite' of tools? 
-There are two python scripts (nuccomp.py, motif_counter.py) which are called by an RMarkdown document.
-Perhaps this needs some sort of clarification?
-</div>
-
-
 We present nuccomp, a suite of tools intended to summarize the contents of FASTA and FASTQ format files that contain nucleotides (Table 2).
 These tools consist of python scripts that summarize FASTA and FASTQ files in tabular format that is easy for other software to import, and an RMarkdown script that numerically and graphically summarizes the tabular data.
 Together, these scripts provide a rapid way to summarize the contents of FASTA and FASTQ files and presents this information in publication quality graphics, as well as reports for internal use.
@@ -105,12 +70,6 @@ The use of RMarkdown not only provides an example of how to present the data in 
 
 
 ## Methods
-
-<div custom-style=DivCol>
-DNA? No RNA? Amino acids? These are different 'alphabets' that would need to be handled differently.
-However, RNA-Seq is 'DNA' sequencing, is that the question?
-</div>
-
 
 The GitHub repository nuccomp [@knausb2023] contains two python scripts, an RMarkdown document (Table 2), example data, and example output.
 The python scripts takes a FASTA or FASTQ format file, consisting of DNA nucleotides, as input.
@@ -135,15 +94,6 @@ The python script nuccomp.py takes as input a FASTA or FASTQ format file, which 
 The python (≥ 3.8.2) script uses biopython (≥ 1.79; @cock2009biopython) to read in the file and to collect the length, as well as the (case sensitive) number of nucleotides and IUPAC ambiguous nucleotides.
 This information is output to a comma delimited text file.
 This script may be run independently or may be called from the RMarkdown document.
-
-
-<div custom-style=DivCol>
-Clarify that motif_counter.py queries for a regex motif.
-</div>
-
-<div custom-style=DivCol>
-Add formula for scaling and centering.
-</div>
 
 
 The python script motif_counter.py divides each sequence in a FASTA or FASTQ file into windows of user specified length and then counts the number of motifs found with a regular expression within each window.
@@ -197,10 +147,6 @@ Execution of the RMarkdown script, including checks for dependencies, calls to t
 knitr::include_graphics("../S288C_reference_sequence_R64-2-1_20150113.png")
 ```
 
-
-<div custom-style=DivCol>
-Methods should be past tense???
-</div>
 
 In order to demonstrate the convenience of nuccomp, it was tested on several publicly available genomes.
 The potato (*Solanum tuberosum*) genome, with a size of 705 Mbp and an N50 of 1.3 Mbp, required 46.6 seconds.
