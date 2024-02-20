@@ -116,7 +116,7 @@ The GitHub repository nuccomp [@knausb2023] contains two python scripts, an RMar
 The python scripts takes a FASTA or FASTQ format file, consisting of DNA nucleotides, as input.
 The outputs from the python scripts are summarized graphically and presented as formatted tables using the RMarkdown document.
 The RMarkdown is compiled, or 'knit', to an html document suitable for internal reports.
-Output can also be compiled to other formats supported by RMarkdown (html, pdf, docx; @rmarkdown) and ggplot (\*.png, \*.tiff, and other formats; @ggplot2).
+Documents can also be compiled to html, pdf, or docx formats supported by RMarkdown [@rmarkdown] and graphics can be produced in png and tiff formats supported by R [@R; @ggplot2].
 
 
 ```{r, echo=FALSE}
@@ -157,8 +157,15 @@ The coordinates for each window, the count, and score are reported in a BED form
 
 
 $$
-scale = x-min(x)  \\
-scale = scale / max(scale) \\
+scale = count - min(count)
+$$
+
+
+$$
+scale = scale / max(scale)
+$$
+
+$$
 scale = 1 - scale
 $$
 
@@ -210,14 +217,14 @@ Benchmarking results can be found at the GitHub repository (@knausb2023) in the 
 ## Discussion
 
 
-Current genome sequencing technology reports this DNA in a text file organized in the FASTA or FASTQ format [@cock2010sanger].
+Current genome sequencing technology outputs DNA in a text-based FASTA or FASTQ file format [@cock2010sanger].
 Genomics projects therefore involve managing FASTA and FASTQ files.
 Part of this management involves summarizing the contents of these large files in order to validate their contents as well as aid in project organization.
-This entails collection of summaries of the FASTA files from the various workflow outputs.
-A significant amount of project time may be invested in determining which summaries are available from which output and how to present this information.
+This entails collection of summaries of the FASTA files from various bioinformatic tools.
+A significant amount of project time may be invested in determining which summaries are available from different tools and how to present this information.
 
 
-The use of an RMarkdown document facilitates the summary of the data and also provides a high level code example for the summaries made.
+The use of nuccomp facilitates the summary of DNA data and also provides a high level code example for the summaries.
 This RMarkdown document is a text file that is compiled, or 'knit', into several formats, such as \*html or \*pdf.
 The text file includes text as well as code chunks, as an attempt at literate programming.
 This means that the N50 summary statistic in the report includes the code used to generate the summary, providing transparency and educational value.
