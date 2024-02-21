@@ -179,7 +179,7 @@ Because the summary table produced by nuccomp is saved as a text file, users hav
 It is hoped that providing this functionality will allow users to create their own innovations derived from this foundation.
 
 
-The existing software QUAST [@gurevich2013quast] similarly summarizes assemblies by making it's own summaries as well as aggregating information from other software.
+The existing software QUAST [@gurevich2013quast] similarly makes it's own summaries as well as aggregating information from other software.
 This makes it a feature rich option relative to nuccomp; however this richness comes with a performance cost.
 The simplicity of nuccomp lends itself to efficient execution time.
 This simplicity also lend itself to other applications.
