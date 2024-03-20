@@ -1,0 +1,42 @@
+---
+title: "Cover letter"
+output: html_document
+date: "`r format(Sys.time(), '%Y, %B %d')`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Editorial Board Bioinformatics
+
+Dear Editors,
+
+We are submitting the article ‘nuccomp: rapidly summarize the contents of FASTA and FASTQ files containing nucleotides’ for publication in the journal Bioinformatics. The software described therein rapidly summarizes the contents of biological sequence data in the FASTA and FASTQ formats. Currently, projects ranging from genome announcements to pangenomic projects rely on the management of sequence data in the FASTA and FASTQ formats. Our software accomplishes this essential task rapidly and summarizes this information graphically in a high-level language, R, which we hope will encourage learning of the implemented methods as well as customization by the end user.
+
+
+We confirm that this work is original and has not been published elsewhere, and is not currently being considered for publication elsewhere.
+
+
+We have no conflicts of interest to disclose.
+
+
+Thank you for your consideration,
+
+
+Brian J. Knaus, Ph.D.
+Faculty Research Associate
+brian.knaus@oregonstate.edu
+
+and
+
+Kelly J. Vining, Ph.D.
+Associate Professor
+Kelly.Vining@oregonstate.edu
+
+ 
+Department of Horticulture
+Oregon State University
+4017 Agriculture and Life Sciences Building
+Corvallis, OR 97331
+
