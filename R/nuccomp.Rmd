@@ -781,6 +781,9 @@ genome_df <- data.frame(matrix(
 genome_df <- as.data.frame(genome_df)
 names(genome_df) <- c("Category", "Value")
 genome_df$Value <- as.numeric(genome_df$Value)
+genome_df$Value <- format(genome_df$Value, 
+                          digits = 3, nsmall = 3L, 
+                          scientific = FALSE, big.mark = ",")
 
 proc_time <- Sys.time() - st1
 genome_df <- rbind(genome_df, c("Processing time", format( proc_time, units = "mins")))
