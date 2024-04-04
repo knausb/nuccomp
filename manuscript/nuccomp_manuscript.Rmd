@@ -1,7 +1,5 @@
 ---
 title: "nuccomp: rapidly summarize the contents of FASTA and FASTQ files containing nucleotides"
-author: "Brian J. Knaus and Kelly J. Vining"
-date: "`r format(Sys.time(), '%Y, %B %d')`"
 output: 
   word_document:
     reference_docx: style_rmd_to_docx.docx
@@ -15,6 +13,20 @@ editor_options:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+Brian J. Knaus    
+Corresponding author    
+brian.knaus@oregonstate.edu    
+Department of Horticulture    
+Oregon State University    
+4017 Agriculture and Life Sciences Building    
+Corvallis, OR 97331    
+
+and
+
+Kelly J. Vining    
+Department of Horticulture    
+Oregon State University    
 
 
 ## Abstract
