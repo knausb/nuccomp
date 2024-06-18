@@ -1,0 +1,393 @@
+---
+title: "Comparisons"
+author: "Insert authors here"
+date: "`r format(Sys.time(), '%Y, %B %d')`"
+output:
+  html_document:
+    toc: true
+    code_folding: hide
+editor_options: 
+  chunk_output_type: console
+bibliography: ../manuscript/references.bib
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(fig.align = "center")
+knitr::opts_chunk$set(fig.height = 4)
+knitr::opts_chunk$set(fig.width = 4)
+t1 <- Sys.time()
+```
+
+
+
+Criteria
+
+- Published
+- Requires compilation
+- Platforms / language
+- Speed
+- Works on FAST[AQ], gzipped
+
+
+## Test data
+
+The *Arabidopsis thaliana* genome (GCF_000001735.4_TAIR10.1_genomic.fna.gz) consists of 119,668,634 nucleotides arranged into 7 sequences with an N50 of 23,459,830 bp.
+These 7 sequences include the mitochondrion (367,808 bp) and the chloroplast (154,478 bp).
+
+
+```{r}
+my_test_file <- "arab.fna.gz"
+my_test_file2 <- sub("\\.gz$", "", my_test_file)
+
+if( !file.exists(my_test_file) ){
+  download.file("https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/735/GCF_000001735.4_TAIR10.1/GCF_000001735.4_TAIR10.1_genomic.fna.gz", destfile = my_test_file, method = "curl")
+  my_cmd <- paste("gunzip -c ", my_test_file, " > ", my_test_file2, sep = "")
+  #system(my_cmd)
+}
+
+```
+
+
+
+```{r}
+summ_df <- data.frame( matrix(nrow = 8, ncol = 6) )
+colnames(summ_df) <- c("Compiled", "Gzip", "Tabular output", "Sequence summary", "Graphics", "Time")
+rownames(summ_df) <- c("nuccomp.py", "Quast", "SeqKit", 
+                       "Seqstats", "sequence-stats",
+                       "nuccomp.Rmd", "Quast_plots", "SeqKit_watch")
+
+summ_df['nuccomp.py', 'Compiled'] <- "No"
+summ_df['nuccomp.py', 'Gzip'] <- "Yes"
+summ_df['nuccomp.py', 'Tabular output'] <- "Yes"
+summ_df['nuccomp.py', 'Sequence summary'] <- "Yes"
+summ_df['nuccomp.py', 'Graphics'] <- "No"
+
+summ_df['nuccomp.Rmd', 'Compiled'] <- "No"
+summ_df['nuccomp.Rmd', 'Gzip'] <- "Yes"
+summ_df['nuccomp.Rmd', 'Tabular output'] <- "Yes"
+summ_df['nuccomp.Rmd', 'Sequence summary'] <- "Yes"
+summ_df['nuccomp.Rmd', 'Graphics'] <- "Yes"
+
+summ_df['Quast', 'Compiled'] <- "No"
+summ_df['Quast', 'Gzip'] <- "Yes"
+summ_df['Quast', 'Tabular output'] <- "Yes"
+summ_df['Quast', 'Sequence summary'] <- "No"
+summ_df['Quast', 'Graphics'] <- "No"
+
+summ_df['Quast_plots', 'Compiled'] <- "No"
+summ_df['Quast_plots', 'Gzip'] <- "Yes"
+summ_df['Quast_plots', 'Tabular output'] <- "Yes"
+summ_df['Quast_plots', 'Sequence summary'] <- "No"
+summ_df['Quast_plots', 'Graphics'] <- "Yes"
+
+summ_df['SeqKit', 'Compiled'] <- "No"
+summ_df['SeqKit', 'Gzip'] <- "Yes"
+summ_df['SeqKit', 'Tabular output'] <- "Yes"
+summ_df['SeqKit', 'Sequence summary'] <- "No"
+summ_df['SeqKit', 'Graphics'] <- "No"
+
+summ_df['SeqKit_watch', 'Compiled'] <- "No"
+summ_df['SeqKit_watch', 'Gzip'] <- "Yes"
+summ_df['SeqKit_watch', 'Tabular output'] <- "No"
+summ_df['SeqKit_watch', 'Sequence summary'] <- "No"
+summ_df['SeqKit_watch', 'Graphics'] <- "Yes"
+
+```
+
+
+
+## nuccomp.py
+
+Versioning: https://github.com/knausb/nuccomp
+
+Website: https://github.com/knausb/nuccomp
+
+Platform: Unix, Windows
+
+```{r}
+my_cmd <- paste("~/gits/nuccomp/python/nuccomp.py ", my_test_file, "", sep = "")
+my_time <- system.time( system(my_cmd) )
+#my_time
+
+my_nuccomp <- read.csv("arab_nuccomp.csv")
+knitr::kable(my_nuccomp[, 1:8], caption = "Example output produced by nuccomp.py.")
+
+summ_df['nuccomp.py', 'Time'] <- my_time['elapsed']
+#summ_df
+
+```
+
+
+
+```{r}
+file.remove("./nuccomp.Rmd")
+file.copy(from = "../R/nuccomp.Rmd", to = "./nuccomp.Rmd")
+
+my_cmd <- paste("perl -pi -e 's/my_infile <- \"S288C_reference_sequence_R64-2-1_20150113.fsa.gz\"/my_infile <- \"", my_test_file, "\"/g' nuccomp.Rmd", sep = "")
+system( my_cmd )
+
+my_cmd <- "Rscript -e \"rmarkdown::render('nuccomp.Rmd')\""
+my_time <- system.time( system( my_cmd ) )
+
+#rmarkdown::render('nuccomp.Rmd')
+#my_time <- system.time( rmarkdown::render('nuccomp.Rmd') )
+summ_df['nuccomp.Rmd', 'Time'] <- my_time['elapsed']
+
+```
+
+
+
+
+## Quast
+
+Citation: @gurevich2013quast
+
+Versioning: https://github.com/ablab/quast/
+
+Website: https://quast.sourceforge.net/docs/manual.html
+
+Platform: Unix
+
+
+
+```{r}
+my_cmd <- paste("~/gits/quast/quast.py -v", sep = "")
+my_time <- system.time( system(my_cmd) )
+
+my_cmd <- paste("~/gits/quast/quast.py --threads 1 --large --silent --no-plots --no-html ", my_test_file, sep = "")
+my_time <- system.time( system(my_cmd) )
+
+summ_df['Quast', 'Time'] <- my_time['elapsed']
+#summ_df
+
+
+my_quast <- read.table("quast_results/results_2024_06_13_02_07_08/report.tsv", sep = "\t", header = T)
+knitr::kable(my_quast, format.args = list(big.mark = ","), caption = "Example output from file produced by Quast.")
+
+```
+
+
+```{r}
+my_cmd <- paste("~/gits/quast/quast.py -v", sep = "")
+my_time <- system.time( system(my_cmd) )
+
+my_cmd <- paste("~/gits/quast/quast.py --threads 1 --large --silent ", my_test_file, sep = "")
+my_time <- system.time( system(my_cmd) )
+
+summ_df['Quast_plots', 'Time'] <- my_time['elapsed']
+#summ_df
+
+my_quast <- read.table("quast_results/results_2024_06_13_02_07_08/report.tsv", sep = "\t", header = T)
+knitr::kable(my_quast, format.args = list(big.mark = ","), caption = "Example output from file produced by Quast.")
+```
+
+
+
+
+## SeqKit
+
+Citation: @shen2024seqkit2
+
+Versioning: https://github.com/shenwei356/seqkit
+
+Website: https://bioinf.shenwei.me/seqkit/
+
+Platform: Unix, Windows
+
+
+Output is to standard out, but includes a '--tabular' flag I used to read directly into R, but could also be redirected to a file on platforms that support this.
+
+Includes modules that produce graphics.
+
+
+```{r}
+my_cmd <- "~/bin/seqkit/seqkit version"
+my_time <- system.time( system(my_cmd) )
+
+
+#my_cmd <- paste("~/bin/seqkit/seqkit seq ", my_test_file, " --out-file seqkit_out.txt stats", sep = "")
+my_cmd <- paste("~/bin/seqkit/seqkit stats ", my_test_file, " --tabular ", sep = "")
+my_time <- system.time( SKout <- system(my_cmd, intern = TRUE) )
+#my_time
+
+#print(SKout)
+SKout <- read.table(text=SKout, sep = "\t", header = T)
+knitr::kable(SKout, format.args = list(big.mark = ","))
+
+
+summ_df['SeqKit', 'Time'] <- my_time['elapsed']
+#summ_df
+
+# my_cmd <- paste("~/bin/seqkit/seqkit sum ", my_test_file, "", sep = "")
+# my_time <- system.time( SKout <- system(my_cmd, intern = TRUE) )
+# my_time
+```
+
+
+```{r}
+my_cmd <- paste("~/bin/seqkit/seqkit watch --bins 7 --fields ReadLen ", my_test_file, " -O len.png", sep = "")
+my_time <- system.time( SKout <- system(my_cmd, intern = TRUE) )
+#my_time
+summ_df['SeqKit_watch', 'Time'] <- my_time['elapsed']
+
+```
+
+
+
+
+
+
+## Seqstats
+
+
+Citation: none
+
+Versioning: https://github.com/clwgg/seqstats
+
+Website: https://github.com/clwgg/seqstats
+
+Platform: Unix
+
+
+C/make
+
+Requires compilation and make.
+
+```
+$ make
+make target 'klib/kseq.h', needed
+```
+
+```
+$ make
+make: *** No rule to make target 'klib/kseq.h', needed by 'seqstats'.  Stop.
+```
+
+Writes to standard out.
+I was able to capture this but do not consider it 'machine friendly'.
+The 'N 50' record included '\t\t' where other records included '\t'.
+This may be easy for some users to sanitize, but may present a barier to use to other users.
+
+
+```{r}
+#my_cmd <- "~/gits/seqstats/seqstats"
+
+my_cmd <- paste("~/gits/seqstats/seqstats ", my_test_file, "", sep = "")
+my_time <- system.time( seqs_out <- system(my_cmd, intern = TRUE) )
+#my_time
+
+summ_df['Seqstats', 'Compiled'] <- "Yes"
+summ_df['Seqstats', 'Gzip'] <- "Yes"
+summ_df['Seqstats', 'Tabular output'] <- "No"
+summ_df['Seqstats', 'Sequence summary'] <- "No"
+summ_df['Seqstats', 'Graphics'] <- "No"
+summ_df['Seqstats', 'Time'] <- my_time['elapsed']
+
+seqs_out <- sub("\t\t", "\t", seqs_out)
+seqs_out <- read.table( text = seqs_out, sep = "\t", header = F)
+#read.table( text = seqs_out, sep = "\t", header = F)
+
+knitr::kable(seqs_out, format.args = list(big.mark = ","), caption = "Example output produced by seqstats.")
+
+```
+
+
+
+
+
+## seqstats
+
+https://github.com/drostlab/seqstats
+
+No citation.
+
+
+
+## sequence-stats
+
+Citation: none
+
+Versioning: https://github.com/raymondkiu/sequence-stats
+
+Website: https://github.com/raymondkiu/sequence-stats
+
+Platform: Unix
+
+Does not handle gzipped data.
+
+Output sent to standard out was successfully captured in R and treated as colon delimited tabular data.
+
+Uses awk and BASH.
+
+
+```{r}
+
+my_cmd <- "~/gits/sequence-stats/src/sequence-stats -v"
+my_time <- system.time( system(my_cmd) )
+
+
+my_cmd <- paste("~/gits/sequence-stats/src/sequence-stats -a ", my_test_file2, "", sep = "")
+my_time <- system.time( my_sstat <- system(my_cmd, intern = TRUE) )
+#my_time
+my_sstat <- read.table(text = my_sstat, sep  =":", header = TRUE)
+knitr::kable(my_sstat, format.args = list(big.mark=",", scientific=F))
+
+my_cmd <- paste("~/gits/sequence-stats/src/sequence-stats -c ", my_test_file2, "", sep = "")
+my_time2 <- system.time( my_sstat <- system(my_cmd, intern = TRUE) )
+my_sstat <- read.table(text = my_sstat, sep  ="\t", header = FALSE)
+knitr::kable(my_sstat, format.args = list(big.mark=",", scientific=F))
+#
+my_time <- my_time + my_time2
+
+my_cmd <- paste("~/gits/sequence-stats/src/sequence-stats -b ", my_test_file2, "", sep = "")
+#my_time <- system.time( system(my_cmd) )
+#my_time
+#print(my_time[1:3])
+#my_time['elapsed']
+
+summ_df['sequence-stats', 'Compiled'] <- "No"
+summ_df['sequence-stats', 'Gzip'] <- "No"
+summ_df['sequence-stats', 'Tabular output'] <- "Yes"
+summ_df['sequence-stats', 'Sequence summary'] <- "Yes"
+summ_df['sequence-stats', 'Graphics'] <- "No"
+summ_df['sequence-stats', 'Time'] <- my_time['elapsed']
+#summ_df
+```
+
+
+## Summary
+
+
+```{r}
+names(summ_df)[ names(summ_df) == "Time" ] <- "Seconds"
+knitr::kable(summ_df)
+```
+
+
+
+## Clean up
+
+
+```{r}
+
+# if( file.exists(my_test_file) ){
+#   file.remove(my_test_file)
+# }
+
+```
+
+
+```{r}
+t99 <- Sys.time()
+t99 - t1
+```
+
+```{r}
+sessionInfo()
+```
+
+
+## References
