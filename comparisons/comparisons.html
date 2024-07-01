@@ -461,7 +461,7 @@ display: none;
 
 <h1 class="title toc-ignore">Comparisons</h1>
 <h4 class="author">Insert authors here</h4>
-<h4 class="date">2024, June 14</h4>
+<h4 class="date">2024, June 27</h4>
 
 </div>
 
@@ -504,7 +504,11 @@ if( !file.exists(my_test_file) ){
   #system(my_cmd)
 }</code></pre>
 <pre class="r"><code>summ_df &lt;- data.frame( matrix(nrow = 8, ncol = 6) )
-colnames(summ_df) &lt;- c(&quot;Compiled&quot;, &quot;Gzip&quot;, &quot;Tabular output&quot;, &quot;Sequence summary&quot;, &quot;Graphics&quot;, &quot;Time&quot;)
+colnames(summ_df) &lt;- c(&quot;Compiled&quot;, 
+                       #&quot;FAST[AQ]&quot;,
+                       &quot;Gzip&quot;, 
+                       &quot;Tabular output&quot;,
+                       &quot;Sequence summary&quot;, &quot;Graphics&quot;, &quot;Time&quot;)
 rownames(summ_df) &lt;- c(&quot;nuccomp.py&quot;, &quot;Quast&quot;, &quot;SeqKit&quot;, 
                        &quot;Seqstats&quot;, &quot;sequence-stats&quot;,
                        &quot;nuccomp.Rmd&quot;, &quot;Quast_plots&quot;, &quot;SeqKit_watch&quot;)
@@ -995,7 +999,6 @@ treated as colon delimited tabular data.</p>
 <pre class="r"><code>my_cmd &lt;- &quot;~/gits/sequence-stats/src/sequence-stats -v&quot;
 my_time &lt;- system.time( system(my_cmd) )
 
-
 my_cmd &lt;- paste(&quot;~/gits/sequence-stats/src/sequence-stats -a &quot;, my_test_file2, &quot;&quot;, sep = &quot;&quot;)
 my_time &lt;- system.time( my_sstat &lt;- system(my_cmd, intern = TRUE) )
 #my_time
@@ -1170,7 +1173,7 @@ knitr::kable(summ_df)</code></pre>
 <td align="left">Yes</td>
 <td align="left">Yes</td>
 <td align="left">No</td>
-<td align="right">4.238</td>
+<td align="right">3.989</td>
 </tr>
 <tr class="even">
 <td align="left">Quast</td>
@@ -1179,7 +1182,7 @@ knitr::kable(summ_df)</code></pre>
 <td align="left">Yes</td>
 <td align="left">No</td>
 <td align="left">No</td>
-<td align="right">10.620</td>
+<td align="right">9.766</td>
 </tr>
 <tr class="odd">
 <td align="left">SeqKit</td>
@@ -1188,7 +1191,7 @@ knitr::kable(summ_df)</code></pre>
 <td align="left">Yes</td>
 <td align="left">No</td>
 <td align="left">No</td>
-<td align="right">0.904</td>
+<td align="right">0.880</td>
 </tr>
 <tr class="even">
 <td align="left">Seqstats</td>
@@ -1197,7 +1200,7 @@ knitr::kable(summ_df)</code></pre>
 <td align="left">No</td>
 <td align="left">No</td>
 <td align="left">No</td>
-<td align="right">0.595</td>
+<td align="right">0.569</td>
 </tr>
 <tr class="odd">
 <td align="left">sequence-stats</td>
@@ -1206,7 +1209,7 @@ knitr::kable(summ_df)</code></pre>
 <td align="left">Yes</td>
 <td align="left">Yes</td>
 <td align="left">No</td>
-<td align="right">25.339</td>
+<td align="right">23.807</td>
 </tr>
 <tr class="even">
 <td align="left">nuccomp.Rmd</td>
@@ -1215,7 +1218,7 @@ knitr::kable(summ_df)</code></pre>
 <td align="left">Yes</td>
 <td align="left">Yes</td>
 <td align="left">Yes</td>
-<td align="right">9.038</td>
+<td align="right">8.048</td>
 </tr>
 <tr class="odd">
 <td align="left">Quast_plots</td>
@@ -1224,7 +1227,7 @@ knitr::kable(summ_df)</code></pre>
 <td align="left">Yes</td>
 <td align="left">No</td>
 <td align="left">Yes</td>
-<td align="right">13.249</td>
+<td align="right">12.470</td>
 </tr>
 <tr class="even">
 <td align="left">SeqKit_watch</td>
@@ -1233,7 +1236,7 @@ knitr::kable(summ_df)</code></pre>
 <td align="left">No</td>
 <td align="left">No</td>
 <td align="left">Yes</td>
-<td align="right">0.933</td>
+<td align="right">0.912</td>
 </tr>
 </tbody>
 </table>
@@ -1245,7 +1248,7 @@ knitr::kable(summ_df)</code></pre>
 # }</code></pre>
 <pre class="r"><code>t99 &lt;- Sys.time()
 t99 - t1</code></pre>
-<pre><code>## Time difference of 1.11068 mins</code></pre>
+<pre><code>## Time difference of 1.034543 mins</code></pre>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.4.0 (2024-04-24)
 ## Platform: x86_64-pc-linux-gnu

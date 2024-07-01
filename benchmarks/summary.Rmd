@@ -33,6 +33,27 @@ st1 <- Sys.time()
 ```
 
 
+## Download genomes
+
+
+```{r}
+
+my_url <- "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/735/GCF_000001735.4_TAIR10.1/GCF_000001735.4_TAIR10.1_genomic.fna.gz"
+my_destfile = "GCF_000001735.4_TAIR10.1_genomic.fna.gz"
+
+
+my_url <- "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/626/175/GCF_900626175.2_cs10/GCF_900626175.2_cs10_genomic.fna.gz"
+my_destfile = "GCF_900626175.2_cs10_genomic.fna.gz"
+
+
+#download.file(url = my_url, destfile = my_destfile, method = "curl")
+
+list.files()
+
+```
+
+
+
 ## Summarize processed genomes
 
 
@@ -130,6 +151,14 @@ lm1 %>% tidy() %>% kable( caption = "**Table X** Linear model describing the rel
 # coefficients(lm1)[1] + 3099 * coefficients(lm1)[2]
 
 ```
+
+
+## Delete genomes
+
+```{r}
+
+```
+
 
 
 ## Session Info

@@ -54,7 +54,11 @@ if( !file.exists(my_test_file) ){
 
 ```{r}
 summ_df <- data.frame( matrix(nrow = 8, ncol = 6) )
-colnames(summ_df) <- c("Compiled", "Gzip", "Tabular output", "Sequence summary", "Graphics", "Time")
+colnames(summ_df) <- c("Compiled", 
+                       "FAST[AQ]",
+                       "Gzip", 
+                       "Tabular output",
+                       "Sequence summary", "Graphics", "Time")
 rownames(summ_df) <- c("nuccomp.py", "Quast", "SeqKit", 
                        "Seqstats", "sequence-stats",
                        "nuccomp.Rmd", "Quast_plots", "SeqKit_watch")
@@ -327,7 +331,6 @@ Uses awk and BASH.
 
 my_cmd <- "~/gits/sequence-stats/src/sequence-stats -v"
 my_time <- system.time( system(my_cmd) )
-
 
 my_cmd <- paste("~/gits/sequence-stats/src/sequence-stats -a ", my_test_file2, "", sep = "")
 my_time <- system.time( my_sstat <- system(my_cmd, intern = TRUE) )
