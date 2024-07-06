@@ -1,0 +1,9 @@
+"Software","Compiled","FAST.AQ.","Gzip","Tabular.output","Sequence.summary","Graphics","Seconds"
+"nuccomp.py","No",NA,"Yes","Yes","Yes","No",3.974
+"Quast","No",NA,"Yes","Yes","No","No",9.626
+"SeqKit","No",NA,"Yes","Yes","No","No",0.854
+"Seqstats","Yes",NA,"Yes","No","No","No",0.567
+"sequence-stats","No",NA,"No","Yes","Yes","No",23.57
+"nuccomp.Rmd","No",NA,"Yes","Yes","Yes","Yes",7.6
+"Quast_plots","No",NA,"Yes","Yes","No","Yes",12.146
+"SeqKit_watch","No",NA,"Yes","No","No","Yes",0.946

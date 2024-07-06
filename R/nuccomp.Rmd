@@ -5,7 +5,7 @@ date: "`r format(Sys.time(), '%Y, %B %d')`"
 output:
   html_document:
     toc: true
-    code_folding: show
+    code_folding: hide
 editor_options: 
   chunk_output_type: console
 ---
@@ -330,8 +330,8 @@ pl <- pl + geom_vline(xintercept = n50/my_denom, color = "#B22222",
                       linetype="dashed")
 my_ymax <- max(ggplot_build(pl)$data[[1]]$y)/2
 
-pl <- pl + annotate("text", x = my_max/my_denom * 0.95, y = my_ymax,
-                    label = my_text, adj = 1)
+# pl <- pl + annotate("text", x = my_max/my_denom * 0.95, y = my_ymax,
+#                     label = my_text, adj = 1)
 
 #pl <- pl + xlab("Length (Kbp)")
 pl <- pl + xlab("Length (Mbp)")
@@ -719,7 +719,7 @@ If we want to publish this information we may want to summarize this information
 This is illustrated below.
 
 
-```{r, fig.height=8, fig.width=8, fig.cap="**Figure X.** Summary of the assembly (FAST[AQ]) file. **Panel A** summarizes the distribution of sequence lengths in the assembly. **Panel B** summarizes the per sequence distribution for the rate of each nucleotide (case insensitive). **Panel C** is an ideogram (cartoon) for the first sequences where the height of each bar represents the sequence length and the with and color for windows is based on the per window inverse abundance of the 'CG' motif. **Panels D, E, and F** summarize the occurrence of IUPAC ambiguous nucleotides (wWsSmMkKrRyY), any nucelotide (nN), and any unexpected nucleotides on a per sequence/contig basis. **Panel G** presents the relationship between the length of each sequence/contig and it's G/C content."}
+```{r, fig.height=8, fig.width=8, fig.cap="**Figure 1.** Summary of the assembly (FAST[AQ]) file. **Panel A** summarizes the distribution of sequence lengths in the assembly. **Panel B** summarizes the per sequence distribution for the rate of each nucleotide (case insensitive). **Panel C** is an ideogram (cartoon) for the first sequences where the height of each bar represents the sequence length and the with and color for windows is based on the per window inverse abundance of the 'CG' motif. **Panels D, E, and F** summarize the occurrence of IUPAC ambiguous nucleotides (wWsSmMkKrRyY), any nucelotide (nN), and any unexpected nucleotides on a per sequence/contig basis. When these panels are empty they provide positive validation that these features were searched for but not found. **Panel G** presents the relationship between the length of each sequence/contig and it's G/C content."}
 
 library(ggpubr)
 

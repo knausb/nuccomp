@@ -1,0 +1,244 @@
+---
+title: "Benchmarks"
+author: "Insert authors here"
+date: "`r format(Sys.time(), '%Y, %B %d')`"
+output:
+  html_document:
+    toc: true
+    code_folding: hide
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(fig.align = "center")
+knitr::opts_chunk$set(fig.height = 4)
+knitr::opts_chunk$set(fig.width = 4)
+# options(knitr.duplicate.label = "allow")
+
+st1 <- Sys.time()
+```
+
+
+## Get data
+
+
+```{r}
+sample_df <- data.frame(
+  Name = "Arabidopsis",
+  url = "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/735/GCF_000001735.4_TAIR10.1/GCF_000001735.4_TAIR10.1_genomic.fna.gz",
+  destfile = "GCF_000001735.4_TAIR10.1_genomic.fna.gz"
+)
+
+# Cottonwood
+sample_df <- rbind(sample_df, c(
+  "Cottonwood",
+  "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/775/GCF_000002775.5_P.trichocarpa_v4.1/GCF_000002775.5_P.trichocarpa_v4.1_genomic.fna.gz",
+  "GCF_000002775.5_P.trichocarpa_v4.1_genomic.fna.gz")
+)
+
+# Hazelnut
+sample_df <- rbind(sample_df, c(
+  "Hazelnut",
+	"https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/901/000/735/GCA_901000735.2_CavTom2PMs-1.0/GCA_901000735.2_CavTom2PMs-1.0_genomic.fna.gz",
+  "GCA_901000735.2_CavTom2PMs-1.0_genomic.fna.gz")
+)
+
+# Hemp
+sample_df <- rbind(sample_df, c(
+  "Hemp",
+	"https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/626/175/GCF_900626175.2_cs10/GCF_900626175.2_cs10_genomic.fna.gz",
+  "GCF_900626175.2_cs10_genomic.fna.gz")
+)
+
+# Mint
+sample_df <- rbind(sample_df, c(
+  "Mint",
+	"https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/642/375/GCA_001642375.2_Mlong_CMEN585_v3/GCA_001642375.2_Mlong_CMEN585_v3_genomic.fna.gz",
+  "GCA_001642375.2_Mlong_CMEN585_v3_genomic.fna.gz")
+)
+
+# Potato
+sample_df <- rbind(sample_df, c(
+  "Potato",
+  "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/226/075/GCF_000226075.1_SolTub_3.0/GCF_000226075.1_SolTub_3.0_genomic.fna.gz",
+  "GCF_000226075.1_SolTub_3.0_genomic.fna.gz")
+)
+
+# Rice
+sample_df <- rbind(sample_df, c(
+  "Rice",
+  "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/433/935/GCF_001433935.1_IRGSP-1.0/GCF_001433935.1_IRGSP-1.0_genomic.fna.gz",
+  "GCF_001433935.1_IRGSP-1.0_genomic.fna.gz")
+)
+
+# Yeast
+sample_df <- rbind(sample_df, c(
+  "Yeast",
+  "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64/GCF_000146045.2_R64_genomic.fna.gz",
+  "GCF_000146045.2_R64_genomic.fna.gz")
+)
+
+```
+
+
+### Download data
+
+
+```{r, eval=FALSE}
+# i <- 1
+# i <- 2
+
+for(i in 1:nrow(sample_df)){
+  if( !file.exists( sample_df$destfile[i]) ){
+    print(sample_df$Name[i])
+    download.file( url = sample_df$url[i], 
+                   destfile = sample_df$destfile[i],
+                   method = "curl")
+  }
+}
+```
+
+
+## knit
+
+
+```{r}
+# i <- 1
+# j <- 2
+# j <- 8
+
+#sample_df$elapsed <- NA
+
+for( j in 1:nrow(sample_df) ){
+#for( j in 1:2 ){
+  print( sample_df$Name[j] )
+  my_rmd <- paste( sample_df$Name[j], "_nuccomp.Rmd", sep = "" )  
+  file.copy(from = "../R/nuccomp.Rmd", to = my_rmd, overwrite = TRUE )  
+
+  # perl -pi -e 's/you/me/g' file
+  my_cmd <- paste("perl -pi -e 's/my_infile <- \"S288C_reference_sequence_R64-2-1_20150113.fsa.gz\"/my_infile <- \"", sample_df$destfile[j], "\"/g' ", my_rmd, sep = "")
+  system( my_cmd )
+
+  if( sample_df$Name[j] == "Yeast" ){
+    my_cmd <- paste("perl -pi -e 's/window_size <- 1e6/window_size <- 1.5e4/g' ", my_rmd, sep = "")
+    system( my_cmd )
+  }
+  
+  # my_time <- system.time( rmarkdown::render( input = my_rmd, 
+  #                                            #envir = new.env(),
+  #                                            #envir = emptyenv(),
+  #                                            quiet = TRUE ) )
+  # my_cmd <- "Rscript -e \"rmarkdown::render('Cottonwood_nuccomp.Rmd')\""
+  
+  my_cmd <- paste("Rscript -e \"rmarkdown::render(\'", my_rmd, "\', quiet = TRUE)\"", sep = "")
+  my_time <- system.time( system(my_cmd) )
+  
+  sample_df$elapsed[j] <- my_time["elapsed"]
+}
+
+```
+
+
+## Summarize
+
+
+```{r, eval=TRUE}
+
+#my_nucs <- list.files(path = ".", pattern = "nuccomp.csv$")
+
+# i <- 1
+for(i in 1:nrow(sample_df)){
+  my_csv <- sample_df$destfile[i]
+  my_csv <- sub(".fna.gz", "_nuccomp.csv", my_csv)
+  my_nuc <- read.csv( file = my_csv )
+  my_nuc[1:3, 1:6]  
+  sample_df$Length[i] <- sum(my_nuc$Length)
+  sample_df$nseq[i] <- length(my_nuc$Length)
+  
+  my_lens <- sort(my_nuc$Length, decreasing = TRUE)
+  my_mid <- sum(my_lens)/2
+  n50 <- my_lens[cumsum(my_lens) >= my_mid][1]
+  sample_df$n50[i] <- n50
+  sample_df$max[i] <- max(my_lens)
+  sample_df$median[i] <- median(my_lens)
+
+  gc_perc <- sum(my_nuc[, c("c", "C", "g", "G")])/sum(my_nuc[, c("a", "A", "c", "C", "g", "G", "t", "T")])
+  sample_df$GC[i] <- gc_perc * 100
+}
+
+```
+
+
+```{r, eval=TRUE}
+#sample_df[1:3, c(1, 4:10)]
+
+#sample_df2 <- sample_df[, c(1, 6, 5, 7:10)]
+sample_df2 <- sample_df[, c("Name", "nseq", "Length", "n50", "max", "median", "GC", "elapsed")]
+sample_df2$GC <- round(sample_df2$GC, digits = 3)
+
+colnames(sample_df2) <- c("Name", "Sequence count", "Length (bp)", "n50 (bp)", "Maximum (bp)", "Median (bp)", "GC (%)", "Elapsed (secs)")
+
+knitr::kable(sample_df2, caption = "Properties of the genomes (length, number of sequences, etc.) and processing time", format.args = list( big.mark = ","))
+
+```
+
+
+
+```{r}
+library(ggplot2)
+
+sample_df2$`Length (Mbp)` <- sample_df2$`Length (bp)`/1e6
+
+p <- ggplot( data = sample_df2, 
+             aes( 
+#                 x = `Length (bp)`, 
+                 x = `Length (Mbp)`, 
+                 y = `Elapsed (secs)`
+                 )
+            )
+p <- p + geom_point( size = 4, shape = 16 )
+p <- p + theme_bw()
+p <- p + geom_smooth(formula = y ~ x, method=lm, se=TRUE)
+p
+```
+
+
+```{r}
+lm1 <- lm( `Elapsed (secs)` ~ `Length (Mbp)`, data = sample_df2)
+#summary(lm1)
+
+library(broom)
+library(knitr)
+library(magrittr)
+
+lm1 %>% tidy() %>% kable( caption = "**Table X** Linear model describing the relationship among assembly length (nucleotides) and processing time (seconds)." )
+```
+
+
+
+## Clean
+
+
+```{r}
+unlink("*_nuccomp.csv")
+unlink("*_CG_wins.bed")
+unlink("*_nuccomp.Rmd")
+# unlink("*_nuccomp.html")
+```
+
+
+```{r, eval=FALSE}
+# unlink("*fna.gz")
+```
+
+
+
+```{r}
+st99 <- Sys.time()
+st99 - st1
+```
+

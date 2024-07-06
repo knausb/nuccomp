@@ -44,8 +44,10 @@ my_test_file2 <- sub("\\.gz$", "", my_test_file)
 
 if( !file.exists(my_test_file) ){
   download.file("https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/735/GCF_000001735.4_TAIR10.1/GCF_000001735.4_TAIR10.1_genomic.fna.gz", destfile = my_test_file, method = "curl")
+}
+if( !file.exists(my_test_file2) ){
   my_cmd <- paste("gunzip -c ", my_test_file, " > ", my_test_file2, sep = "")
-  #system(my_cmd)
+  system(my_cmd)
 }
 
 ```
@@ -53,7 +55,7 @@ if( !file.exists(my_test_file) ){
 
 
 ```{r}
-summ_df <- data.frame( matrix(nrow = 8, ncol = 6) )
+summ_df <- data.frame( matrix(nrow = 8, ncol = 7) )
 colnames(summ_df) <- c("Compiled", 
                        "FAST[AQ]",
                        "Gzip", 
@@ -168,7 +170,8 @@ summ_df['Quast', 'Time'] <- my_time['elapsed']
 #summ_df
 
 
-my_quast <- read.table("quast_results/results_2024_06_13_02_07_08/report.tsv", sep = "\t", header = T)
+#my_quast <- read.table("quast_results/results_2024_06_13_02_07_08/report.tsv", sep = "\t", header = T)
+my_quast <- read.table("quast_results/latest/report.tsv", sep = "\t", header = T)
 knitr::kable(my_quast, format.args = list(big.mark = ","), caption = "Example output from file produced by Quast.")
 
 ```
@@ -184,7 +187,8 @@ my_time <- system.time( system(my_cmd) )
 summ_df['Quast_plots', 'Time'] <- my_time['elapsed']
 #summ_df
 
-my_quast <- read.table("quast_results/results_2024_06_13_02_07_08/report.tsv", sep = "\t", header = T)
+#my_quast <- read.table("quast_results/results_2024_06_13_02_07_08/report.tsv", sep = "\t", header = T)
+my_quast <- read.table("quast_results/latest/report.tsv", sep = "\t", header = T)
 knitr::kable(my_quast, format.args = list(big.mark = ","), caption = "Example output from file produced by Quast.")
 ```
 
@@ -366,7 +370,20 @@ summ_df['sequence-stats', 'Time'] <- my_time['elapsed']
 
 ```{r}
 names(summ_df)[ names(summ_df) == "Time" ] <- "Seconds"
-knitr::kable(summ_df)
+summ_df$Seconds <- round(summ_df$Seconds, digits = 3)
+summ_df <- data.frame(
+  Software = row.names(summ_df),
+  summ_df
+)
+
+
+knitr::kable(summ_df, row.names = FALSE)
+
+
+
+write.table(summ_df, file = "comparison_summary.csv",
+            sep = ",", row.names = FALSE, col.names = TRUE)
+
 ```
 
 
@@ -375,11 +392,9 @@ knitr::kable(summ_df)
 
 
 ```{r}
-
 # if( file.exists(my_test_file) ){
 #   file.remove(my_test_file)
 # }
-
 ```
 
 
