@@ -334,6 +334,7 @@ if (window.hljs) {
 div.csl-bib-body { }
 div.csl-entry {
 clear: both;
+margin-bottom: 0em;
 }
 .hanging div.csl-entry {
 margin-left:2em;
@@ -461,7 +462,7 @@ display: none;
 
 <h1 class="title toc-ignore">Comparisons</h1>
 <h4 class="author">Insert authors here</h4>
-<h4 class="date">2024, June 27</h4>
+<h4 class="date">2024, July 10</h4>
 
 </div>
 
@@ -500,12 +501,14 @@ my_test_file2 &lt;- sub(&quot;\\.gz$&quot;, &quot;&quot;, my_test_file)
 
 if( !file.exists(my_test_file) ){
   download.file(&quot;https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/735/GCF_000001735.4_TAIR10.1/GCF_000001735.4_TAIR10.1_genomic.fna.gz&quot;, destfile = my_test_file, method = &quot;curl&quot;)
+}
+if( !file.exists(my_test_file2) ){
   my_cmd &lt;- paste(&quot;gunzip -c &quot;, my_test_file, &quot; &gt; &quot;, my_test_file2, sep = &quot;&quot;)
-  #system(my_cmd)
+  system(my_cmd)
 }</code></pre>
-<pre class="r"><code>summ_df &lt;- data.frame( matrix(nrow = 8, ncol = 6) )
+<pre class="r"><code>summ_df &lt;- data.frame( matrix(nrow = 8, ncol = 7) )
 colnames(summ_df) &lt;- c(&quot;Compiled&quot;, 
-                       #&quot;FAST[AQ]&quot;,
+                       &quot;FAST[AQ]&quot;,
                        &quot;Gzip&quot;, 
                        &quot;Tabular output&quot;,
                        &quot;Sequence summary&quot;, &quot;Graphics&quot;, &quot;Time&quot;)
@@ -659,6 +662,13 @@ knitr::kable(my_nuccomp[, 1:8], caption = &quot;Example output produced by nucco
 </table>
 <pre class="r"><code>summ_df[&#39;nuccomp.py&#39;, &#39;Time&#39;] &lt;- my_time[&#39;elapsed&#39;]
 #summ_df</code></pre>
+<pre class="r"><code>if( file.exists(&quot;arab_CG_wins.bed&quot;) ){
+  file.remove(&quot;arab_CG_wins.bed&quot;)
+}
+if( file.exists(&quot;arab_nuccomp.csv&quot;) ){
+  file.remove(&quot;arab_nuccomp.csv&quot;)
+}</code></pre>
+<pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>file.remove(&quot;./nuccomp.Rmd&quot;)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>file.copy(from = &quot;../R/nuccomp.Rmd&quot;, to = &quot;./nuccomp.Rmd&quot;)</code></pre>
@@ -689,7 +699,8 @@ summ_df[&#39;Quast&#39;, &#39;Time&#39;] &lt;- my_time[&#39;elapsed&#39;]
 #summ_df
 
 
-my_quast &lt;- read.table(&quot;quast_results/results_2024_06_13_02_07_08/report.tsv&quot;, sep = &quot;\t&quot;, header = T)
+#my_quast &lt;- read.table(&quot;quast_results/results_2024_06_13_02_07_08/report.tsv&quot;, sep = &quot;\t&quot;, header = T)
+my_quast &lt;- read.table(&quot;quast_results/latest/report.tsv&quot;, sep = &quot;\t&quot;, header = T)
 knitr::kable(my_quast, format.args = list(big.mark = &quot;,&quot;), caption = &quot;Example output from file produced by Quast.&quot;)</code></pre>
 <table>
 <caption>Example output from file produced by Quast.</caption>
@@ -767,7 +778,8 @@ my_time &lt;- system.time( system(my_cmd) )
 summ_df[&#39;Quast_plots&#39;, &#39;Time&#39;] &lt;- my_time[&#39;elapsed&#39;]
 #summ_df
 
-my_quast &lt;- read.table(&quot;quast_results/results_2024_06_13_02_07_08/report.tsv&quot;, sep = &quot;\t&quot;, header = T)
+#my_quast &lt;- read.table(&quot;quast_results/results_2024_06_13_02_07_08/report.tsv&quot;, sep = &quot;\t&quot;, header = T)
+my_quast &lt;- read.table(&quot;quast_results/latest/report.tsv&quot;, sep = &quot;\t&quot;, header = T)
 knitr::kable(my_quast, format.args = list(big.mark = &quot;,&quot;), caption = &quot;Example output from file produced by Quast.&quot;)</code></pre>
 <table>
 <caption>Example output from file produced by Quast.</caption>
@@ -1143,24 +1155,33 @@ summ_df[&#39;sequence-stats&#39;, &#39;Time&#39;] &lt;- my_time[&#39;elapsed&#39
 <div id="summary" class="section level2">
 <h2>Summary</h2>
 <pre class="r"><code>names(summ_df)[ names(summ_df) == &quot;Time&quot; ] &lt;- &quot;Seconds&quot;
-knitr::kable(summ_df)</code></pre>
+summ_df$Seconds &lt;- round(summ_df$Seconds, digits = 3)
+summ_df &lt;- data.frame(
+  Software = row.names(summ_df),
+  summ_df
+)
+
+
+knitr::kable(summ_df, row.names = FALSE)</code></pre>
 <table>
 <colgroup>
-<col width="19%" />
-<col width="11%" />
-<col width="6%" />
-<col width="19%" />
-<col width="21%" />
-<col width="11%" />
+<col width="17%" />
 <col width="10%" />
+<col width="10%" />
+<col width="5%" />
+<col width="17%" />
+<col width="19%" />
+<col width="10%" />
+<col width="9%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th align="left"></th>
+<th align="left">Software</th>
 <th align="left">Compiled</th>
+<th align="left">FAST.AQ.</th>
 <th align="left">Gzip</th>
-<th align="left">Tabular output</th>
-<th align="left">Sequence summary</th>
+<th align="left">Tabular.output</th>
+<th align="left">Sequence.summary</th>
 <th align="left">Graphics</th>
 <th align="right">Seconds</th>
 </tr>
@@ -1169,119 +1190,134 @@ knitr::kable(summ_df)</code></pre>
 <tr class="odd">
 <td align="left">nuccomp.py</td>
 <td align="left">No</td>
+<td align="left">NA</td>
 <td align="left">Yes</td>
 <td align="left">Yes</td>
 <td align="left">Yes</td>
 <td align="left">No</td>
-<td align="right">3.989</td>
+<td align="right">2.704</td>
 </tr>
 <tr class="even">
 <td align="left">Quast</td>
 <td align="left">No</td>
+<td align="left">NA</td>
 <td align="left">Yes</td>
 <td align="left">Yes</td>
 <td align="left">No</td>
 <td align="left">No</td>
-<td align="right">9.766</td>
+<td align="right">5.427</td>
 </tr>
 <tr class="odd">
 <td align="left">SeqKit</td>
 <td align="left">No</td>
+<td align="left">NA</td>
 <td align="left">Yes</td>
 <td align="left">Yes</td>
 <td align="left">No</td>
 <td align="left">No</td>
-<td align="right">0.880</td>
+<td align="right">0.758</td>
 </tr>
 <tr class="even">
 <td align="left">Seqstats</td>
 <td align="left">Yes</td>
+<td align="left">NA</td>
 <td align="left">Yes</td>
 <td align="left">No</td>
 <td align="left">No</td>
 <td align="left">No</td>
-<td align="right">0.569</td>
+<td align="right">0.200</td>
 </tr>
 <tr class="odd">
 <td align="left">sequence-stats</td>
 <td align="left">No</td>
+<td align="left">NA</td>
 <td align="left">No</td>
 <td align="left">Yes</td>
 <td align="left">Yes</td>
 <td align="left">No</td>
-<td align="right">23.807</td>
+<td align="right">40.858</td>
 </tr>
 <tr class="even">
 <td align="left">nuccomp.Rmd</td>
 <td align="left">No</td>
+<td align="left">NA</td>
 <td align="left">Yes</td>
 <td align="left">Yes</td>
 <td align="left">Yes</td>
 <td align="left">Yes</td>
-<td align="right">8.048</td>
+<td align="right">7.051</td>
 </tr>
 <tr class="odd">
 <td align="left">Quast_plots</td>
 <td align="left">No</td>
+<td align="left">NA</td>
 <td align="left">Yes</td>
 <td align="left">Yes</td>
 <td align="left">No</td>
 <td align="left">Yes</td>
-<td align="right">12.470</td>
+<td align="right">5.855</td>
 </tr>
 <tr class="even">
 <td align="left">SeqKit_watch</td>
 <td align="left">No</td>
+<td align="left">NA</td>
 <td align="left">Yes</td>
 <td align="left">No</td>
 <td align="left">No</td>
 <td align="left">Yes</td>
-<td align="right">0.912</td>
+<td align="right">0.763</td>
 </tr>
 </tbody>
 </table>
+<pre class="r"><code>write.table(summ_df, file = &quot;comparison_summary.csv&quot;,
+            sep = &quot;,&quot;, row.names = FALSE, col.names = TRUE)</code></pre>
 </div>
 <div id="clean-up" class="section level2">
 <h2>Clean up</h2>
 <pre class="r"><code># if( file.exists(my_test_file) ){
 #   file.remove(my_test_file)
-# }</code></pre>
+# }
+if( file.exists(&quot;arab_CG_wins.bed&quot;) ){
+  file.remove(&quot;arab_CG_wins.bed&quot;)
+}</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>if( file.exists(&quot;arab_nuccomp.csv&quot;) ){
+  file.remove(&quot;arab_nuccomp.csv&quot;)
+}</code></pre>
+<pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>t99 &lt;- Sys.time()
 t99 - t1</code></pre>
-<pre><code>## Time difference of 1.034543 mins</code></pre>
+<pre><code>## Time difference of 1.072156 mins</code></pre>
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>## R version 4.4.0 (2024-04-24)
-## Platform: x86_64-pc-linux-gnu
-## Running under: Ubuntu 22.04.4 LTS
+<pre><code>## R version 4.3.2 (2023-10-31)
+## Platform: aarch64-apple-darwin20 (64-bit)
+## Running under: macOS Sonoma 14.5
 ## 
 ## Matrix products: default
-## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0 
-## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0
+## BLAS:   /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRblas.0.dylib 
+## LAPACK: /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0
 ## 
 ## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
-##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 ## 
 ## time zone: America/Los_Angeles
-## tzcode source: system (glibc)
+## tzcode source: internal
 ## 
 ## attached base packages:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] digest_0.6.34     R6_2.5.1          fastmap_1.1.1     xfun_0.42        
-##  [5] cachem_1.0.8      knitr_1.45        htmltools_0.5.7   rmarkdown_2.25   
-##  [9] lifecycle_1.0.4   cli_3.6.2         sass_0.4.8        jquerylib_0.1.4  
-## [13] compiler_4.4.0    rstudioapi_0.15.0 tools_4.4.0       evaluate_0.23    
-## [17] bslib_0.6.1       yaml_2.3.8        rlang_1.1.3       jsonlite_1.8.8</code></pre>
+##  [5] cowsay_0.9.0      rmsfact_0.0.3     cachem_1.0.8      knitr_1.45       
+##  [9] htmltools_0.5.7   rmarkdown_2.25    lifecycle_1.0.4   cli_3.6.2        
+## [13] fortunes_1.5-4    praise_1.0.0      sass_0.4.8        jquerylib_0.1.4  
+## [17] compiler_4.3.2    rstudioapi_0.15.0 tools_4.3.2       bslib_0.6.1      
+## [21] evaluate_0.23     yaml_2.3.8        jsonlite_1.8.8    rlang_1.1.3      
+## [25] crayon_1.5.2</code></pre>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2 class="unnumbered">References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-gurevich2013quast" class="csl-entry">
 Gurevich, Alexey, Vladislav Saveliev, Nikolay Vyahhi, and Glenn Tesler.
 2013. <span>“QUAST: Quality Assessment Tool for Genome

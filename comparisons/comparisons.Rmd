@@ -129,6 +129,13 @@ summ_df['nuccomp.py', 'Time'] <- my_time['elapsed']
 
 
 ```{r}
+if( file.exists("arab_CG_wins.bed") ){
+  file.remove("arab_CG_wins.bed")
+}
+if( file.exists("arab_nuccomp.csv") ){
+  file.remove("arab_nuccomp.csv")
+}
+
 file.remove("./nuccomp.Rmd")
 file.copy(from = "../R/nuccomp.Rmd", to = "./nuccomp.Rmd")
 
@@ -395,6 +402,13 @@ write.table(summ_df, file = "comparison_summary.csv",
 # if( file.exists(my_test_file) ){
 #   file.remove(my_test_file)
 # }
+if( file.exists("arab_CG_wins.bed") ){
+  file.remove("arab_CG_wins.bed")
+}
+if( file.exists("arab_nuccomp.csv") ){
+  file.remove("arab_nuccomp.csv")
+}
+
 ```
 
 

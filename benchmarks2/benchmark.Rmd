@@ -82,6 +82,14 @@ sample_df <- rbind(sample_df, c(
   "GCF_000146045.2_R64_genomic.fna.gz")
 )
 
+# Hop downy mildew.
+sample_df <- rbind(sample_df, c(
+  "Hop_downy_mildew",
+  "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/991/265/GCA_003991265.1_ASM399126v1/GCA_003991265.1_ASM399126v1_genomic.fna.gz",
+  "GCA_003991265.1_ASM399126v1_genomic.fna.gz")
+)
+
+
 ```
 
 
@@ -95,9 +103,12 @@ sample_df <- rbind(sample_df, c(
 for(i in 1:nrow(sample_df)){
   if( !file.exists( sample_df$destfile[i]) ){
     print(sample_df$Name[i])
+    orig_timeout <- getOption("timeout")
+    options(timeout = max(300, getOption("timeout")))
     download.file( url = sample_df$url[i], 
                    destfile = sample_df$destfile[i],
                    method = "curl")
+    options(timeout = orig_timeout)
   }
 }
 ```
@@ -109,7 +120,9 @@ for(i in 1:nrow(sample_df)){
 ```{r}
 # i <- 1
 # j <- 2
+#j <- 4 # Hemp
 # j <- 8
+j <- 9 # Hop_downy_mildew
 
 #sample_df$elapsed <- NA
 
@@ -124,9 +137,20 @@ for( j in 1:nrow(sample_df) ){
   system( my_cmd )
 
   if( sample_df$Name[j] == "Yeast" ){
-    my_cmd <- paste("perl -pi -e 's/window_size <- 1e6/window_size <- 1.5e4/g' ", my_rmd, sep = "")
+    my_cmd <- paste("perl -pi -e 's/window_size <- 1e6/window_size <- 1.5e4/g' ",
+                    my_rmd, sep = "")
     system( my_cmd )
   }
+  if( sample_df$Name[j] == "Hop_downy_mildew" ){
+    my_cmd <- paste("perl -pi -e 's/window_size <- 1e6/window_size <- 0.5e4/g' ",
+                    my_rmd, sep = "")
+    system( my_cmd )
+    my_cmd <- paste("perl -pi -e 's/size_sort <- FALSE/size_sort <- TRUE/g' ",
+                    my_rmd, sep = "")
+    system( my_cmd )
+    
+  }
+  
   
   # my_time <- system.time( rmarkdown::render( input = my_rmd, 
   #                                            #envir = new.env(),
@@ -184,6 +208,7 @@ colnames(sample_df2) <- c("Name", "Sequence count", "Length (bp)", "n50 (bp)", "
 
 knitr::kable(sample_df2, caption = "Properties of the genomes (length, number of sequences, etc.) and processing time", format.args = list( big.mark = ","))
 
+#write.table(x = sample_df2, file = "", 
 ```
 
 
