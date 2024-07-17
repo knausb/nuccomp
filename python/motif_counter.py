@@ -15,15 +15,9 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument("INFILE", help="FAST[AQ] file containing nucleotides.")
 parser.add_argument('--motif', nargs='?', default="CG", const="CG", type=str, help="Motif to count in each window [CG].")
-
 parser.add_argument('--invert', dest='invert', action='store_true', help="Invert the scaled counts [default].")
 parser.add_argument('--no-invert', dest='invert', action='store_false', help="Do not invert the scaled counts.")
 parser.set_defaults(invert=True)
-
-#parser.add_argument('--invert', action='store_true', help="Invert the scaled counts [True]")
-#parser.add_argument('--no-invert', dest='invert', action='store_false')
-#parser.set_defaults(invert=True)
-#parser.add_argument('--win_size', nargs='?', const=1000000, type=int, default=1000000)
 parser.add_argument('--win_size', nargs='?', const=1000000, type=str, default=1000000, help="Window size [default = 1000000]")
 parser.add_argument("-v", "--verbose", help="increase output verbosity.",
                     action="store_true")
@@ -48,21 +42,17 @@ def check_file(infile):
     file_properties = {'inname': infile, 'format': 'none', 'compression': 'none', 'outname': 'none'}
     # Remove PATH from infile.
     file_properties[ 'outname' ] = os.path.basename(infile)
-#    print("file_properties[ 'outname' ]", file_properties[ 'outname' ])
 
     if is_gz_file(infile):
-#        print("File is gzipped.")
         file_properties[ 'compression' ] = 'GZ'
         file_properties[ 'outname' ] = re.sub(".gz$", "", file_properties[ 'outname' ])
         f = gzip.open(infile, 'rt')
     else:
-#        print("File is not gzipped.")
         f = open(infile, encoding="utf-8")
     line = f.readline()
     f.close()
     line = line.rstrip()
     if re.match("^@", line):
-#        print("FASTQ line:", line)
         file_properties[ 'format' ] = 'FASTQ'
         file_properties[ 'outname' ] = re.sub(".fq$", "", file_properties[ 'outname' ])
         file_properties[ 'outname' ] = re.sub(".fastq$", "", file_properties[ 'outname' ])
@@ -75,21 +65,17 @@ def check_file(infile):
         file_properties[ 'outname' ] = re.sub(".fsa$", "", file_properties[ 'outname' ])
         file_properties[ 'outname' ] = re.sub(".fasta$", "", file_properties[ 'outname' ])
         return( file_properties )
-#        print("FASTA line:", line)
     else:
         print("Unexpected line:", line)
-#        raise ValueError('Expecting a FASTQ format file.')
         sys.exit("Expecting a FASTA or FASTQ format file.")
 
 
 def chrom_to_win(chrom, win_size, motif, out_file):
     chrom.seq = chrom.seq.upper()
-    #chrom.seq = chrom.seq.lower()
     # Initialize the number of windows in this chromosome.
     # Taking the int() is equivalent to floor(), so we add one.
     win_number = int( len(chrom) / win_size )
     win_number = win_number + 1
-    # print( "win_number: ", win_number )
 
     # Initialize lists for chromosomal summaries.
     my_starts = [0] * win_number
@@ -100,20 +86,8 @@ def chrom_to_win(chrom, win_size, motif, out_file):
     my_rgbs = [0] * win_number
 
     # Initialize a min and max for scaling.
-#    chrom_min = 1000000
-#    chrom_max = 0
     chrom_min = -999
     chrom_max = -999
-                    
-#    viridis_magma = ['59,15,112', '92,22,127', '124,35,130',
-#                     '156,46,127','190,58,119', '222,73,104',
-#                     '244,102,92', '252,140,99', '254,178,122',
-#                     '254,216,154','252,253,191']
-    # R> dput(apply(col2rgb(viridisLite::magma( n=10, alpha = 1, begin = 0.2, end = 0.9, direction  =1)), MARGIN = 2, function(x){ paste(x, collapse = ",") }))
-#    viridis_magma = ["59,15,112", "92,22,127", "122,35,130", 
-#                     "154,45,127", "187,56,120", "217,70,107",
-#                     "241,96,93", "251,133,96", "254,170,116",
-#                     "254,206,145"]
 
     # R> dput(apply(col2rgb(viridisLite::magma( n=11, alpha = 1, begin = 0.2, end = 0.9, direction  =1)), MARGIN = 2, function(x){ paste(x, collapse = ",") }))
     viridis_magma = ["59,15,112", "89,21,126", "116,33,129",
@@ -123,7 +97,6 @@ def chrom_to_win(chrom, win_size, motif, out_file):
 
     viridis_magma.reverse()
 
-#    print("win_number: ", win_number)
     # Loop over windows
     # to count regex matches
     # and collect chromosome max and min.
@@ -145,47 +118,19 @@ def chrom_to_win(chrom, win_size, motif, out_file):
             chrom_min = my_scores[i]
         if my_scores[i] > chrom_max:
             chrom_max = my_scores[i]
-#    print( "chrom_min: ", chrom_min)
-#    print( "chrom_max: ", chrom_max)
-    # Compute score and RGB columns.
-#    if win_number == 1:
-#        i = 0
-#        my_scores[i] = my_counts[i] / my_lens[i]    
-#        if args.invert:
-#            my_scores[i] = 1 - my_scores[i]
-#        my_scores[i] = my_scores[i] * 1000
-#        my_scores[i] = int( my_scores[i] )
-#        my_index = int( my_scores[i] / 100 )
-##        print( my_index )
-#        my_rgbs[i] = viridis_magma[ my_index ]        
-#    else:
+
     for i in range( win_number ):
-#            print("    my_counts[i]: ", my_counts[i])
-#            print(my_counts[i], my_lens[i], chrom_max, chrom_min)
-#            my_scores[i] = my_counts[i]
-#            print("--> ", chrom_max - chrom_min)
-#            my_scores[i] = my_counts[i] / my_lens[i]
-#            print("win_number: ", i)
-#            my_scores[i] = my_scores[i] - chrom_min/my_lens[i]
             if (chrom_max - chrom_min) > 0:
-#                print("  1> my_scores[i]: ", my_scores[i], "; chrom_max:", chrom_max, "; chrom_min:", chrom_min, "; my_lens[i]:", my_lens[i])
-#                my_scores[i] = my_scores[i] - chrom_min/my_lens[i]
                 my_scores[i] = my_scores[i] - chrom_min
-#                print("  2> my_scores[i]: ", my_scores[i], "; chrom_max:", chrom_max, "; chrom_min:", chrom_min)
-#                my_scores[i] = my_scores[i] / ( (chrom_max - chrom_min)/my_lens[i] )
                 my_scores[i] = my_scores[i] / ( chrom_max - chrom_min )
-            #my_scores[i] = (my_counts[i] - chrom_min)/(chrom_max - chrom_min)
-#            if i == win_number - 1:
-#                print("  my_scores[i]: ", my_scores[i])
             if args.invert:
                 my_scores[i] = 1 - my_scores[i]
             my_scores[i] = my_scores[i] * 1000
             my_scores[i] = int( my_scores[i] )
             my_index = int( my_scores[i] / 100 )
-#        print( my_index )
             my_rgbs[i] = viridis_magma[ my_index ]
 
-    
+
     for i in range( win_number ):
         print( chrom.id,
                my_starts[i],
@@ -194,12 +139,9 @@ def chrom_to_win(chrom, win_size, motif, out_file):
                my_scores[i],
                ".",
                ".",".",
-               #".",
                my_rgbs[i],
                my_counts[i],
-               my_lens[i], 
-#               chrom_min,
-#               chrom_max,
+               my_lens[i],
                sep = "\t", file = out_file)
 
 
@@ -222,8 +164,6 @@ file_dict = check_file(args.INFILE)
 file_dict[ 'outname' ] = file_dict[ 'outname' ] + "_" + str(args.motif) + '_wins.bed'
 
 if args.verbose:
-#    print("Input file: " + args.FASTA)
-#    print("Output file: " + outfile)
     print("Input file: "  + file_dict[ 'inname' ])
     print("Output file: " + file_dict[ 'outname' ])
     print("File compression: " + file_dict[ 'compression' ])

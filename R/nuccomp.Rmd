@@ -374,21 +374,17 @@ my_df <- rbind(my_df, tmp)
 my_df$Base <- factor(my_df$Base, levels = c("Adenine", "Cytosine", "Thymine", "Guanine"))
 
 my_df <- my_df[!is.na(my_df$nucs), , drop = FALSE]
-#my_df[1:3, ]
 
 my_pal <- c("#DD0A17", "#5157FB", "#1CBE20", "#E6E431")
 
 pat <- ggplot(my_df, aes(x = nucs, color = Base, fill = Base))
-#pat <- pat + geom_histogram( binwidth = 0.01 )
 pat <- pat + geom_histogram( bins = 30 )
 pat <- pat + facet_wrap( . ~ Base, nrow = 2, ncol = 2)
 pat <- pat + theme_bw()
 pat <- pat + theme( strip.background = element_rect( fill = "#F5F5F5" ) )
 
-#pat <- pat + xlim( c( 0, 0.5 ) )
 pat <- pat + xlab("Base frequency in sequence")
 pat <- pat + ylab("Sequence count")
-#pat + scale_color_manual(values=c("#999999", "#E69F00", "#56B4E9", "#56B4E9"))
 pat <- pat + scale_color_manual(values=c("#FFFFFF00", "#FFFFFF00", "#FFFFFF00", "#FFFFFF00"))
 
 pat <- pat + scale_fill_manual( values = my_pal )
@@ -774,24 +770,34 @@ genome_df <- data.frame(matrix(
     "Number of Nn", sum(colSums(my_nucs[, c("N", "n")])),
     "Number of IUPAC ambiguous: wWsSmMkKrRyY", sum(colSums(my_nucs[, c("w", "W", "s", "S", "m", "M", "k", "K", "r", "R", "y", "Y")])),
     "Number of unexpected", sum(my_nucs$Length) - sum(rowSums(my_nucs[,c("a", "A", "c", "C", "g", "G", "t", "T", "w", "W", "s", "S", "m", "M", "k", "K", "r", "R", "y", "Y", "n", "N")]))
-#)
+
   ),
   ncol = 2, byrow = TRUE
 ))
 genome_df <- as.data.frame(genome_df)
 names(genome_df) <- c("Category", "Value")
-genome_df$Value <- as.numeric(genome_df$Value)
-genome_df$Value <- format(genome_df$Value, 
-                          digits = 3, nsmall = 3L, 
-                          scientific = FALSE, big.mark = ",")
 
 proc_time <- Sys.time() - st1
-genome_df <- rbind(genome_df, c("Processing time", format( proc_time, units = "mins")))
+proc_time <- format( proc_time, units = "secs")
+proc_time <- sub(" .+", "", proc_time)
+proc_time <- as.numeric(proc_time)
+genome_df <- rbind(genome_df, c("Processing time (secs)", proc_time))
 
 knitr::kable(genome_df, 
              digits = 3, 
              format.args = list(scientific = FALSE, big.mark = ","),
              caption = "**Table X** Summary of the sequences.")
+```
+
+
+File output can be accomplished with the following example that outputs to comma delimited format.
+
+
+```{r}
+# write.table( x = genome_df, 
+#              file = paste(my_out, "_nuccomp_summary.csv", sep = ""),
+#              sep = ",",
+#              row.names = FALSE, col.names = TRUE )
 ```
 
 
@@ -807,18 +813,6 @@ genome_df <- genome_df[-1, , drop = FALSE]
 #
 dput(genome_df)
 ```
-
-
-File output can be accomplished with the following example that outputs to comma delimited format.
-
-
-```{r, comment=NA}
-# write.table( x = genome_df, 
-#              file = paste(my_out, "_nuccomp_summary.csv", sep = ""),
-#              sep = ",",
-#              row.names = FALSE, col.names = TRUE )
-```
-
 
 
 ## Session information
